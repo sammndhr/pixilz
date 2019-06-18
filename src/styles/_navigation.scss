@@ -1,0 +1,104 @@
+.favicon {
+  height: 1.5rem;
+  width: 1.5rem;
+  margin-bottom: 0;
+}
+
+.header {
+  align-items: center;
+  justify-content: center;
+  position: sticky;
+  top: 0;
+  left: 0;
+  max-width: 100vw; //comment is for when nav was grid and not flex --> without this grid-items don't wrap and overflow outside viewport
+  width: 100%; //comment is for when nav was grid and not flex --> this plus max-width forces header to take up whole viewport
+  margin: 0;
+  padding: 0 1.5rem;
+  font-size: 1.5rem;
+  background-color: rgb(141, 215, 141);
+  transition: all 0.3s ease;
+
+  &.scroll {
+    box-shadow: 1px 2px 18px rgba(0, 0, 0, 0.1);
+
+    .nav {
+      height: 3.5rem;
+    }
+
+    .links a {
+      &:hover,
+      &.active {
+        color: #111;
+        border-bottom: 2px solid #5183f5;
+      }
+
+      &:active {
+        color: #111;
+        border-bottom: 2px dashed #5183f5;
+      }
+    }
+  }
+  .nav {
+    display: flex;
+    flex-wrap: no-wrap;
+    align-items: center;
+    justify-content: space-between;
+    max-width: $width; //forces nav to specified width
+    height: 5.5rem;
+    margin: auto;
+    padding: 0 1.5rem;
+    background-color: aliceblue;
+    transition: height 0.3s ease;
+
+    .brand {
+      display: flex;
+      align-items: center;
+      font-family: 'Medieval', 'Arial';
+      a {
+        display: flex;
+        align-items: center;
+        color: #333;
+
+        font-size: 1.5rem;
+
+        &:hover,
+        &:focus {
+          color: black;
+        }
+      }
+    }
+
+    .links {
+      display: flex;
+      align-items: center;
+      margin-left: auto; //flex item will align to the right since you can't use justify-items or justify-self with flexbox
+      a {
+        display: flex;
+        align-items: center;
+        text-align: center;
+        margin: 0;
+        padding: 1rem 0.75rem;
+      }
+    }
+  }
+}
+
+button.dark-switcher {
+  margin: 0;
+  border: 0;
+  padding: 1rem;
+  background: transparent;
+  &:focus {
+    outline: none;
+  }
+}
+
+.theme-icon {
+  height: 1.5rem;
+  width: 1.5rems;
+  margin-bottom: 0;
+}
+
+main {
+  background-color: rgb(182, 167, 167);
+}

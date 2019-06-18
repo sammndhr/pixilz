@@ -90,7 +90,9 @@ video {
   font-size: 100%;
   font: inherit;
   vertical-align: baseline;
+  text-align: center;
 }
+
 /* HTML5 display-role reset for older browsers */
 article,
 aside,
@@ -136,4 +138,9 @@ html {
 *:before,
 *:after {
   box-sizing: inherit;
+}
+
+// remove anchor tag text-decoration
+a {
+  text-decoration: none;
 }

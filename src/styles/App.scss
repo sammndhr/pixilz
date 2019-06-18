@@ -1,53 +1,54 @@
 @import 'reset';
-
-.App {
-  text-align: center;
+@import 'variables';
+@import 'navigation';
+@font-face {
+  font-family: 'Medieval';
+  src: url('./MedievalSharp-Bold.ttf') format('truetype');
 }
 
 body {
   font-family: arial;
 }
 
+a,
+button {
+  cursor: pointer;
+}
+
+.cta-btn {
+  display: flex;
+  align-items: center;
+}
+
 .container {
-  min-height: 100vh;
   display: grid;
+  justify-items: center;
+  min-height: 100vh;
   grid-template-columns: 1fr;
   grid-template-rows: auto 1fr auto;
-}
+  grid-template-areas:
+    'header'
+    'main'
+    'footer';
 
-header {
-  padding: 30px;
-  text-align: center;
-  font-size: 1.4em;
-  background-color: #369;
-  color: white;
-}
+  header {
+    grid-area: header;
+    width: 100%;
+  }
 
-main {
-  // flex: 1;
-  padding: 20px;
-}
+  main {
+    padding: 1.5rem;
+    grid-area: main;
+    overflow: auto;
+    width: 100%;
+  }
 
-nav {
-  background-color: #f90;
-  padding: 20px;
-}
-
-aside {
-  padding: 20px;
-  background-color: #936;
-}
-
-footer {
-  padding: 30px;
-  text-align: center;
-  font-size: 1.4em;
-  background-color: #690;
-  color: white;
-}
-
-h1 {
-  margin-bottom: 1em;
-  font-size: 1.3em;
-  font-weight: bold;
+  footer {
+    grid-area: footer;
+    padding: 2rem;
+    font-size: 1.4em;
+    background-color: #690;
+    color: white;
+    width: 100%;
+  }
 }
