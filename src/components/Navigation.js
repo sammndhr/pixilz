@@ -16,15 +16,12 @@ export default class Navigation extends Component {
   handleScroll = () => {
     if (window.scrollY > 20) {
       this.setState({ scrolled: true })
-      console.log(window.scrollY)
     } else {
-      console.log(window.scrollY)
       this.setState({ scrolled: false })
     }
   }
   render() {
     const { scrolled } = this.state
-    console.log(scrolled)
     return (
       <header className={scrolled ? 'header scroll' : 'header'}>
         <nav className='nav'>
