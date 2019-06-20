@@ -2,13 +2,16 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import './styles/index.scss'
 import App from './components/App'
-import { BrowserRouter } from 'react-router-dom'
+import { BrowserRouter as Router, Route } from 'react-router-dom'
 import * as serviceWorker from './serviceWorker'
+import { ThemeProvider } from './context/ThemeContext'
 
 ReactDOM.render(
-  <BrowserRouter>
-    <App />
-  </BrowserRouter>,
+  <Router>
+    <ThemeProvider>
+      <Route path='/' exact component={App} />
+    </ThemeProvider>
+  </Router>,
   document.getElementById('root')
 )
 

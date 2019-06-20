@@ -1,1 +1,11 @@
 $width: 980px;
+
+$background: #f8f9f9; //used #12C47C as base color on https://palx.jxnblk.com/ to get bg color
+$primary: #12c47c;
+$secondary: #ef5b5b;
+$link: $primary;
+$link-hover: darken($link, 10%);
+$dark: rgb(34, 34, 34);
+// $tertiary: #;
+// $other: #;
+// $color: #;

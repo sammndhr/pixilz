@@ -15,26 +15,23 @@
   margin: 0;
   padding: 0 1.5rem;
   font-size: 1.5rem;
-  background-color: rgb(141, 215, 141);
   transition: all 0.3s ease;
 
   &.scroll {
-    box-shadow: 1px 2px 18px rgba(0, 0, 0, 0.1);
+    background-color: $dark;
+    box-shadow: 0 5px 10px rgba(154, 160, 185, 0.05),
+      0 15px 40px rgba(166, 173, 201, 0.2);
 
     .nav {
       height: 3.5rem;
-    }
-
-    .links a {
-      &:hover,
-      &.active {
-        color: #111;
-        border-bottom: 2px solid #5183f5;
-      }
-
-      &:active {
-        color: #111;
-        border-bottom: 2px dashed #5183f5;
+      .brand {
+        a {
+          color: $primary;
+          text-decoration: none;
+          &:hover {
+            color: $link-hover;
+          }
+        }
       }
     }
   }
@@ -47,8 +44,7 @@
     height: 5.5rem;
     margin: auto;
     padding: 0 1.5rem;
-    background-color: aliceblue;
-    transition: height 0.3s ease;
+    transition: all 0.3s ease;
 
     .brand {
       display: flex;
@@ -57,13 +53,10 @@
       a {
         display: flex;
         align-items: center;
-        color: #333;
-
+        color: $dark;
         font-size: 1.5rem;
-
-        &:hover,
-        &:focus {
-          color: black;
+        &:hover {
+          color: $link-hover;
         }
       }
     }
@@ -97,8 +90,4 @@ button.dark-switcher {
   height: 1.5rem;
   width: 1.5rems;
   margin-bottom: 0;
-}
-
-main {
-  background-color: rgb(182, 167, 167);
 }
