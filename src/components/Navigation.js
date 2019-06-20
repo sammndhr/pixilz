@@ -1,7 +1,12 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import sun from '../images/sun.svg'
+import moon from '../images/moon.svg'
+import ThemeContext from '../context/ThemeContext'
+
 export default class Navigation extends Component {
+  static contextType = ThemeContext
+
   state = {
     scrolled: false
   }
@@ -22,6 +27,7 @@ export default class Navigation extends Component {
   }
   render() {
     const { scrolled } = this.state
+    const theme = this.context //lsLight
     return (
       <header className={scrolled ? 'header scroll' : 'header'}>
         <nav className='nav'>
@@ -32,9 +38,17 @@ export default class Navigation extends Component {
           </div>
           <div className='links'>
             <div className='cta-btn'>
-              <Link to='/' className='dark-switcher'>
-                <img src={sun} className='theme-icon' alt='Light Mode' />
-              </Link>
+              <button className='dark-switcher' onClick={theme.toggleTheme}>
+                {theme.dark ? (
+                  <span>
+                    <img src={sun} className='theme-icon' alt='Light Mode' />
+                  </span>
+                ) : (
+                  <span>
+                    <img src={moon} className='theme-icon' alt='Dark Mode' />
+                  </span>
+                )}
+              </button>
             </div>
           </div>
         </nav>
