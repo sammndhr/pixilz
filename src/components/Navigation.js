@@ -25,9 +25,22 @@ export default class Navigation extends Component {
       this.setState({ scrolled: false })
     }
   }
+
+  renderThemeButton = theme => {
+    return theme.dark ? (
+      <span>
+        <img src={sun} className='theme-icon' alt='Light Mode' />
+      </span>
+    ) : (
+      <span>
+        <img src={moon} className='theme-icon' alt='Dark Mode' />
+      </span>
+    )
+  }
   render() {
     const { scrolled } = this.state
-    const theme = this.context //lsLight
+    const theme = this.context
+
     return (
       <header className={scrolled ? 'header scroll' : 'header'}>
         <nav className='nav'>
@@ -39,15 +52,7 @@ export default class Navigation extends Component {
           <div className='links'>
             <div className='cta-btn'>
               <button className='dark-switcher' onClick={theme.toggleTheme}>
-                {theme.dark ? (
-                  <span>
-                    <img src={sun} className='theme-icon' alt='Light Mode' />
-                  </span>
-                ) : (
-                  <span>
-                    <img src={moon} className='theme-icon' alt='Dark Mode' />
-                  </span>
-                )}
+                {this.renderThemeButton(theme)}
               </button>
             </div>
           </div>
