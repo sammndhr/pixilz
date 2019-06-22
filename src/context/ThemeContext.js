@@ -12,16 +12,14 @@ class ThemeProvider extends Component {
     dark: false
   }
   componentDidMount() {
-    const dark = JSON.parse(localStorage.getItem('dark'))
-
-    if (dark) {
-      this.setState({ dark })
+    const lsDark = JSON.parse(localStorage.getItem('dark'))
+    if (lsDark) {
+      this.setState({ dark: lsDark })
     }
   }
 
-  componentDidUpdate(prevState) {
+  componentDidUpdate(prevProps, prevState) {
     const { dark } = this.state
-
     if (prevState.dark !== dark) {
       localStorage.setItem('dark', JSON.stringify(dark))
     }

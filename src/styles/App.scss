@@ -1,6 +1,7 @@
 @import 'reset';
 @import 'variables';
 @import 'navigation';
+@import 'dark';
 @font-face {
   font-family: 'Medieval';
   src: url('./MedievalSharp-Bold.ttf') format('truetype');
@@ -24,6 +25,7 @@ button {
 .container {
   display: grid;
   justify-items: center;
+  background-color: $background;
   min-height: 100vh;
   grid-template-columns: 1fr;
   grid-template-rows: 1fr auto;
