@@ -1,7 +1,9 @@
 import React, { Component } from 'react'
 import '../styles/App.scss'
 import Navigation from './Navigation.js'
+import Canvas from './Canvas.js'
 import ThemeContext from '../context/ThemeContext'
+
 export default class App extends Component {
   static contextType = ThemeContext
   render() {
@@ -16,29 +18,7 @@ export default class App extends Component {
       <div className={'App container ' + themeClass}>
         <Navigation />
         <main>
-          <h1>Main</h1>
-          <p>Here is the main body.</p>
-          <p>Here is the main body.</p>
-          <p>Here is the main body.</p>
-          <p>Here is the main body.</p>
-          <p>Here is the main body.</p>
-          <p>Here is the main body.</p>
-          <p>Here is the main body.</p>
-          <p>Here is the main body.</p>
-          <p>Here is the main body.</p>
-          <p>Here is the main body.</p>
-          <p>Here is the main body.</p>
-          <p>Here is the main body.</p>
-          <p>Here is the main body.</p>
-          <p>Here is the main body.</p>
-          <p>Here is the main body.</p>
-          <p>Here is the main body.</p>
-          <p>Here is the main body.</p>
-          <p>Here is the main body.</p>
-          <p>Here is the main body.</p>
-          <p>Here is the main body.</p>
-          <p>Here is the main body.</p>
-          <p>Here is the main body.</p>
+          <Canvas />
         </main>
         <footer>Footer</footer>
       </div>
