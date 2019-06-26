@@ -3,41 +3,54 @@ import test01 from '../images/test01.jpg'
 import test02 from '../images/test02.jpg'
 
 export default class Canvas extends Component {
-  canvasRef = React.createRef()
-  imgRef = React.createRef()
+  canvasRefs = {}
   divRef = React.createRef()
+  state = { canvases: [] }
 
-  drawCanvas = () => {
-    const canvas = this.canvasRef.current
-    const img = this.imgRef.current
-    const imgWrapperDiv = this.divRef.current.children
-    const ctx = canvas.getContext('2d')
-    canvas.width = img.width
-    let totalHeight = 0
-    for (let i = 0; i < imgWrapperDiv.length; i++) {
-      const img = imgWrapperDiv[i]
-      totalHeight += img.height
-    }
-    canvas.height = totalHeight
-    let h = 0
-    for (let i = 0; i < imgWrapperDiv.length; i++) {
-      const img = imgWrapperDiv[i]
+  createCanvas = () => {
+    const images = [...this.divRef.current.children]
+    const canvases = images.map((img, i) => {
+      return (
+        <canvas
+          key={i}
+          width={img.width}
+          height={img.height}
+          className='canvas'
+          ref={ref => {
+            this.canvasRefs[`canvas${i}`] = ref
+          }}
+        />
+      )
+    })
+    this.setState({ canvases })
+  }
+
+  componentDidMount() {
+    this.createCanvas()
+  }
+
+  componentDidUpdate() {
+    const images = [...this.divRef.current.children]
+    for (let i = 0; i < images.length; i++) {
+      const img = images[i]
       img.onload = () => {
-        ctx.drawImage(img, 0, h, img.width, img.height)
-        h += img.height
+        this.drawCanvas(img, i)
       }
     }
   }
 
-  componentDidMount() {
-    this.drawCanvas()
+  drawCanvas = (img, i) => {
+    const canvas = this.canvasRefs[`canvas${i}`]
+    const ctx = canvas.getContext('2d')
+    ctx.drawImage(img, 0, 0)
   }
+
   render() {
     return (
       <div>
-        <canvas ref={this.canvasRef} className='canvas' />
+        <div className='canvas-wrapper'>{this.state.canvases}</div>
         <div className='images' ref={this.divRef} style={{ display: 'none' }}>
-          <img id='test1' ref={this.imgRef} src={test01} alt='test01' />
+          <img id='test1' src={test01} alt='test01' />
           <img id='test2' src={test02} alt='test02' />
         </div>
       </div>
