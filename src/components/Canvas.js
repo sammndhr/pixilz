@@ -1,11 +1,13 @@
 import React, { Component } from 'react'
 import test01 from '../images/test01.jpg'
 import test02 from '../images/test02.jpg'
+import { Zip } from '../utils'
+import { saveAs } from 'file-saver'
 
 export default class Canvas extends Component {
   canvasRefs = {}
   divRef = React.createRef()
-  state = { canvases: [] }
+  state = { canvases: [], blobs: [] }
 
   componentDidMount() {
     const images = [...this.divRef.current.children]
@@ -16,6 +18,18 @@ export default class Canvas extends Component {
         this.drawCanvas(img, i)
       }
     }
+  }
+
+  getCanvasBlob = (canvas, mimeType, quality) => {
+    return new Promise((resolve, reject) => {
+      canvas.toBlob(
+        blob => {
+          resolve(blob)
+        },
+        mimeType,
+        quality
+      )
+    })
   }
 
   createCanvas = (img, i) => {
@@ -40,23 +54,43 @@ export default class Canvas extends Component {
     const canvas = this.canvasRefs[i]
     const ctx = canvas.getContext('2d')
     ctx.drawImage(img, 0, 0)
+    this.getCanvasBlob(canvas, 'image/jpeg', 1).then(
+      blob => {
+        this.setState(prevState => {
+          const newState = prevState
+          return newState.blobs.push(blob)
+        })
+      },
+      err => {
+        console.log(err)
+      }
+    )
   }
 
   handleClick = () => {
-    const click = function(node) {
-      var event = new MouseEvent('click')
-      node.dispatchEvent(event)
-    }
-    for (const key in this.canvasRefs) {
-      if (this.canvasRefs.hasOwnProperty(key)) {
-        const canvas = this.canvasRefs[key]
-        const url = canvas.toDataURL('image/png')
-        const link = document.createElement('a')
-        link.download = `${key}.png`
-        link.href = url
-        click(link) //link.click() doesn't work on all browsers
+    const blobs = this.state.blobs
+    const files = []
+    blobs.forEach((blob, i) => {
+      const stream = function() {
+        return new Response(blob).body
       }
-    }
+      const file = {
+        name: `${i}.jpeg`,
+        stream
+      }
+      files.push(file)
+    })
+    const readableStream = new Zip({
+      start(ctrl) {
+        files.forEach(file => {
+          ctrl.enqueue(file)
+        })
+        ctrl.close()
+      }
+    })
+    new Response(readableStream).blob().then(blob => {
+      saveAs(blob, 'archive.zip')
+    })
   }
 
   render() {
