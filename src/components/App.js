@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import '../styles/App.scss'
 import Navigation from './Navigation.js'
-import Canvas from './Canvas.js'
+import UploadImages from './UploadImages.js'
 import ThemeContext from '../context/ThemeContext'
 
 export default class App extends Component {
@@ -18,7 +18,7 @@ export default class App extends Component {
       <div className={'App container ' + themeClass}>
         <Navigation />
         <main>
-          <Canvas />
+          <UploadImages />
         </main>
         <footer>Footer</footer>
       </div>
