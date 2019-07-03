@@ -1,6 +1,4 @@
 import React, { Component } from 'react'
-import test01 from '../images/test01.jpg'
-import test02 from '../images/test02.jpg'
 import { Zip } from '../utils'
 import { saveAs } from 'file-saver'
 
@@ -21,12 +19,18 @@ export default class Canvas extends Component {
       }
     }
   }
-  handleLoad = () => {
-    
-  }
+  handleLoad = () => {}
   createImage = (data, i) => {
     const alt = `Image ${i}`
-    const img = <img src={data} alt={alt} className='images' key={i} onLoad={this.handleLoad} />
+    const img = (
+      <img
+        src={data}
+        alt={alt}
+        className='images'
+        key={i}
+        onLoad={this.handleLoad}
+      />
+    )
     return img
   }
   getCanvasBlob = (canvas, mimeType, quality) => {
