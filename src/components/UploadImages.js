@@ -1,15 +1,7 @@
-import React, { Component } from 'react'
+import React, { Component, Fragment } from 'react'
 
-export default class UploadImages extends Component {
-  state = { images: [], uploadStatus: false }
-  componentDidUpdate() {
-    console.log(this.state.uploadStatus)
-    console.log(
-      this.state.images.length,
-      this.state.images,
-      'this.state.images'
-    )
-  }
+export default class Main extends Component {
+  state = { imgUrls: [], uploadStatus: false }
   sortFilesByName = files => {
     const filesArr = Array.from(files)
     const reA = /[^a-zA-Z]/g
@@ -44,18 +36,11 @@ export default class UploadImages extends Component {
       reader.readAsDataURL(file)
     })
   }
-  readAndCreateImgs = async files => {
+  readMultipleFiles = async files => {
     const sortedFiles = this.sortFilesByName(files)
-    const createImg = (data, i) => {
-      const img = (
-        <img className='images' src={data} alt='uploaded images' key={i} />
-      )
-      return img
-    }
-    const promises = sortedFiles.map(async (file, i) => {
-      const data = await this.readFile(file) //since await pauses execution until resolved/rejected, returned img is a promise
-      const img = createImg(data, i)
-      return img
+    const promises = sortedFiles.map(async file => {
+      const data = await this.readFile(file)
+      return data
     })
 
     return Promise.all(promises).then(results => {
@@ -64,12 +49,14 @@ export default class UploadImages extends Component {
   }
 
   uploadFiles = e => {
-    this.readAndCreateImgs(e.target.files)
+    this.readMultipleFiles(e.target.files)
       .then(results => {
-        this.setState({ images: results })
+        this.setState({ imgUrls: results })
         this.setState(prevState => ({
           uploadStatus: !prevState.uploadStatus
         }))
+        this.props.onDataUrls(results)
+        this.props.onStatusChange(this.state.uploadStatus)
       })
       .catch(err => {
         console.error('Well that sucks:', err)
@@ -78,7 +65,7 @@ export default class UploadImages extends Component {
 
   render() {
     return (
-      <div>
+      <Fragment>
         <label htmlFor='upload-images'>Upload Images</label>
         <input
           id='upload-images'
@@ -86,7 +73,7 @@ export default class UploadImages extends Component {
           multiple='multiple'
           onChange={this.uploadFiles}
         />
-      </div>
+      </Fragment>
     )
   }
 }
