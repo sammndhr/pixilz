@@ -10,16 +10,25 @@ export default class Canvas extends Component {
   state = { canvases: [], blobs: [] }
 
   componentDidMount() {
-    const images = [...this.divRef.current.children]
-    for (let i = 0; i < images.length; i++) {
-      const img = images[i]
+    const dataUrls = this.props.imgUrls
+    console.log(this.props)
+
+    for (let i = 0; i < dataUrls.length; i++) {
+      const img = this.createImage(dataUrls[i], i)
       img.onload = () => {
         this.createCanvas(img, i)
         this.drawCanvas(img, i)
       }
     }
   }
-
+  handleLoad = () => {
+    
+  }
+  createImage = (data, i) => {
+    const alt = `Image ${i}`
+    const img = <img src={data} alt={alt} className='images' key={i} onLoad={this.handleLoad} />
+    return img
+  }
   getCanvasBlob = (canvas, mimeType, quality) => {
     return new Promise((resolve, reject) => {
       canvas.toBlob(
@@ -98,10 +107,6 @@ export default class Canvas extends Component {
       <div>
         <button onClick={this.handleClick}>Download</button>
         <div className='canvas-wrapper'>{this.state.canvases}</div>
-        <div className='images' ref={this.divRef} style={{ display: 'none' }}>
-          <img id='test1' src={test01} alt='test01' />
-          <img id='test2' src={test02} alt='test02' />
-        </div>
       </div>
     )
   }
