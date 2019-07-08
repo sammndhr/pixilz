@@ -1,43 +1,61 @@
 import React, { Component, Fragment } from 'react'
 import ImageList from './ImageList.js'
 import UploadImages from './UploadImages'
+import Canvas from './Canvas'
+import DataContext from '../context/DataContext'
 
 export default class Main extends Component {
-  state = { imgUrls: [], uploadStatus: false }
-  handleDataUrls = dataUrls => {
-    this.setState({ imgUrls: dataUrls })
-  }
-  handleStatus = status => {
-    this.setState({ uploadStatus: status })
-  }
-  handleLoad = () => {
-    console.log('loaded')
+  static contextType = DataContext
+
+  state = {
+    dataUrls: [],
+    uploadStatus: false,
+    loadStatus: false,
+    setData: ({ dataUrls, uploadStatus }) => {
+      this.setState({ dataUrls })
+      this.setState({ uploadStatus })
+    },
+    setImgsLoadStatus: ({ loadStatus }) => {
+      this.setState({ loadStatus })
+    }
   }
 
   renderImgList = () => {
     return (
-      <ImageList imgUrls={this.state.imgUrls} handleLoad={this.handleLoad} />
+      <div>
+        <div>
+          {/* <Link
+            to={{
+              pathname: '/canvas',
+              state: {
+                images: this.state.images
+              }
+            }}>
+            Stitch
+          </Link> */}
+        </div>
+        <Canvas>
+          <ImageList dataUrls={this.state.dataUrls} />
+        </Canvas>
+      </div>
     )
   }
 
   renderUploadButton = () => {
-    return (
-      <UploadImages
-        onDataUrls={this.handleDataUrls}
-        onStatusChange={this.handleStatus}
-      />
-    )
+    return <UploadImages />
   }
 
   render() {
     return (
-      <Fragment>
-        <main>
-          {this.state.uploadStatus
-            ? this.renderImgList()
-            : this.renderUploadButton()}
-        </main>
-      </Fragment>
+      <DataContext.Provider value={this.state}>
+        <Fragment>
+          <main>
+            {this.state.uploadStatus
+              ? this.renderImgList()
+              : this.renderUploadButton()}
+          </main>
+        </Fragment>
+      </DataContext.Provider>
     )
   }
 }

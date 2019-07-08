@@ -1,13 +1,16 @@
 import React, { Component, Fragment } from 'react'
+import DataContext from '../context/DataContext'
 
 export default class Main extends Component {
-  state = { imgUrls: [], uploadStatus: false }
+  static contextType = DataContext
+
+  state = { dataUrls: [], uploadStatus: false }
+
   sortFilesByName = files => {
     const filesArr = Array.from(files)
     const reA = /[^a-zA-Z]/g
     const reN = /[^0-9]/g
-
-    function sortAlphaNum(objA, objB) {
+    const sortAlphaNum = (objA, objB) => {
       const a = objA.name
       const b = objB.name
       const aA = a.replace(reA, '')
@@ -36,6 +39,7 @@ export default class Main extends Component {
       reader.readAsDataURL(file)
     })
   }
+
   readMultipleFiles = async files => {
     const sortedFiles = this.sortFilesByName(files)
     const promises = sortedFiles.map(async file => {
@@ -49,17 +53,20 @@ export default class Main extends Component {
   }
 
   uploadFiles = e => {
+    const dataContext = this.context
     this.readMultipleFiles(e.target.files)
       .then(results => {
-        this.setState({ imgUrls: results })
         this.setState(prevState => ({
+          dataUrls: results,
           uploadStatus: !prevState.uploadStatus
         }))
-        this.props.onDataUrls(results)
-        this.props.onStatusChange(this.state.uploadStatus)
+        dataContext.setData({
+          dataUrls: this.state.dataUrls,
+          uploadStatus: this.state.uploadStatus
+        })
       })
       .catch(err => {
-        console.error('Well that sucks:', err)
+        console.error('Error:', err)
       })
   }
 
