@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 // import ImageList from './ImageList'
-// import { Zip } from '../utils'
-// import { saveAs } from 'file-saver'
+import { Zip } from '../utils'
+import { saveAs } from 'file-saver'
 import DataContext from '../context/DataContext'
 
 export default class Canvas extends Component {
@@ -63,7 +63,8 @@ export default class Canvas extends Component {
     )
     this.setState(prevState => {
       const newState = prevState
-      return newState.canvases.push(canvas) //canvases is what will get rendered
+      newState.canvases.push(canvas)
+      return newState //canvases is what will get rendered
     })
   }
 
@@ -71,6 +72,19 @@ export default class Canvas extends Component {
     const canvas = await this.canvasRefs[i]
     const ctx = canvas.getContext('2d')
     ctx.drawImage(img, 0, 0)
+    const blob = this.getCanvasBlob(canvas, 'image/jpeg', 1).then(
+      blob => {
+        return blob
+      },
+      err => {
+        console.log(err)
+      }
+    )
+    this.setState(prevState => {
+      const newState = prevState
+      newState.blobs.push(blob)
+      return newState
+    })
   }
 
   getCanvasBlob = (canvas, mimeType, quality) => {
@@ -84,8 +98,39 @@ export default class Canvas extends Component {
       )
     })
   }
+  handleClick = () => {
+    Promise.all(this.state.blobs).then(blobs => {
+      const files = []
+      blobs.forEach((blob, i) => {
+        const stream = function() {
+          return new Response(blob).body
+        }
+        const file = {
+          name: `${i}.jpeg`,
+          stream
+        }
+        files.push(file)
+      })
+      const readableStream = new Zip({
+        start(ctrl) {
+          files.forEach(file => {
+            ctrl.enqueue(file)
+          })
+          ctrl.close()
+        }
+      })
+      new Response(readableStream).blob().then(blob => {
+        saveAs(blob, 'archive.zip')
+      })
+    })
+  }
 
   render() {
-    return <div className='canvas-wrapper'>{this.state.canvases}</div>
+    return (
+      <div>
+        <button onClick={this.handleClick}>Download</button>
+        <div className='canvas-wrapper'>{this.state.canvases}</div>
+      </div>
+    )
   }
 }
