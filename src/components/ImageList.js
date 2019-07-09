@@ -1,19 +1,7 @@
-import React, { Component, Fragment } from 'react'
+import React, { Component } from 'react'
 import DataContext from '../context/DataContext'
 
-const Image = props => {
-  return (
-    <img
-      src={props.src}
-      className='images'
-      alt={props.alt}
-      onLoad={props.onLoad}
-      onError={props.onError}
-    />
-  )
-}
-
-export default class ImageList extends Component {
+class ImageList extends Component {
   static contextType = DataContext
 
   state = {
@@ -23,26 +11,27 @@ export default class ImageList extends Component {
 
   componentDidUpdate(prevProps, prevState) {
     const dataContext = this.context
-    const urlsCount = prevProps.dataUrls.length
     const promises = this.state.imgsLoadPromises
     const promisesCount = promises.length
+    const prevPromisesCount = prevState.imgsLoadPromises.length
 
-    if (
-      prevState.imgsLoadPromises.length !== promisesCount &&
-      promisesCount === urlsCount
-    ) {
-      Promise.all(promises).then(() => {
-        this.setState(prevState => ({
-          allLoadStatus: !prevState.allLoadStatus
-        }))
-        dataContext.setImgsLoadStatus({
-          loadStatus: this.state.allLoadStatus
+    if (promisesCount !== prevPromisesCount) {
+      Promise.all(promises)
+        .then(() => {
+          this.setState(prevState => ({
+            allLoadStatus: !prevState.allLoadStatus
+          }))
+          dataContext.setImgsLoadStatus({
+            imgsLoadStatus: this.state.allLoadStatus
+          })
         })
-      })
+        .catch(err => {
+          console.error('Error loading images: ', err)
+        })
     }
   }
 
-  handleLoadedImg = e => {
+  handleLoadedImg = () => {
     const loaded = Promise.resolve(true)
     this.setState(prevState => {
       const updatedStatus = prevState.imgsLoadPromises.slice()
@@ -51,23 +40,31 @@ export default class ImageList extends Component {
     })
   }
 
-  handleLoadError = e => {
+  handleLoadError = () => {
     //todo
-    console.log()
+    console.error('Error laoding image')
   }
 
   render() {
-    return [
-      this.props.dataUrls.map((src, i) => (
-        <img
-          key={i}
-          src={src}
-          className='images'
-          onLoad={this.handleLoadedImg}
-          onError={this.handleLoadError}
-          alt='alt'
-        />
-      ))
-    ]
+    const { imageRef, ...rest } = this.props
+    return (
+      <div ref={imageRef} className='images-wrapper'>
+        {/* div will get forwarded in Canvas as this.props.forwardedRef*/}
+        {rest.dataUrls.map((src, i) => (
+          <img
+            key={i}
+            src={src}
+            className='images'
+            onLoad={this.handleLoadedImg}
+            onError={this.handleLoadError}
+            alt='alt'
+          />
+        ))}
+      </div>
+    )
   }
 }
+
+export default React.forwardRef((props, ref) => (
+  <ImageList {...props} imageRef={ref} />
+))

@@ -4,8 +4,10 @@ export const dataState = {
   dataUrls: [],
   uploadStatus: false,
   loadStatus: false,
+  canvasLoadStatus: false,
   setData: () => {},
-  setImgsLoadStatus: () => {}
+  setImgsLoadStatus: () => {},
+  setCanvasLoadStatus: () => {}
 }
 
 const DataContext = React.createContext(dataState)
