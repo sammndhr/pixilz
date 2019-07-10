@@ -1,12 +1,13 @@
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 import ImageList from './ImageList.js'
 import UploadImages from './UploadImages'
 import Canvas from './Canvas'
 import DataContext from '../context/DataContext'
 
-export default class Main extends Component {
+export default class Main extends PureComponent {
+  //Whole app was rerendering when themeContext changed with Componnet. PureComponet fixes but don't know how. Relevant: https://frontarm.com/james-k-nelson/react-context-performance/
   static contextType = DataContext
-  
+
   imageRef = React.createRef()
 
   renderImgList = dataContext => {
