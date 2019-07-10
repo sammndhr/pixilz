@@ -6,68 +6,52 @@ import DataContext from '../context/DataContext'
 
 export default class Main extends Component {
   static contextType = DataContext
-
+  
   imageRef = React.createRef()
 
-  state = {
-    dataUrls: [],
-    uploadStatus: false,
-    imgsLoadStatus: false,
-    canvasLoadStatus: false,
-    setData: ({ dataUrls, uploadStatus }) => {
-      this.setState({ dataUrls })
-      this.setState({ uploadStatus })
-    },
-    setImgsLoadStatus: ({ imgsLoadStatus }) => {
-      this.setState({ imgsLoadStatus })
-    },
-    setCanvasLoadStatus: ({ canvasLoadStatus }) => {
-      this.setState({ canvasLoadStatus })
-    }
+  renderImgList = dataContext => {
+    return <ImageList ref={this.imageRef} dataUrls={dataContext.dataUrls} />
   }
 
-  renderImgList = () => {
-    return <ImageList ref={this.imageRef} dataUrls={this.state.dataUrls} />
-  }
-  renderCanvas = () => {
-    if (this.state.imgsLoadStatus && this.imageRef.current !== null) {
+  renderCanvas = dataContext => {
+    if (dataContext.imgsLoadStatus && this.imageRef.current !== null) {
       return <Canvas forwardedRef={this.imageRef}> </Canvas>
       // Two more ways to forward refs. Look in Notion for notes (search for "forwarding refs")
     }
   }
+
   renderUploadButton = () => {
     return <UploadImages />
   }
 
-  uploadButtonControl = () => {
-    return this.state.uploadStatus
-      ? this.renderImgList()
-      : this.renderUploadButton()
+  uploadButtonControl = dataContext => {
+    return dataContext.uploadStatus
+      ? this.renderImgList(dataContext)
+      : this.renderUploadButton(dataContext)
   }
 
-  canvasRenderControl = () => {
+  canvasRenderControl = dataContext => {
     //both <ImageList/> and <UploadButton/> won't render after canvas has rendered
-    if (!this.state.canvasLoadStatus) {
-      if (!this.state.imgsLoadStatus) {
-        return this.uploadButtonControl()
+    if (!dataContext.canvasLoadStatus) {
+      if (!dataContext.imgsLoadStatus) {
+        return this.uploadButtonControl(dataContext)
       } else {
-        if (this.state.uploadStatus) {
+        if (dataContext.uploadStatus) {
           // but if images have uploaded AND loaded, render <ImageList/>
-          return this.renderImgList()
+          return this.renderImgList(dataContext)
         }
       }
     }
   }
 
   render() {
+    const dataContext = this.context
     return (
-      <DataContext.Provider value={this.state}>
-        <main>
-          {this.canvasRenderControl()}
-          {/* <ImageList/> will be rendered and <Canvas/> will use the images (and ref) after which canvasLoadStatus will change. Then this.canvasRenderControl will not return anything*/}
-          {this.renderCanvas()}
-        </main>
-      </DataContext.Provider>
+      <main>
+        {this.canvasRenderControl(dataContext)}
+        {/* <ImageList/> will be rendered and <Canvas/> will use the images (and ref) after which canvasLoadStatus will change. Then this.canvasRenderControl will not return anything*/}
+        {this.renderCanvas(dataContext)}
+      </main>
     )
   }
 }
