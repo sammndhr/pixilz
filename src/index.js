@@ -8,7 +8,8 @@ import * as serviceWorker from './serviceWorker'
 import { ThemeProvider } from './context/ThemeContext'
 import { DataProvider } from './context/DataContext'
 ReactDOM.render(
-  <Router>
+  //todo: change to use history instead of forceRefresh
+  <Router forceRefresh={true}>
     <ThemeProvider>
       <DataProvider>
         <Route path='/' exact component={App} />
