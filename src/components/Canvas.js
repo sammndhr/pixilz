@@ -8,11 +8,13 @@ export default class Canvas extends Component {
   /*this.props.forwardedRef.current is good for read only(here, just need to read the images and not change anything) since props are immutable. Otherwise you need to clone the ReactElement, Relevant SO: https://stackoverflow.com/a/50441271*/
 
   static contextType = DataContext
-  canvasRefs = {}
+  canvasRefs = []
   state = {
     blobs: [],
     canvases: [],
-    canvasLoadStatus: false
+    canvasLoadStatus: false,
+    totalHeight: 0,
+    avgHeight: 0
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -38,8 +40,10 @@ export default class Canvas extends Component {
   componentDidMount() {
     const images = Array.from(this.props.forwardedRef.current.children)
     const len = images.length
+    let totalHeight = 0
     for (let i = 0; i < len; i++) {
       const img = images[i]
+      totalHeight += img.height
       this.createCanvas(img, i)
       if (i === len - 1) {
         this.setState(prevState => ({
@@ -47,6 +51,13 @@ export default class Canvas extends Component {
         }))
       }
     }
+    this.setState({ totalHeight }, () => {
+      this.setAverageHeight(this.state.totalHeight, len)
+    })
+  }
+
+  setAverageHeight = (height, count) => {
+    this.setState({ avgHeight: Math.round(height / count) })
   }
 
   createCanvas = (img, i) => {
@@ -98,7 +109,7 @@ export default class Canvas extends Component {
       )
     })
   }
-  handleClick = () => {
+  handleDownloadClick = () => {
     Promise.all(this.state.blobs).then(blobs => {
       const files = []
       blobs.forEach((blob, i) => {
@@ -125,11 +136,179 @@ export default class Canvas extends Component {
     })
   }
 
+  handleClick = () => {
+    const attachSlicedImg = canvas => {
+      document.getElementById('testo').append(canvas)
+    }
+
+    const combineSlicedImgs = arr => {
+      const canvas = document.createElement('canvas')
+      const canvases = []
+      let joinedHeight = 0,
+        joinedWidth = 0
+      for (let i = 0; i < arr.length; i++) {
+        const cvs = arr[i],
+          cvsObj = {
+            canvas: cvs,
+            oWidth: cvs.width,
+            oHeight: cvs.height
+          }
+        joinedWidth = cvs.width
+
+        canvases.push(cvsObj)
+      }
+      for (let i = 0; i < canvases.length; i++) {
+        const cvsObj = canvases[i]
+        cvsObj.nWidth = joinedWidth
+
+        cvsObj.nHeight = (cvsObj.nWidth * cvsObj.oHeight) / cvsObj.oWidth
+        joinedHeight += cvsObj.nHeight
+      }
+
+      canvas.width = joinedWidth
+      canvas.height = joinedHeight
+      const ctx = canvas.getContext('2d'),
+        Left = 0
+      let Top = 0
+      for (let i = 0; i < canvases.length; i++) {
+        ctx.drawImage(canvases[i].canvas, Left, Top)
+        Top += canvases[i].nHeight
+      }
+
+      return canvas
+    }
+
+    const combineSmallerImgs = (first, height, images) => {
+      let comb = first
+      while (comb.height < height && images.length >= 1) {
+        const next = images.shift()
+        comb = combineSlicedImgs([comb, next])
+      }
+      return comb
+    }
+
+    const comparePixels = (old, curr) => {
+      const threshold = 0
+      const diff = Math.sqrt(
+        Math.pow(curr.r - old.r, 2) +
+          Math.pow(curr.g - old.g, 2) +
+          Math.pow(curr.b - old.b, 2)
+      )
+      return !(diff > threshold)
+    }
+
+    const verifyLastRowColor = (canvas, avgH) => {
+      const height = avgH || canvas.height,
+        { width } = canvas,
+        ctx = canvas.getContext('2d'),
+        { data } = ctx.getImageData(0, height - 1, width, 1)
+
+      let curr,
+        old,
+        slice = true
+
+      for (let i = 0, max = data.length; i < max; i += 4) {
+        curr = {
+          r: data[i],
+          g: data[i + 1],
+          b: data[i + 2],
+          a: data[i + 3]
+        }
+
+        if (old !== undefined) {
+          if (comparePixels(old, curr) === false) {
+            return false
+          }
+        }
+        old = curr
+      }
+      return slice
+    }
+    const sliceCanvas = (combCan, sliceHeight) => {
+      const { height, width } = combCan,
+        canvas = document.createElement('canvas'),
+        ctx = canvas.getContext('2d'),
+        remainingCan = document.createElement('canvas'),
+        remainingH = height - sliceHeight,
+        rCtx = remainingCan.getContext('2d')
+
+      canvas.width = width
+      canvas.height = sliceHeight
+      remainingCan.width = width
+      remainingCan.height = remainingH
+      ctx.drawImage(combCan, 0, 0, width, sliceHeight, 0, 0, width, sliceHeight)
+
+      attachSlicedImg(canvas)
+      rCtx.drawImage(
+        combCan,
+        0,
+        sliceHeight - 1,
+        width,
+        remainingH,
+        0,
+        0,
+        width,
+        remainingH
+      )
+      return remainingCan
+    }
+    const findSLiceLocation = (first, avgHeight) => {
+      let sliceHeight = avgHeight
+      let remainingCan = first
+      while (sliceHeight < first.height) {
+        if (verifyLastRowColor(first, sliceHeight) === true) {
+          const padding = sliceHeight + 40
+          if (
+            verifyLastRowColor(first, padding) === true &&
+            padding < first.height
+          ) {
+            sliceHeight = padding
+          }
+          remainingCan = sliceCanvas(first, sliceHeight)
+          break
+        }
+        sliceHeight += 10
+      }
+      return remainingCan
+    }
+
+    const recurse = (canvases, avgHeight) => {
+      const cnvsCopy = canvases
+      let first = cnvsCopy.shift()
+      first = combineSmallerImgs(first, avgHeight, cnvsCopy)
+      if (cnvsCopy.length === 0) {
+        attachSlicedImg(first)
+        return
+      } else if (verifyLastRowColor(first, avgHeight)) {
+        if (first.height <= avgHeight) {
+          attachSlicedImg(first)
+        } else {
+          const remainingCan = findSLiceLocation(first, avgHeight)
+          cnvsCopy.unshift(remainingCan)
+        }
+      } else {
+        const second = cnvsCopy.shift()
+        const combined = combineSlicedImgs([first, second])
+        first = combineSmallerImgs(combined, avgHeight, cnvsCopy)
+        const remainingCan = findSLiceLocation(first, avgHeight)
+        cnvsCopy.unshift(remainingCan)
+      }
+      recurse(cnvsCopy, avgHeight)
+    }
+    recurse(this.canvasRefs, this.state.avgHeight)
+  }
+
   render() {
     return (
       <Fragment>
-        <button onClick={this.handleClick}>Download</button>
-        <div className='canvas-wrapper'>{this.state.canvases}</div>
+        <div className='wrapper1'>
+          <div id='testo' />
+          <button onClick={this.handleDownloadClick}>Download</button>
+          <button onClick={this.handleClick}>Stitch and Slice</button>
+        </div>
+        <div className='canvas-wrapper' style={{ display: 'none' }}>
+          {this.state.canvases}
+        </div>
       </Fragment>
     )
   }
