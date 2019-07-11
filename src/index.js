@@ -2,18 +2,18 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import './styles/index.scss'
 import App from './components/App'
-import Canvas from './components/Canvas'
-import { BrowserRouter as Router, Route } from 'react-router-dom'
+
+import { BrowserRouter as Router } from 'react-router-dom'
 import * as serviceWorker from './serviceWorker'
 import { ThemeProvider } from './context/ThemeContext'
 import { DataProvider } from './context/DataContext'
+
 ReactDOM.render(
   //todo: change to use history instead of forceRefresh
   <Router forceRefresh={true}>
     <ThemeProvider>
       <DataProvider>
-        <Route path='/' exact component={App} />
-        <Route path='/canvas' component={Canvas} />
+        <App />
       </DataProvider>
     </ThemeProvider>
   </Router>,
