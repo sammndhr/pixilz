@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component, Fragment } from 'react'
 // import ImageList from './ImageList'
 import { Zip } from '../utils'
 import { saveAs } from 'file-saver'
@@ -68,8 +68,8 @@ export default class Canvas extends Component {
     })
   }
 
-  drawCanvas = async (img, i) => {
-    const canvas = await this.canvasRefs[i]
+  drawCanvas = (img, i) => {
+    const canvas = this.canvasRefs[i]
     const ctx = canvas.getContext('2d')
     ctx.drawImage(img, 0, 0)
     const blob = this.getCanvasBlob(canvas, 'image/jpeg', 1).then(
@@ -127,10 +127,10 @@ export default class Canvas extends Component {
 
   render() {
     return (
-      <div>
+      <Fragment>
         <button onClick={this.handleClick}>Download</button>
         <div className='canvas-wrapper'>{this.state.canvases}</div>
-      </div>
+      </Fragment>
     )
   }
 }
