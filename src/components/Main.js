@@ -15,7 +15,7 @@ export default class Main extends PureComponent {
   }
 
   renderCanvas = dataContext => {
-    if (dataContext.imgsLoadStatus && this.imageRef.current !== null) {
+    if (dataContext.imgsLoadStatus && !!this.imageRef.current) {
       return <Canvas forwardedRef={this.imageRef}> </Canvas>
       // Two more ways to forward refs. Look in Notion for notes (search for "forwarding refs")
     }
@@ -26,23 +26,21 @@ export default class Main extends PureComponent {
   }
 
   uploadButtonControl = dataContext => {
-    return dataContext.uploadStatus
-      ? this.renderImgList(dataContext)
-      : this.renderUploadButton(dataContext)
+    if (!dataContext.uploadStatus) return this.renderUploadButton(dataContext)
+    return this.renderImgList(dataContext)
   }
 
   canvasRenderControl = dataContext => {
     //both <ImageList/> and <UploadButton/> won't render after canvas has rendered
-    if (!dataContext.canvasLoadStatus) {
-      if (!dataContext.imgsLoadStatus) {
-        return this.uploadButtonControl(dataContext)
-      } else {
-        if (dataContext.uploadStatus) {
-          // but if images have uploaded AND loaded, render <ImageList/>
-          return this.renderImgList(dataContext)
-        }
-      }
-    }
+    if (dataContext.canvasLoadStatus) return
+
+    if (!dataContext.imgsLoadStatus)
+      return this.uploadButtonControl(dataContext)
+
+    if (dataContext.imgsLoadStatus && dataContext.uploadStatus)
+      return this.renderImgList(dataContext)
+      // but if images have uploaded AND loaded, render <ImageList/>
+
   }
 
   render() {

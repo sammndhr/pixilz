@@ -34,8 +34,7 @@ class ImageList extends Component {
   handleLoadedImg = () => {
     const loaded = Promise.resolve(true)
     this.setState(prevState => {
-      const updatedStatus = prevState.imgsLoadPromises.slice()
-      updatedStatus.push(loaded)
+      const updatedStatus = prevState.imgsLoadPromises.concat(loaded)
       return { imgsLoadPromises: updatedStatus }
     })
   }

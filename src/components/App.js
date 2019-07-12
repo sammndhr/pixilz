@@ -17,6 +17,8 @@ export default class App extends Component {
     return (
       <div className={'App container ' + themeClass}>
         <Navigation />
+        {/* <Route path='/uploaded' exact render={() => <Uploaded />} /> */}
+        {/* <Route path='/sliced' exact render={() => <Sliced />} /> */}
         <Route path='/' exact render={() => <Main />} />
         {/* <Route path='/' exact component={Main} />  */}
         {/* https://reacttraining.com/react-router/web/api/Route/render-func */}
@@ -25,3 +27,23 @@ export default class App extends Component {
     )
   }
 }
+
+// class Uploaded {
+//   stichAndSlice() {
+
+//     //...your stuff
+//     this.props.history.push('/sliced')
+//   }
+//   render() {
+//     <div onClick={()=> {stichAndSlice()}}slice
+//   }
+// }
+
+// class Sliced {
+
+//   render() {
+//     return (
+
+//     )
+//   }
+// }

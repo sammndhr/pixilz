@@ -203,27 +203,33 @@ export default class Canvas extends Component {
         ctx = canvas.getContext('2d'),
         { data } = ctx.getImageData(0, height - 1, width, 1)
 
-      let curr,
-        old,
-        slice = true
+      let curr, 
+       prev,
+        slice = true,
+        currPixel = 0
 
-      for (let i = 0, max = data.length; i < max; i += 4) {
+      const NEXT_PIXEL = 4,
+        red = 0,
+        green = 1,
+        blue = 2,
+        alpha = 3
+
+      while (currPixel < data.length) {
         curr = {
-          r: data[i],
-          g: data[i + 1],
-          b: data[i + 2],
-          a: data[i + 3]
+          r: data[currPixel + red],
+          g: data[currPixel + green],
+          b: data[currPixel + blue],
+          a: data[currPixel + alpha]
         }
 
-        if (old !== undefined) {
-          if (comparePixels(old, curr) === false) {
-            return false
-          }
-        }
-        old = curr
+        if (!!prev && !comparePixels(prev, curr)) return 
+
+        prev = curr
+        currPixel += NEXT_PIXEL
       }
       return slice
     }
+
     const sliceCanvas = (combCan, sliceHeight) => {
       const { height, width } = combCan,
         canvas = document.createElement('canvas'),
