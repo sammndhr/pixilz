@@ -1,7 +1,8 @@
 import React, { Component, Fragment } from 'react'
 import DataContext from '../context/DataContext'
+import { withRouter } from 'react-router'
 
-export default class Main extends Component {
+class Main extends Component {
   static contextType = DataContext
 
   state = { dataUrls: [], uploadStatus: false }
@@ -52,7 +53,7 @@ export default class Main extends Component {
     })
   }
 
-  uploadFiles = e => {
+  uploadFiles = (e, history) => {
     const dataContext = this.context
     this.readMultipleFiles(e.target.files)
       .then(results => {
@@ -64,6 +65,7 @@ export default class Main extends Component {
           dataUrls: this.state.dataUrls,
           uploadStatus: this.state.uploadStatus
         })
+        history.push('/options')
       })
       .catch(err => {
         console.error('Error:', err)
@@ -71,6 +73,8 @@ export default class Main extends Component {
   }
 
   render() {
+    const { match, location, history } = this.props
+    console.log(match, location, history)
     return (
       <Fragment>
         <label htmlFor='upload-images'>Upload Images</label>
@@ -78,9 +82,13 @@ export default class Main extends Component {
           id='upload-images'
           type='file'
           multiple='multiple'
-          onChange={this.uploadFiles}
+          onChange={e => {
+            this.uploadFiles(e, history)
+          }}
         />
       </Fragment>
     )
   }
 }
+
+export default withRouter(Main)

@@ -3,20 +3,24 @@ import ImageList from './ImageList.js'
 import UploadImages from './UploadImages'
 import Canvas from './Canvas'
 import DataContext from '../context/DataContext'
+import { Route } from 'react-router-dom'
 
 export default class Main extends PureComponent {
   //Whole app was rerendering when themeContext changed with Componnet. PureComponet fixes but don't know how. Relevant: https://frontarm.com/james-k-nelson/react-context-performance/
   static contextType = DataContext
 
-  imageRef = React.createRef()
+  // imageRef = React.createRef()
 
   renderImgList = dataContext => {
-    return <ImageList ref={this.imageRef} dataUrls={dataContext.dataUrls} />
+    console.log(dataContext)
+    return <div>Something</div>
+    // return <ImageList ref={this.imageRef} dataUrls={dataContext.dataUrls} />
   }
 
   renderCanvas = dataContext => {
-    if (dataContext.imgsLoadStatus && !!this.imageRef.current) {
-      return <Canvas forwardedRef={this.imageRef}> </Canvas>
+    const imageRef = this.context.imageRef
+    if (dataContext.imgsLoadStatus && !!imageRef.current) {
+      return <Canvas forwardedRef={imageRef}> </Canvas>
       // Two more ways to forward refs. Look in Notion for notes (search for "forwarding refs")
     }
   }
@@ -27,7 +31,7 @@ export default class Main extends PureComponent {
 
   uploadButtonControl = dataContext => {
     if (!dataContext.uploadStatus) return this.renderUploadButton(dataContext)
-    return this.renderImgList(dataContext)
+    // return this.renderImgList(dataContext)
   }
 
   canvasRenderControl = dataContext => {
@@ -37,10 +41,9 @@ export default class Main extends PureComponent {
     if (!dataContext.imgsLoadStatus)
       return this.uploadButtonControl(dataContext)
 
-    if (dataContext.imgsLoadStatus && dataContext.uploadStatus)
-      return this.renderImgList(dataContext)
-      // but if images have uploaded AND loaded, render <ImageList/>
-
+    // if (dataContext.imgsLoadStatus && dataContext.uploadStatus)
+    // return this.renderImgList(dataContext)
+    // but if images have uploaded AND loaded, render <ImageList/>
   }
 
   render() {
@@ -49,7 +52,7 @@ export default class Main extends PureComponent {
       <main>
         {this.canvasRenderControl(dataContext)}
         {/* <ImageList/> will be rendered and <Canvas/> will use the images (and ref) after which canvasLoadStatus will change. Then this.canvasRenderControl will not return anything*/}
-        {this.renderCanvas(dataContext)}
+        {/* {this.renderCanvas(dataContext)} */}
       </main>
     )
   }

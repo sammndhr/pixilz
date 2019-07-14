@@ -1,33 +1,47 @@
-import React, { Component } from 'react'
+import React, { Component, useContext } from 'react'
 import '../styles/App.scss'
-import Navigation from './Navigation.js'
-import Main from './Main.js'
+import Navigation from './Navigation'
+import Main from './Main'
 import ThemeContext from '../context/ThemeContext'
 import { BrowserRouter as Router, Route } from 'react-router-dom'
-export default class App extends Component {
-  static contextType = ThemeContext
-  render() {
-    const { dark } = this.context
-    let themeClass = ''
-    if (!dark) {
-      themeClass = 'light'
-    } else {
-      themeClass = 'dark'
-    }
-    return (
-      <div className={'App container ' + themeClass}>
-        <Navigation />
-        {/* <Route path='/uploaded' exact render={() => <Uploaded />} /> */}
-        {/* <Route path='/sliced' exact render={() => <Sliced />} /> */}
-        <Route path='/' exact render={() => <Main />} />
-        {/* <Route path='/' exact component={Main} />  */}
-        {/* https://reacttraining.com/react-router/web/api/Route/render-func */}
-        <footer>Footer</footer>
-      </div>
-    )
+import ImageList from './ImageList'
+import UploadImages from './UploadImages'
+
+import DataContext from '../context/DataContext'
+
+const App = () => {
+  const theme = useContext(ThemeContext)
+  const data = useContext(DataContext)
+
+  const { dark } = theme
+  let themeClass = ''
+  if (!dark) {
+    themeClass = 'light'
+  } else {
+    themeClass = 'dark'
   }
+  return (
+    <div className={'App container ' + themeClass}>
+      <Navigation />
+
+      {/* <Route path='/sliced' exact render={() => <Sliced />} /> */}
+      <Route path='/' exact render={() => <Main />} />
+      <main>
+        <Route
+          path='/options'
+          render={() => (
+            <ImageList ref={data.imageRef} dataUrls={data.dataUrls} />
+          )}
+        />
+      </main>
+      {/* <Route path='/' exact component={Main} />  */}
+      {/* https://reacttraining.com/react-router/web/api/Route/render-func */}
+      <footer>Footer</footer>
+    </div>
+  )
 }
 
+export default App
 // class Uploaded {
 //   stichAndSlice() {
 

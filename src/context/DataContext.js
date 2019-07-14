@@ -5,6 +5,7 @@ export const defaultState = {
   uploadStatus: false,
   loadStatus: false,
   canvasLoadStatus: false,
+  imgRef: null,
   setData: () => {},
   setImgsLoadStatus: () => {},
   setCanvasLoadStatus: () => {}
@@ -17,7 +18,8 @@ class DataProvider extends Component {
     dataUrls: [],
     uploadStatus: false,
     imgsLoadStatus: false,
-    canvasLoadStatus: false
+    canvasLoadStatus: false,
+    imgRef: React.createRef()
   }
 
   setData = ({ dataUrls, uploadStatus }) => {
