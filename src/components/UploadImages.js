@@ -73,8 +73,7 @@ class Main extends Component {
   }
 
   render() {
-    const { match, location, history } = this.props
-    console.log(match, location, history)
+    const { history } = this.props
     return (
       <Fragment>
         <label htmlFor='upload-images'>Upload Images</label>

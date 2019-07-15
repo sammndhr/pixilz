@@ -1,40 +1,42 @@
-import React, { Component, useContext } from 'react'
+import React, { useContext } from 'react'
 import '../styles/App.scss'
 import Navigation from './Navigation'
 import Main from './Main'
 import ThemeContext from '../context/ThemeContext'
 import { BrowserRouter as Router, Route } from 'react-router-dom'
-import ImageList from './ImageList'
-import UploadImages from './UploadImages'
+import CanvasList from './CanvasList'
 
 import DataContext from '../context/DataContext'
 
 const App = () => {
   const theme = useContext(ThemeContext)
   const data = useContext(DataContext)
-
   const { dark } = theme
+  const canvasRef = React.createRef()
   let themeClass = ''
+
   if (!dark) {
     themeClass = 'light'
   } else {
     themeClass = 'dark'
   }
+
   return (
     <div className={'App container ' + themeClass}>
       <Navigation />
-
-      {/* <Route path='/sliced' exact render={() => <Sliced />} /> */}
       <Route path='/' exact render={() => <Main />} />
       <main>
+        {/* <Route
+          path='/download'
+          render={() => <Canvas ref={canvasRef} forwardedRef={imgRef} />}
+        /> */}
         <Route
           path='/options'
           render={() => (
-            <ImageList ref={data.imageRef} dataUrls={data.dataUrls} />
+            <CanvasList forwardedRef={canvasRef} dataUrls={data.dataUrls} />
           )}
         />
       </main>
-      {/* <Route path='/' exact component={Main} />  */}
       {/* https://reacttraining.com/react-router/web/api/Route/render-func */}
       <footer>Footer</footer>
     </div>

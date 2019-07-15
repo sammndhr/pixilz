@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react'
-import ImageList from './ImageList.js'
+// import ImageList from './ImageList.js'
 import UploadImages from './UploadImages'
 import Canvas from './Canvas'
 import DataContext from '../context/DataContext'
