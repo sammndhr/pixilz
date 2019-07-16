@@ -10,9 +10,7 @@ import DataContext from '../context/DataContext'
 
 const App = () => {
   const theme = useContext(ThemeContext)
-  const data = useContext(DataContext)
   const { dark } = theme
-  const canvasRef = React.createRef()
   let themeClass = ''
 
   if (!dark) {
@@ -30,12 +28,7 @@ const App = () => {
           path='/download'
           render={() => <Canvas ref={canvasRef} forwardedRef={imgRef} />}
         /> */}
-        <Route
-          path='/options'
-          render={() => (
-            <CanvasList forwardedRef={canvasRef} dataUrls={data.dataUrls} />
-          )}
-        />
+        <Route path='/options' render={() => <CanvasList />} />
       </main>
       {/* https://reacttraining.com/react-router/web/api/Route/render-func */}
       <footer>Footer</footer>

@@ -14,7 +14,7 @@ class CanvasList extends Component {
   }
 
   componentDidMount() {
-    this.processImages(this.props.dataUrls)
+    this.processImages(this.context.dataUrls)
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -102,7 +102,11 @@ class CanvasList extends Component {
     return (
       <Fragment>
         {this.renderButton(history)}
-        <div ref={this.props.forwardedRef} className='canvas-wrapper'>
+        <div
+          ref={currRef => {
+            this.context.canvasDivRef = currRef
+          }}
+          className='canvas-wrapper'>
           {this.state.canvases}
         </div>
       </Fragment>
