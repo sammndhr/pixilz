@@ -3,13 +3,13 @@ import '../styles/App.scss'
 import Navigation from './Navigation'
 import Main from './Main'
 import ThemeContext from '../context/ThemeContext'
+import DataContext from '../context/DataContext'
 import { BrowserRouter as Router, Route } from 'react-router-dom'
 import CanvasList from './CanvasList'
 
-import DataContext from '../context/DataContext'
-
 const App = () => {
   const theme = useContext(ThemeContext)
+  const data = useContext(DataContext)
   const { dark } = theme
   let themeClass = ''
 

@@ -5,8 +5,8 @@ export const defaultState = {
   uploadStatus: false,
   loadStatus: false,
   canvasLoadStatus: false,
-  imgRef: null,
   canvasDivRef: null,
+  avgHeight: 0,
   setData: () => {},
   setImgsLoadStatus: () => {},
   setCanvasLoadStatus: () => {}
@@ -21,7 +21,7 @@ class DataProvider extends Component {
     imgsLoadStatus: false,
     canvasLoadStatus: false,
     canvasDivRef: null,
-    imgRef: React.createRef()
+    avgHeight: 0
   }
 
   setData = ({ dataUrls, uploadStatus }) => {
@@ -37,27 +37,21 @@ class DataProvider extends Component {
     this.setState({ canvasLoadStatus })
   }
 
+  setContextState = args => {
+    this.setState(args)
+  }
+
   render() {
     const { children } = this.props
-    const {
-      dataUrls,
-      uploadStatus,
-      imgsLoadStatus,
-      canvasLoadStatus,
-      canvasDivRef
-    } = this.state
 
     return (
       <DataContext.Provider
         value={{
-          dataUrls,
-          uploadStatus,
-          imgsLoadStatus,
-          canvasLoadStatus,
-          canvasDivRef,
           setData: this.setData,
           setImgsLoadStatus: this.setImgsLoadStatus,
-          setCanvasLoadStatus: this.setCanvasLoadStatus
+          setCanvasLoadStatus: this.setCanvasLoadStatus,
+          setContextState: this.setContextState,
+          ...this.state
         }}>
         {children}
       </DataContext.Provider>

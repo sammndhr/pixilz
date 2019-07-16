@@ -8,94 +8,22 @@ export default class Canvas extends Component {
   /*this.props.forwardedRef.current is good for read only(here, just need to read the images and not change anything) since props are immutable. Otherwise you need to clone the ReactElement, Relevant SO: https://stackoverflow.com/a/50441271*/
 
   static contextType = DataContext
-  canvasRefs = []
+
   state = {
     blobs: [],
-    canvases: [],
-    canvasLoadStatus: false,
     totalHeight: 0,
     avgHeight: 0
   }
+  componentDidUpdate(prevProps, prevState) {}
 
-  componentDidUpdate(prevProps, prevState) {
-    //gets called after done "rendering" and all the children have been rendered. In componentDidMount, after handling last image, called setState({canvasLoadStatus: true}). So prevState.canvasLoadStatus !== this.state.canvasLoadStatus will be the condition for drawing the canvases and setting context canvasLoadStatus
-    const dataContext = this.context
-    const images = this.props.forwardedRef.current
-    const currStatus = this.state.canvasLoadStatus
-    const prevStatus = prevState.canvasLoadStatus
-
-    if (currStatus !== prevStatus) {
-      const imagesRef = Array.from(images.children)
-      const ImgsRefLen = imagesRef.length
-      for (let i = 0; i < ImgsRefLen; i++) {
-        const img = imagesRef[i]
-        this.drawCanvas(img, i)
-      }
-      dataContext.setCanvasLoadStatus({
-        canvasLoadStatus: this.state.canvasLoadStatus
-      })
-    }
+  componentWillReceiveProps(newProps) {
+    console.log(this.context.canvasDivRef)
   }
 
   componentDidMount() {
-    const images = Array.from(this.props.forwardedRef.current.children)
-    const len = images.length
-    let totalHeight = 0
-    for (let i = 0; i < len; i++) {
-      const img = images[i]
-      totalHeight += img.height
-      this.createCanvas(img, i)
-      if (i === len - 1) {
-        this.setState(prevState => ({
-          canvasLoadStatus: !prevState.canvasLoadStatus
-        }))
-      }
-    }
-    this.setState({ totalHeight }, () => {
-      this.setAverageHeight(this.state.totalHeight, len)
-    })
-  }
-
-  setAverageHeight = (height, count) => {
-    this.setState({ avgHeight: Math.round(height / count) })
-  }
-
-  createCanvas = (img, i) => {
-    const canvas = (
-      <canvas
-        key={i}
-        width={img.width}
-        height={img.height}
-        className='canvas'
-        ref={ref => {
-          this.canvasRefs[i] = ref
-        }}
-      />
-    )
-    this.setState(prevState => {
-      const newState = prevState
-      newState.canvases.push(canvas)
-      return newState //canvases is what will get rendered
-    })
-  }
-
-  drawCanvas = (img, i) => {
-    const canvas = this.canvasRefs[i]
-    const ctx = canvas.getContext('2d')
-    ctx.drawImage(img, 0, 0)
-    const blob = this.getCanvasBlob(canvas, 'image/jpeg', 1).then(
-      blob => {
-        return blob
-      },
-      err => {
-        console.log(err)
-      }
-    )
-    this.setState(prevState => {
-      const newState = prevState
-      newState.blobs.push(blob)
-      return newState
-    })
+    console.log('From Canvas', this.context.canvasDivRef)
+    const canvasList = Array.from(this.context.canvasDivRef.children)
+    this.handleClick(canvasList)
   }
 
   getCanvasBlob = (canvas, mimeType, quality) => {
@@ -136,7 +64,7 @@ export default class Canvas extends Component {
     })
   }
 
-  handleClick = () => {
+  handleClick = canvasList => {
     const attachSlicedImg = canvas => {
       document.getElementById('testo').append(canvas)
     }
@@ -203,8 +131,8 @@ export default class Canvas extends Component {
         ctx = canvas.getContext('2d'),
         { data } = ctx.getImageData(0, height - 1, width, 1)
 
-      let curr, 
-       prev,
+      let curr,
+        prev,
         slice = true,
         currPixel = 0
 
@@ -222,7 +150,7 @@ export default class Canvas extends Component {
           a: data[currPixel + alpha]
         }
 
-        if (!!prev && !comparePixels(prev, curr)) return 
+        if (!!prev && !comparePixels(prev, curr)) return
 
         prev = curr
         currPixel += NEXT_PIXEL
@@ -301,7 +229,7 @@ export default class Canvas extends Component {
       }
       recurse(cnvsCopy, avgHeight)
     }
-    recurse(this.canvasRefs, this.state.avgHeight)
+    recurse(canvasList, this.state.avgHeight)
   }
 
   render() {
@@ -310,10 +238,6 @@ export default class Canvas extends Component {
         <div className='wrapper1'>
           <div id='testo' />
           <button onClick={this.handleDownloadClick}>Download</button>
-          <button onClick={this.handleClick}>Stitch and Slice</button>
-        </div>
-        <div className='canvas-wrapper' style={{ display: 'none' }}>
-          {this.state.canvases}
         </div>
       </Fragment>
     )

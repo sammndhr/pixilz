@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from 'react'
 import DataContext from '../context/DataContext'
 import { withRouter } from 'react-router'
+import Canvas from './Canvas'
 
 class CanvasList extends Component {
   static contextType = DataContext
@@ -10,10 +11,12 @@ class CanvasList extends Component {
     canvases: [],
     images: [],
     totalHeight: 0,
-    canvasLoadStatus: false
+    canvasLoadStatus: false,
+    clickStatus: false
   }
 
   componentDidMount() {
+    this.context.setContextState({ canvasDivRef: this.refs.canvasDiv })
     this.processImages(this.context.dataUrls)
   }
 
@@ -33,6 +36,7 @@ class CanvasList extends Component {
   processImages = dataUrls => {
     let totalHeight = 0
     const images = [],
+      canvases = [],
       len = dataUrls.length
 
     for (let i = 0; i < len; i++) {
@@ -43,18 +47,22 @@ class CanvasList extends Component {
       // eslint-disable-next-line no-loop-func
       img.onload = () => {
         totalHeight += img.height
-        this.createCanvas(img, i)
+        const canvas = this.createCanvas(img, i)
+        canvases.push(canvas)
         if (i === len - 1) {
-          this.setState({ totalHeight, images, canvasLoadStatus: true }, () => {
-            this.setAverageHeight(this.state.totalHeight, len)
+          this.setState({
+            totalHeight,
+            images,
+            canvases,
+            canvasLoadStatus: true,
+            avgHeight: Math.round(totalHeight / len)
+          })
+          this.context.setContextState({
+            avgHeight: Math.round(totalHeight / len)
           })
         }
       }
     }
-  }
-
-  setAverageHeight = (height, count) => {
-    this.setState({ avgHeight: Math.round(height / count) })
   }
 
   createCanvas = (img, i) => {
@@ -70,11 +78,7 @@ class CanvasList extends Component {
       />
     )
 
-    this.setState(prevState => {
-      const newState = prevState
-      newState.canvases.push(canvas)
-      return newState //canvases is what will get rendered
-    })
+    return canvas
   }
 
   drawCanvas = (img, i) => {
@@ -83,30 +87,20 @@ class CanvasList extends Component {
     ctx.drawImage(img, 0, 0)
   }
 
-  handleClick = history => {
-    console.log(history)
-  }
-  renderButton = history => {
-    return (
-      <button
-        onClick={e => {
-          this.handleClick(history)
-        }}>
-        Stitch n Slice
-      </button>
-    )
-  }
-
   render() {
-    const { history } = this.props
     return (
       <Fragment>
-        {this.renderButton(history)}
-        <div
-          ref={currRef => {
-            this.context.canvasDivRef = currRef
-          }}
-          className='canvas-wrapper'>
+        <button
+          onClick={e => {
+            this.setState(prevState => ({
+              clickStatus: !prevState.clickStatus
+            }))
+          }}>
+          Stitch n Slice
+        </button>
+        {this.state.clickStatus && <Canvas />}
+
+        <div ref='canvasDiv' className='canvas-wrapper'>
           {this.state.canvases}
         </div>
       </Fragment>
