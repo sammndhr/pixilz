@@ -1,10 +1,11 @@
 import React, { Component, Fragment } from 'react'
+import { withRouter } from 'react-router-dom'
 import { Zip } from '../utils'
 import { saveAs } from 'file-saver'
 import DataContext from '../context/DataContext'
 import stitchProcessing from '../utils/stitchProcressing.js'
 
-export default class ProcessedCanvas extends Component {
+class ProcessedCanvas extends Component {
   static contextType = DataContext
   canvasRefs = []
   state = {
@@ -65,7 +66,13 @@ export default class ProcessedCanvas extends Component {
     this.context.setContextState({
       canvasProcessStatus: true
     })
+    this.pushToHistoryState(this.props.history)
   }
+
+  pushToHistoryState = history => {
+    history.push('/download')
+  }
+
   getCanvasBlob = (canvas, mimeType, quality) => {
     return new Promise((resolve, reject) => {
       canvas.toBlob(
@@ -122,3 +129,5 @@ export default class ProcessedCanvas extends Component {
     )
   }
 }
+
+export default withRouter(ProcessedCanvas)

@@ -116,10 +116,9 @@ const stitchProcessing = (canvasList, avgHeight, canvasRefs) => {
       remainingCan = document.createElement('canvas'),
       remainingH = height - sliceHeight,
       rCtx = remainingCan.getContext('2d'),
-      i = processedCanvases.length,
       canvasAttributes = {
         sourceCan: combCan,
-        i,
+        i: processedCanvases.length,
         width,
         height: sliceHeight
       }

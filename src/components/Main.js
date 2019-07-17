@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, Fragment } from 'react'
 import UploadImages from './UploadImages'
 import DataContext from '../context/DataContext'
 
@@ -10,5 +10,5 @@ export default function Main() {
   if (!(canvasLoadStatus && imgsLoadStatus && uploadStatus)) {
     uploadImages = <UploadImages />
   }
-  return <main>{uploadImages}</main>
+  return <Fragment>{uploadImages}</Fragment>
 }

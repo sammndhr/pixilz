@@ -5,6 +5,7 @@ import ThemeContext from '../context/ThemeContext'
 import Navigation from './Navigation'
 import Main from './Main'
 import CanvasList from './CanvasList'
+import ProcessedCanvas from './ProcessedCanvas'
 
 const App = () => {
   const theme = useContext(ThemeContext)
@@ -20,9 +21,10 @@ const App = () => {
   return (
     <div className={'App container ' + themeClass}>
       <Navigation />
-      <Route path='/' exact render={() => <Main />} />
       <main>
+        <Route path='/' exact render={() => <Main />} />
         <Route path='/options' render={() => <CanvasList />} />
+        <Route path='/download' render={() => <ProcessedCanvas />} />
       </main>
       {/* https://reacttraining.com/react-router/web/api/Route/render-func */}
       <footer>Footer</footer>
