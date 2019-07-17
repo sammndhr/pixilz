@@ -61,7 +61,7 @@ class Main extends Component {
           dataUrls: results,
           uploadStatus: !prevState.uploadStatus
         }))
-        dataContext.setData({
+        dataContext.setContextState({
           dataUrls: this.state.dataUrls,
           uploadStatus: this.state.uploadStatus
         })

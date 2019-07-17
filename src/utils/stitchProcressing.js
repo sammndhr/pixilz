@@ -1,7 +1,6 @@
-export default function(canvasList, avgHeight) {
-  const attachSlicedImg = canvas => {
-    document.getElementById('testo').append(canvas)
-  }
+import React from 'react'
+const stitchProcessing = (canvasList, avgHeight, canvasRefs) => {
+  const processedCanvases = []
 
   const combineSlicedImgs = arr => {
     const canvas = document.createElement('canvas')
@@ -92,21 +91,43 @@ export default function(canvasList, avgHeight) {
     return slice
   }
 
+  const processFinalCanvas = ({ sourceCan, i, width, height }) => {
+    const canvas = createCanvas(i, width, height)
+    processedCanvases.push({ canvas, sourceCan, i, width, height })
+  }
+
+  const createCanvas = (i, width, height) => {
+    const canvas = (
+      <canvas
+        key={i}
+        width={width}
+        height={height}
+        className='processed-canvas'
+        ref={ref => {
+          canvasRefs[i] = ref
+        }}
+      />
+    )
+    return canvas
+  }
+
   const sliceCanvas = (combCan, sliceHeight) => {
     const { height, width } = combCan,
-      canvas = document.createElement('canvas'),
-      ctx = canvas.getContext('2d'),
       remainingCan = document.createElement('canvas'),
       remainingH = height - sliceHeight,
-      rCtx = remainingCan.getContext('2d')
+      rCtx = remainingCan.getContext('2d'),
+      i = processedCanvases.length,
+      canvasAttributes = {
+        sourceCan: combCan,
+        i,
+        width,
+        height: sliceHeight
+      }
 
-    canvas.width = width
-    canvas.height = sliceHeight
+    processFinalCanvas(canvasAttributes)
+
     remainingCan.width = width
     remainingCan.height = remainingH
-    ctx.drawImage(combCan, 0, 0, width, sliceHeight, 0, 0, width, sliceHeight)
-
-    attachSlicedImg(canvas)
     rCtx.drawImage(
       combCan,
       0,
@@ -120,6 +141,7 @@ export default function(canvasList, avgHeight) {
     )
     return remainingCan
   }
+
   const findSLiceLocation = (first, avgHeight) => {
     let sliceHeight = avgHeight
     let remainingCan = first
@@ -145,11 +167,21 @@ export default function(canvasList, avgHeight) {
     let first = cnvsCopy.shift()
     first = combineSmallerImgs(first, avgHeight, cnvsCopy)
     if (cnvsCopy.length === 0) {
-      attachSlicedImg(first)
+      processFinalCanvas({
+        sourceCan: first,
+        i: processedCanvases.length,
+        width: first.width,
+        height: first.height
+      })
       return
     } else if (verifyLastRowColor(first, avgHeight)) {
       if (first.height <= avgHeight) {
-        attachSlicedImg(first)
+        processFinalCanvas({
+          sourceCan: first,
+          i: processedCanvases.length,
+          width: first.width,
+          height: first.height
+        })
       } else {
         const remainingCan = findSLiceLocation(first, avgHeight)
         cnvsCopy.unshift(remainingCan)
@@ -164,4 +196,8 @@ export default function(canvasList, avgHeight) {
     recurse(cnvsCopy, avgHeight)
   }
   recurse(canvasList, avgHeight)
+
+  return { processedCanvases }
 }
+
+export default stitchProcessing

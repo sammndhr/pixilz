@@ -1,7 +1,6 @@
 import React, { Component, Fragment } from 'react'
 import DataContext from '../context/DataContext'
-import { withRouter } from 'react-router'
-import Canvas from './Canvas'
+import ProcessedCanvas from './ProcessedCanvas'
 
 class CanvasList extends Component {
   static contextType = DataContext
@@ -58,7 +57,8 @@ class CanvasList extends Component {
             avgHeight: Math.round(totalHeight / len)
           })
           this.context.setContextState({
-            avgHeight: Math.round(totalHeight / len)
+            avgHeight: Math.round(totalHeight / len),
+            canvasLoadStatus: true
           })
         }
       }
@@ -77,7 +77,6 @@ class CanvasList extends Component {
         }}
       />
     )
-
     return canvas
   }
 
@@ -90,15 +89,18 @@ class CanvasList extends Component {
   render() {
     return (
       <Fragment>
-        <button
-          onClick={e => {
-            this.setState(prevState => ({
-              clickStatus: !prevState.clickStatus
-            }))
-          }}>
-          Stitch n Slice
-        </button>
-        {this.state.clickStatus && <Canvas />}
+        {!this.state.clickStatus && this.state.canvasLoadStatus && (
+          <button
+            onClick={e => {
+              this.setState(prevState => ({
+                clickStatus: !prevState.clickStatus
+              }))
+            }}>
+            Stitch n Slice
+          </button>
+        )}
+
+        {this.state.clickStatus && <ProcessedCanvas />}
 
         <div ref='canvasDiv' className='canvas-wrapper'>
           {this.state.canvases}
@@ -108,6 +110,4 @@ class CanvasList extends Component {
   }
 }
 
-export default withRouter(CanvasList)
-
-// export default CanvasList
+export default CanvasList

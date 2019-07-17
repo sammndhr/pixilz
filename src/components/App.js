@@ -1,15 +1,13 @@
 import React, { useContext } from 'react'
+import { Route } from 'react-router-dom'
 import '../styles/App.scss'
+import ThemeContext from '../context/ThemeContext'
 import Navigation from './Navigation'
 import Main from './Main'
-import ThemeContext from '../context/ThemeContext'
-import DataContext from '../context/DataContext'
-import { BrowserRouter as Router, Route } from 'react-router-dom'
 import CanvasList from './CanvasList'
 
 const App = () => {
   const theme = useContext(ThemeContext)
-  const data = useContext(DataContext)
   const { dark } = theme
   let themeClass = ''
 
@@ -24,10 +22,6 @@ const App = () => {
       <Navigation />
       <Route path='/' exact render={() => <Main />} />
       <main>
-        {/* <Route
-          path='/download'
-          render={() => <Canvas ref={canvasRef} forwardedRef={imgRef} />}
-        /> */}
         <Route path='/options' render={() => <CanvasList />} />
       </main>
       {/* https://reacttraining.com/react-router/web/api/Route/render-func */}
@@ -37,22 +31,3 @@ const App = () => {
 }
 
 export default App
-// class Uploaded {
-//   stichAndSlice() {
-
-//     //...your stuff
-//     this.props.history.push('/sliced')
-//   }
-//   render() {
-//     <div onClick={()=> {stichAndSlice()}}slice
-//   }
-// }
-
-// class Sliced {
-
-//   render() {
-//     return (
-
-//     )
-//   }
-// }
