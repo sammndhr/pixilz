@@ -1,0 +1,43 @@
+/* Button container */
+.button-container {
+  position: relative;
+  display: inline-block;
+  text-align: center;
+  width: 45%;
+  min-width: 250px;
+  margin: 10px;
+
+  & label {
+    position: relative;
+    cursor: pointer;
+    margin: 0 auto;
+    padding: 1.5rem;
+    width: 15rem;
+    height: 4.375rem;
+    border: $border-width solid $primary;
+    border-radius: 2.5rem;
+    background: transparent;
+    color: $primary;
+    letter-spacing: 1px;
+    font-size: 1.3rem;
+    font-family: $font-family;
+
+    transition: background-color 0.3s, color 0.3s, width 0.3s, border-width 0.3s,
+      border-color 0.3s;
+
+    &:hover {
+      background-color: $primary;
+      color: $white;
+      text-decoration: none;
+    }
+    &:active {
+      background-color: $button-active;
+      color: $white;
+      border-color: $button-active;
+    }
+    &:focus {
+      outline: none;
+      text-decoration: none;
+    }
+  }
+}

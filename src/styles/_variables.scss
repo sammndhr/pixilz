@@ -1,6 +1,8 @@
 $width: 980px;
 
+$font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 $background: #f8f9f9; //used #12C47C as base color on https://palx.jxnblk.com/ to get bg color
+$white: #ffffff;
 $primary: #12c47c;
 $secondary: #ef5b5b;
 $link: $primary;
@@ -9,3 +11,10 @@ $dark: rgb(34, 34, 34);
 // $tertiary: #;
 // $other: #;
 // $color: #;
+
+/* Buttons */
+$border-width: 0.125rem;
+$button-active: darken(
+  $color: $primary,
+  $amount: 20%
+);

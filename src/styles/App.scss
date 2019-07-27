@@ -1,62 +1,8 @@
 @import 'reset';
 @import 'variables';
+@import 'index';
 @import 'navigation';
 @import 'dark';
 @import 'uploadImages';
 @import 'canvas';
-
-@font-face {
-  font-family: 'Medieval';
-  src: url('./MedievalSharp-Bold.ttf') format('truetype');
-}
-
-body {
-  font-family: arial;
-  background-color: $background;
-}
-
-a,
-button {
-  cursor: pointer;
-}
-
-.cta-btn {
-  display: flex;
-  align-items: center;
-}
-
-.container {
-  display: grid;
-  justify-items: center;
-  background-color: $background;
-  min-height: 100vh;
-  grid-template-columns: 1fr;
-  grid-template-rows: 1fr auto;
-  grid-template-areas:
-    'main'
-    'footer';
-
-  header {
-    width: 100%;
-    max-width: 100vw;
-  }
-
-  main {
-    grid-area: main;
-    padding: 1.5rem;
-    margin-top: 5.5rem;
-    overflow: auto;
-    width: 100%;
-    max-width: 100vw;
-  }
-
-  footer {
-    grid-area: footer;
-    padding: 2rem;
-    font-size: 1.4em;
-    background-color: #690;
-    color: white;
-    width: 100%;
-    max-width: 100vw;
-  }
-}
+@import 'buttons';

@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from 'react'
 import DataContext from '../context/DataContext'
 import { withRouter } from 'react-router'
+import Button from '../common/Button.js'
 
 class Main extends Component {
   static contextType = DataContext
@@ -76,7 +77,8 @@ class Main extends Component {
     const { history } = this.props
     return (
       <Fragment>
-        <label htmlFor='upload-images'>Upload Images</label>
+        {/* <label htmlFor='upload-images' class='btn-2'> */}
+        <Button />
         <input
           id='upload-images'
           type='file'
@@ -85,6 +87,7 @@ class Main extends Component {
             this.uploadFiles(e, history)
           }}
         />
+        {/* </label> */}
       </Fragment>
     )
   }
