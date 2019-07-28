@@ -5,11 +5,20 @@ $dark-border: darken($background, 3%);
 .dark.container {
   background-color: $dark-background;
   color: $foreground;
+  a {
+    color: $blue-1;
+    &:hover {
+      color: lighten($blue-1, 20%);
+    }
+    &:active {
+      color: darken($blue-1, 20%);
+    }
+  }
   .header {
     .nav {
       .brand {
         a {
-          color: $link;
+          color: $primary;
           &:hover {
             color: $white;
           }

@@ -8,10 +8,13 @@
   margin: 10px;
 
   & label {
+    padding: 1.5rem;
+  }
+  & label,
+  button {
     position: relative;
     cursor: pointer;
     margin: 0 auto;
-    padding: 1.5rem;
     width: 15rem;
     height: 4.375rem;
     border: $border-width solid $primary;

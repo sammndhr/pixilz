@@ -6,6 +6,7 @@ import Navigation from './Navigation'
 import Main from './Main'
 import CanvasList from './CanvasList'
 import ProcessedCanvas from './ProcessedCanvas'
+import Footer from './Footer'
 
 const App = () => {
   const theme = useContext(ThemeContext)
@@ -27,7 +28,7 @@ const App = () => {
         <Route path='/download' render={() => <ProcessedCanvas />} />
       </main>
       {/* https://reacttraining.com/react-router/web/api/Route/render-func */}
-      <footer>Footer</footer>
+      <Footer />
     </div>
   )
 }

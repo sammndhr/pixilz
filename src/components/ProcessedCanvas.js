@@ -119,7 +119,7 @@ class ProcessedCanvas extends Component {
   render() {
     return (
       <Fragment>
-        <div>
+        <div className='button-container'>
           <button onClick={this.handleDownloadClick}>Download</button>
         </div>
         {this.state.processedCanvases.map((processedCan, i) => {

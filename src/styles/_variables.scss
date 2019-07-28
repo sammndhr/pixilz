@@ -1,16 +1,21 @@
 $width: 980px;
 
 $font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-$background: #f8f9f9; //used #12C47C as base color on https://palx.jxnblk.com/ to get bg color
+
+//Colors-used #12C47C as base color on https://palx.jxnblk.com/ to get other colors and shades
+$background: #f8f9f9;
 $white: #ffffff;
 $primary: #12c47c;
-$secondary: #ef5b5b;
-$link: $primary;
-$link-hover: darken($link, 10%);
+$primary-1: #4fd39c;
+$primary-2: #7edfb6;
+$red: #ef5b5b;
+$blue: #125cc4;
+$blue-1: #5a8ed6;
+$grey: #587167;
+$link: $blue;
+$link-hover: lighten($link, 20%);
+$link-active: darken($link, 20%);
 $dark: rgb(34, 34, 34);
-// $tertiary: #;
-// $other: #;
-// $color: #;
 
 /* Buttons */
 $border-width: 0.125rem;

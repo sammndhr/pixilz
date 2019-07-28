@@ -90,14 +90,16 @@ class CanvasList extends Component {
     return (
       <Fragment>
         {!this.state.clickStatus && this.state.canvasLoadStatus && (
-          <button
-            onClick={e => {
-              this.setState(prevState => ({
-                clickStatus: !prevState.clickStatus
-              }))
-            }}>
-            Stitch n Slice
-          </button>
+          <div className='button-container'>
+            <button
+              onClick={e => {
+                this.setState(prevState => ({
+                  clickStatus: !prevState.clickStatus
+                }))
+              }}>
+              Stitch n Slice
+            </button>
+          </div>
         )}
 
         {this.state.clickStatus && <ProcessedCanvas />}

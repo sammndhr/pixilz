@@ -16,7 +16,7 @@
   padding: 0 1.5rem;
   font-size: 1.5rem;
   transition: all 0.3s ease;
-
+  z-index: 3;
   &.scroll {
     background-color: #222222;
     box-shadow: 1px 2px 0.75rem rgba(154, 160, 185, 0.1),
