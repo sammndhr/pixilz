@@ -7,10 +7,9 @@ import Form from '../common/Form'
 class Main extends Component {
   static contextType = DataContext
 
-  state = { dataUrls: [], uploadStatus: false }
+  state = { dataUrls: [], uploadStatus: false, checked: true }
 
-  sortFilesByName = files => {
-    const filesArr = Array.from(files)
+  sortFilesByName = filesArr => {
     const reA = /[^a-zA-Z]/g
     const reN = /[^0-9]/g
     const sortAlphaNum = (objA, objB) => {
@@ -44,8 +43,12 @@ class Main extends Component {
   }
 
   readMultipleFiles = async files => {
-    const sortedFiles = this.sortFilesByName(files)
-    const promises = sortedFiles.map(async file => {
+    const filesArr = Array.from(files)
+    const filesToProcess = this.state.checked
+      ? this.sortFilesByName(filesArr)
+      : filesArr
+
+    const promises = filesToProcess.map(async file => {
       const data = await this.readFile(file)
       return data
     })
@@ -73,13 +76,14 @@ class Main extends Component {
         console.error('Error:', err)
       })
   }
-
+  handleCheckboxChange = checked => {
+    this.setState({ checked })
+  }
   render() {
     const { history } = this.props
     return (
       <Fragment>
-        <Form />
-        <Button />
+        <Form handleCheckboxChange={this.handleCheckboxChange} />
         <input
           id='upload-images'
           type='file'
