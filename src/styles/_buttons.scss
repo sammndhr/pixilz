@@ -17,10 +17,10 @@
     margin: 0 auto;
     width: 15rem;
     height: 4.375rem;
-    border: $border-width solid $primary;
+    border: $border-width solid $button;
     border-radius: 2.5rem;
     background: transparent;
-    color: $primary;
+    color: $button;
     letter-spacing: 1px;
     font-size: 1.3rem;
     font-family: $font-family;
@@ -29,7 +29,8 @@
       border-color 0.3s;
 
     &:hover {
-      background-color: $primary;
+      background-color: $button-hover;
+      border-color: $button-hover;
       color: $white;
       text-decoration: none;
     }

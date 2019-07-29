@@ -2,24 +2,75 @@ $width: 980px;
 
 $font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 
-//Colors-used #12C47C as base color on https://palx.jxnblk.com/ to get other colors and shades
-$background: #f8f9f9;
-$white: #ffffff;
-$primary: #12c47c;
-$primary-1: #4fd39c;
-$primary-2: #7edfb6;
+//Colors-used #12C47C as base color on https://palx.jxnblk.com/12C47C to get other colors and shades
+//teals Primary "green"
+$teal-0: #e4f8ef;
+$teal-1: #c6f0df;
+$teal-2: #a5e8cc;
+$teal-3: #7edfb6;
+$teal-4: #4fd39c;
+$teal-5: #12c47a;
+$teal-6: #10b16e;
+$teal-7: #0e9b60;
+$teal-8: #0b8150;
+$teal-9: #085d39;
+//greys
+$grey-0: #f8f9f9;
+$grey-1: #ecedef;
+$grey-2: #dee0e3;
+$grey-3: #cfd3d7;
+$grey-4: #bfc4ca;
+$grey-5: #adb3bb;
+$grey-6: #99a0a9;
+$grey-7: #818995;
+$grey-8: #626d7b;
+$grey-9: #292e34;
+$grey-10: darken($grey-9, 7%);
+$grey-11: #121924;
+
+/* blues */
+$blue-0: #e7eef9;
+$blue-1: #ccdcf2;
+$blue-2: #adc7ea;
+$blue-3: #89aee1;
+$blue-4: #5a8ed6;
+$blue-5: #125cc4;
+$blue-6: #1052b0;
+$blue-7: #0e4899;
+$blue-8: #0b3b7d;
+$blue-9: #082957;
+
+/* cyans */
+$cyan-0: #e3f6f8;
+$cyan-1: #c6edf0;
+$cyan-2: #a4e2e8;
+$cyan-3: #7dd6de;
+$cyan-4: #4ec7d3;
+$cyan-5: #12b5c4;
+$cyan-6: #10a3b1;
+$cyan-7: #0e8f9b;
+$cyan-8: #0b7780;
+$cyan-9: #08555c;
+
 $red: #ef5b5b;
-$blue: #125cc4;
-$blue-1: #5a8ed6;
-$grey: #587167;
-$link: $blue;
-$link-hover: lighten($link, 20%);
-$link-active: darken($link, 20%);
-$dark: rgb(34, 34, 34);
+
+$dark-background: $grey-9;
+$background: $grey-0;
+$default-color: $grey-7;
+$default-dark-color: $grey-1;
+$primary: $teal-7;
+$primary-dark: $teal-5;
+
+$white: #ffffff;
+$jet-black: #000000;
+
+/* Links */
+$link: $blue-6;
+$link-hover: $blue-4;
+$link-active: $blue-7;
 
 /* Buttons */
+$button: $teal-7;
+$button-hover: $teal-6;
+$button-active: $teal-9;
 $border-width: 0.125rem;
-$button-active: darken(
-  $color: $primary,
-  $amount: 20%
-);

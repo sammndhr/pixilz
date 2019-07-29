@@ -1,0 +1,66 @@
+.options {
+  margin: 3em auto;
+  max-width: 30em;
+
+  label {
+    display: block;
+    cursor: pointer;
+    line-height: 2.5;
+    font-size: 1.3em;
+  }
+  [type='checkbox'] {
+    border: 0;
+    clip: rect(0 0 0 0);
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
+    width: 1px;
+    + span {
+      display: block;
+      color: $grey-9;
+      &:before {
+        content: '';
+        display: inline-block;
+        width: 1em;
+        height: 1em;
+        vertical-align: -0.25em;
+        border-radius: 1em;
+        border: 0.125em solid $white;
+        box-shadow: 0 0 0 0.15em $grey-8;
+        margin-right: 0.75em;
+        transition: 0.5s ease all;
+      }
+
+      &:after {
+        content: '\0020\2190';
+        font-size: 1.5em;
+        line-height: 1;
+        vertical-align: -0.125em;
+      }
+    }
+    &:checked + span {
+      &:before {
+        background: $blue-4;
+        box-shadow: 0 0 0 0.25em $grey-8;
+      }
+      &:after {
+        content: '';
+      }
+    }
+  }
+  fieldset {
+    font-size: 1em;
+    border: 2px solid $grey-8;
+    padding: 1em;
+    border-radius: 0.5em;
+  }
+
+  legend {
+    color: $white;
+    background: $grey-8;
+    padding: 0.25em 1em;
+    border-radius: 1em;
+  }
+}

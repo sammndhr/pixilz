@@ -18,7 +18,7 @@
   transition: all 0.3s ease;
   z-index: 3;
   &.scroll {
-    background-color: #222222;
+    background-color: $grey-10;
 
     box-shadow: 1px 2px 0.75rem rgba(154, 160, 185, 0.1),
       1px 2px 2.3rem rgba(166, 173, 201, 0.05);
@@ -30,7 +30,10 @@
           color: $primary;
           text-decoration: none;
           &:hover {
-            color: $link-hover;
+            color: $teal-8;
+          }
+          &:active {
+            color: $teal-8;
           }
         }
       }
@@ -54,13 +57,13 @@
       a {
         display: flex;
         align-items: center;
-        color: $dark;
+        color: $primary;
         font-size: 1.5rem;
         &:hover {
-          color: $primary;
+          color: $teal-6;
         }
         &:active {
-          color: $button-active;
+          color: $teal-9;
         }
       }
     }

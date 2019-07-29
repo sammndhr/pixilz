@@ -1,7 +1,8 @@
 import React, { Component, Fragment } from 'react'
 import DataContext from '../context/DataContext'
 import { withRouter } from 'react-router'
-import Button from '../common/Button.js'
+import Button from '../common/Button'
+import Form from '../common/Form'
 
 class Main extends Component {
   static contextType = DataContext
@@ -77,7 +78,7 @@ class Main extends Component {
     const { history } = this.props
     return (
       <Fragment>
-        {/* <label htmlFor='upload-images' class='btn-2'> */}
+        <Form />
         <Button />
         <input
           id='upload-images'
@@ -87,7 +88,6 @@ class Main extends Component {
             this.uploadFiles(e, history)
           }}
         />
-        {/* </label> */}
       </Fragment>
     )
   }

@@ -1,32 +1,51 @@
-$dark-background: #2d2d2d;
-$foreground: #b3b9c5;
-$dark-border: darken($background, 3%);
-
 .dark.container {
   background-color: $dark-background;
-  color: $foreground;
+  color: $default-dark-color;
   a {
-    color: $blue-1;
+    color: $blue-4;
     &:hover {
-      color: lighten($blue-1, 20%);
+      color: lighten($blue-4, 20%);
     }
     &:active {
-      color: darken($blue-1, 20%);
+      color: darken($blue-4, 20%);
     }
   }
+
   .header {
     .nav {
       .brand {
         a {
           color: $primary;
           &:hover {
-            color: $white;
+            color: $teal-5;
           }
           &:active {
-            color: darken($color: $primary, $amount: 20%);
+            color: $teal-8;
           }
         }
       }
+    }
+  }
+
+  .options {
+    [type='checkbox'] + span {
+      color: $grey-1;
+      &:before {
+        border: 0.125em solid $dark-background;
+        box-shadow: 0 0 0 0.15em $grey-1;
+      }
+    }
+
+    [type='checkbox']:checked + span:before {
+      box-shadow: 0 0 0 0.25em $grey-1;
+    }
+
+    fieldset {
+      border: 2px solid $grey-1;
+    }
+    legend {
+      color: $dark-background;
+      background: $grey-1;
     }
   }
 }
