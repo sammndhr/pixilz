@@ -2,7 +2,7 @@ import React, { Fragment, useEffect, useContext } from 'react'
 import Button from './Button'
 import DataContext from '../context/DataContext'
 
-const Form = ({ handleCheckboxChange }) => {
+const SortForm = ({ handleCheckboxChange }) => {
   const data = useContext(DataContext)
   const { checked } = data
   const handleChange = e => {
@@ -35,4 +35,4 @@ const Form = ({ handleCheckboxChange }) => {
     </Fragment>
   )
 }
-export default Form
+export default SortForm

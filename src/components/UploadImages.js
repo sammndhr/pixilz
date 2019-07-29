@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react'
 import DataContext from '../context/DataContext'
 import { withRouter } from 'react-router'
-import Form from '../common/Form'
+import SortForm from '../common/SortForm'
 import sortFiles from '../utils/sortFiles'
 class Main extends Component {
   static contextType = DataContext
@@ -59,7 +59,7 @@ class Main extends Component {
     const { history } = this.props
     return (
       <Fragment>
-        <Form handleCheckboxChange={this.handleCheckboxChange} />
+        <SortForm handleCheckboxChange={this.handleCheckboxChange} />
         <input
           id='upload-images'
           type='file'

@@ -30,14 +30,23 @@
   .options {
     [type='checkbox'] + span {
       color: $grey-1;
+
       &:before {
-        border: 0.125em solid $dark-background;
+        width: 1.1em;
+        height: 1.1em;
+        border: 0.25em solid $dark-background;
         box-shadow: 0 0 0 0.15em $grey-1;
       }
     }
 
-    [type='checkbox']:checked + span:before {
-      box-shadow: 0 0 0 0.25em $grey-1;
+    [type='checkbox']:checked + span {
+      &:before {
+        background: $blue-5;
+        box-shadow: 0 0 0 0.15em $grey-1;
+      }
+      &:after {
+        content: '';
+      }
     }
 
     fieldset {
