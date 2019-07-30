@@ -1,9 +1,10 @@
 import React, { Component, Fragment } from 'react'
 import { withRouter } from 'react-router-dom'
-import { Zip } from '../utils'
 import { saveAs } from 'file-saver'
+
+import { Zip } from '../utils'
 import DataContext from '../context/DataContext'
-import stitchProcessing from '../utils/stitchProcressing.js'
+import { stitchProcessing } from '../utils/'
 
 class ProcessedCanvas extends Component {
   static contextType = DataContext
@@ -11,7 +12,6 @@ class ProcessedCanvas extends Component {
   state = {
     processedCanvases: [],
     blobs: [],
-    totalHeight: 0,
     avgHeight: 0,
     canvasProcessStatus: false
   }

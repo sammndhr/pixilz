@@ -1,8 +1,10 @@
 import React, { Component, Fragment } from 'react'
-import DataContext from '../context/DataContext'
 import { withRouter } from 'react-router'
+
+import DataContext from '../context/DataContext'
 import SortForm from '../common/SortForm'
-import sortFiles from '../utils/sortFiles'
+import { sortFiles } from '../utils/'
+
 class Main extends Component {
   static contextType = DataContext
 

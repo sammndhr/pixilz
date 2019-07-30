@@ -7,9 +7,10 @@ export const defaultState = {
   canvasLoadStatus: false,
   canvasDivRef: null,
   avgHeight: 0,
+  avgWidth: 0,
   canvasProcessStatus: false,
-  setContextState: () => {},
-  checked: true
+  checked: true,
+  setContextState: () => {}
 }
 
 const DataContext = React.createContext(defaultState)
@@ -23,6 +24,7 @@ class DataProvider extends Component {
     canvasProcessStatus: false,
     canvasDivRef: null,
     avgHeight: 0,
+    avgWidth: 0,
     checked: true
   }
 

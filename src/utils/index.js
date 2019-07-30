@@ -1,3 +1,7 @@
-export { default as Zip } from './zip.js'
+import { default as Image } from './image'
+const { calculateDimensions } = Image
 
-// export { createWriter } from './zip.js'
+export { default as Zip } from './zip'
+export { default as sortFiles } from './file'
+export { default as stitchProcessing } from './canvas'
+export { calculateDimensions }

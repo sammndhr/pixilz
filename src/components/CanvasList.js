@@ -1,6 +1,8 @@
 import React, { Component, Fragment } from 'react'
+
 import DataContext from '../context/DataContext'
 import ProcessedCanvas from './ProcessedCanvas'
+import { calculateDimensions } from '../utils/'
 
 class CanvasList extends Component {
   static contextType = DataContext
@@ -9,7 +11,6 @@ class CanvasList extends Component {
   state = {
     canvases: [],
     images: [],
-    totalHeight: 0,
     canvasLoadStatus: false,
     clickStatus: false
   }
@@ -26,6 +27,9 @@ class CanvasList extends Component {
       imgsLen = images.length
 
     if (currStatus === prevStatus) return
+
+    this.context.setContextState(calculateDimensions(this.state.images))
+
     for (let i = 0; i < imgsLen; i++) {
       const img = images[i]
       this.drawCanvas(img, i)
@@ -33,7 +37,6 @@ class CanvasList extends Component {
   }
 
   processImages = dataUrls => {
-    let totalHeight = 0
     const images = [],
       canvases = [],
       len = dataUrls.length
@@ -45,19 +48,12 @@ class CanvasList extends Component {
       images.push(img)
       // eslint-disable-next-line no-loop-func
       img.onload = () => {
-        totalHeight += img.height
         const canvas = this.createCanvas(img, i)
         canvases.push(canvas)
         if (i === len - 1) {
           this.setState({
-            totalHeight,
             images,
             canvases,
-            canvasLoadStatus: true,
-            avgHeight: Math.round(totalHeight / len)
-          })
-          this.context.setContextState({
-            avgHeight: Math.round(totalHeight / len),
             canvasLoadStatus: true
           })
         }
