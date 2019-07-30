@@ -1,5 +1,10 @@
 .main-grid {
   display: grid;
   max-width: $width;
-  grid-template-columns: minmax(auto, 300px) minmax(auto, 1fr);
+  background-color: rgba(233, 198, 198, 0.377);
+  grid-template-columns: minmax(300px, 500px) minmax(300px, 1fr);
+  aside {
+    background-color: rgb(212, 209, 209);
+    padding: 1.375rem 0 0.875rem;
+  }
 }

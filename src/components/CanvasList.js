@@ -3,7 +3,7 @@ import React, { Component, Fragment } from 'react'
 import DataContext from '../context/DataContext'
 import ProcessedCanvas from './ProcessedCanvas'
 import { calculateDimensions } from '../utils/'
-
+import Resize from '../common/ResizeForm'
 class CanvasList extends Component {
   static contextType = DataContext
   canvasRefs = []
@@ -27,7 +27,8 @@ class CanvasList extends Component {
       imgsLen = images.length
 
     if (currStatus === prevStatus) return
-    const newContextState = calculateDimensions(this.state.images)
+    const dimensions = calculateDimensions(this.state.images)
+    const newContextState = { dimensions }
     newContextState.canvasLoadStatus = this.state.canvasLoadStatus
     this.context.setContextState(newContextState)
 
@@ -86,20 +87,21 @@ class CanvasList extends Component {
   render() {
     return (
       <Fragment>
-        {!this.state.clickStatus && this.state.canvasLoadStatus && (
-          <aside>
-            <div className='button-container'>
-              <button
-                onClick={e => {
-                  this.setState(prevState => ({
-                    clickStatus: !prevState.clickStatus
-                  }))
-                }}>
-                Stitch n Slice
-              </button>
-            </div>
-          </aside>
-        )}
+        {/* {!this.state.clickStatus && this.state.canvasLoadStatus && ( */}
+        <aside>
+          <Resize />
+          <div className='button-container'>
+            <button
+              onClick={e => {
+                this.setState(prevState => ({
+                  clickStatus: !prevState.clickStatus
+                }))
+              }}>
+              Stitch n Slice
+            </button>
+          </div>
+        </aside>
+        {/* )} */}
 
         {this.state.clickStatus && <ProcessedCanvas />}
 
