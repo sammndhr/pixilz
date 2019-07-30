@@ -1,7 +1,8 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect } from 'react'
 import { Route } from 'react-router-dom'
 import '../styles/App.scss'
 import ThemeContext from '../context/ThemeContext'
+import DataContext from '../context/DataContext'
 import Navigation from './Navigation'
 import Main from './Main'
 import CanvasList from './CanvasList'
@@ -10,9 +11,13 @@ import Footer from './Footer'
 
 const App = () => {
   const theme = useContext(ThemeContext)
+  const { canvasLoadStatus } = useContext(DataContext)
   const { dark } = theme
   let themeClass = ''
-
+  let mainClass = ''
+  if (canvasLoadStatus) {
+    mainClass = 'main-grid'
+  }
   if (!dark) {
     themeClass = 'light'
   } else {
@@ -22,7 +27,7 @@ const App = () => {
   return (
     <div className={'App container ' + themeClass}>
       <Navigation />
-      <main>
+      <main className={mainClass}>
         <Route path='/' exact render={() => <Main />} />
         <Route path='/options' render={() => <CanvasList />} />
         <Route path='/download' render={() => <ProcessedCanvas />} />

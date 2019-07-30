@@ -27,8 +27,9 @@ class CanvasList extends Component {
       imgsLen = images.length
 
     if (currStatus === prevStatus) return
-
-    this.context.setContextState(calculateDimensions(this.state.images))
+    const newContextState = calculateDimensions(this.state.images)
+    newContextState.canvasLoadStatus = this.state.canvasLoadStatus
+    this.context.setContextState(newContextState)
 
     for (let i = 0; i < imgsLen; i++) {
       const img = images[i]
@@ -67,7 +68,7 @@ class CanvasList extends Component {
         key={i}
         width={img.width}
         height={img.height}
-        className='canvas'
+        className='canvas-item'
         ref={ref => {
           this.canvasRefs[i] = ref
         }}
@@ -86,16 +87,18 @@ class CanvasList extends Component {
     return (
       <Fragment>
         {!this.state.clickStatus && this.state.canvasLoadStatus && (
-          <div className='button-container'>
-            <button
-              onClick={e => {
-                this.setState(prevState => ({
-                  clickStatus: !prevState.clickStatus
-                }))
-              }}>
-              Stitch n Slice
-            </button>
-          </div>
+          <aside>
+            <div className='button-container'>
+              <button
+                onClick={e => {
+                  this.setState(prevState => ({
+                    clickStatus: !prevState.clickStatus
+                  }))
+                }}>
+                Stitch n Slice
+              </button>
+            </div>
+          </aside>
         )}
 
         {this.state.clickStatus && <ProcessedCanvas />}
