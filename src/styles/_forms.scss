@@ -87,6 +87,7 @@
 }
 
 .range-slider {
+  position: relative;
   margin-top: 30vh;
 }
 
@@ -145,7 +146,7 @@
 }
 
 .rs-label {
-  position: relative;
+  position: absolute;
   transform-origin: center center;
   display: block;
   width: 98px;
@@ -160,7 +161,8 @@
   border: 2px solid #fff;
   margin-top: 20px;
   margin-left: -38px;
-  left: attr(value);
+  top: -120px;
+  // left: attr(value);
   color: #fff;
   font-style: normal;
   font-weight: normal;
@@ -168,7 +170,7 @@
   font-size: 36px;
 }
 .rs-label::after {
-  content: 'kg';
+  content: 'px';
   display: block;
   font-size: 20px;
   letter-spacing: 0.07em;
