@@ -58,16 +58,12 @@ p {
     width: 100%;
     max-width: 100vw;
   }
-
   main {
-    grid-area: main;
     padding: 1.5rem;
     margin-top: 5.5rem;
-    overflow: auto;
     width: 100%;
-    // max-width: 100vw;
+    grid-area: main;
   }
-
   footer {
     grid-area: footer;
     padding: 2rem;
