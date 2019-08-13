@@ -1,9 +1,9 @@
 import React, { Component, Fragment } from 'react'
-
 import DataContext from '../context/DataContext'
 import ProcessedCanvas from './ProcessedCanvas'
 import { calculateDimensions } from '../utils/'
 import Resize from '../common/ResizeForm'
+
 class CanvasList extends Component {
   static contextType = DataContext
   canvasRefs = []
@@ -12,7 +12,8 @@ class CanvasList extends Component {
     canvases: [],
     images: [],
     canvasLoadStatus: false,
-    clickStatus: false
+    clickStatus: false,
+    maxWidth: 0
   }
 
   componentDidMount() {
@@ -29,6 +30,7 @@ class CanvasList extends Component {
     if (currStatus === prevStatus) return
     const dimensions = calculateDimensions(this.state.images)
     const newContextState = { dimensions }
+    this.setState({ maxWidth: dimensions.w.max })
     newContextState.canvasLoadStatus = this.state.canvasLoadStatus
     this.context.setContextState(newContextState)
 
@@ -87,8 +89,16 @@ class CanvasList extends Component {
   render() {
     return (
       <Fragment>
+        {this.state.clickStatus && <ProcessedCanvas />}
+
+        <div
+          ref='canvasDiv'
+          className='canvas-wrapper'
+          style={{ maxWidth: this.state.maxWidth }}>
+          {this.state.canvases}
+        </div>
         {/* {!this.state.clickStatus && this.state.canvasLoadStatus && ( */}
-        <aside>
+        <aside className='aside'>
           <Resize />
           <div className='button-container'>
             <button
@@ -102,12 +112,6 @@ class CanvasList extends Component {
           </div>
         </aside>
         {/* )} */}
-
-        {this.state.clickStatus && <ProcessedCanvas />}
-
-        <div ref='canvasDiv' className='canvas-wrapper'>
-          {this.state.canvases}
-        </div>
       </Fragment>
     )
   }

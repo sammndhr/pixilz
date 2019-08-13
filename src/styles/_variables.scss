@@ -1,3 +1,4 @@
+$max-canvas-width: 2000px;
 $width: 1450px;
 $header-height: 3.5rem;
 $font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
@@ -75,3 +76,7 @@ $button: $teal-7;
 $button-hover: $teal-6;
 $button-active: $teal-9;
 $border-width: 0.125rem;
+
+:export {
+  width: $width;
+}

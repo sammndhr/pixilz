@@ -52,7 +52,8 @@ class ProcessedCanvas extends Component {
   }
 
   componentDidMount() {
-    const { canvasDivRef, avgHeight } = this.context,
+    const { canvasDivRef } = this.context,
+      avgHeight = this.context.dimensions.h.avg,
       canvasList = Array.from(canvasDivRef.children),
       { processedCanvases } = stitchProcessing(
         canvasList,

@@ -8,7 +8,10 @@ export const defaultState = {
   canvasDivRef: null,
   canvasProcessStatus: false,
   checked: true,
-  dimensions: {},
+  dimensions: {
+    w: { min: 0, max: 0, avg: 0 },
+    h: { min: 0, max: 0, avg: 0 }
+  },
   setContextState: () => {}
 }
 

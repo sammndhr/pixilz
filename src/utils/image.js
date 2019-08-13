@@ -26,10 +26,8 @@ const calculateDimensions = images => {
     minMaxHeight = findMinMax(img.height, minMaxHeight)
   }
   return {
-    avgHeight: Math.round(totalHeight / len),
-    avgWidth: Math.round(totalWidth / len),
-    minMaxWidth,
-    minMaxHeight
+    w: { ...minMaxWidth, avg: Math.round(totalWidth / len) },
+    h: { ...minMaxHeight, avg: Math.round(totalHeight / len) }
   }
 }
 export default { calculateDimensions }

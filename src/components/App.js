@@ -1,6 +1,6 @@
-import React, { useContext, useEffect } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { Route } from 'react-router-dom'
-import '../styles/App.scss'
+import styles from '../styles/App.scss'
 import ThemeContext from '../context/ThemeContext'
 import DataContext from '../context/DataContext'
 import Navigation from './Navigation'
@@ -11,10 +11,15 @@ import Footer from './Footer'
 
 const App = () => {
   const theme = useContext(ThemeContext)
-  const { canvasLoadStatus } = useContext(DataContext)
+  const { canvasLoadStatus, dimensions } = useContext(DataContext)
   const { dark } = theme
-  let themeClass = ''
-  let mainClass = ''
+  const [maxWidth, setMaxWidth] = useState(1400)
+  const [style, setStyle] = useState({})
+
+  // gridTemplateColumns: minmax(300px, maxWidth) minmax(min-content, 33%); //set max
+  let themeClass = '',
+    mainClass = ''
+
   if (canvasLoadStatus) {
     mainClass = 'main-grid'
   }
@@ -24,10 +29,22 @@ const App = () => {
     themeClass = 'dark'
   }
 
+  useEffect(() => {
+    if (dimensions && dimensions.w && dimensions.w.max) {
+      setMaxWidth(dimensions.w.max)
+      setStyle({
+        maxWidth: `${maxWidth + 512 + 24 + 24}px`,
+        gridTemplateColumns: `minmax(66%, max-content) minmax(min-content,  512px)`
+      })
+    }
+    console.log('canvasLoadStatus, dimensions, maxWidth')
+    console.log(canvasLoadStatus, dimensions, maxWidth)
+  }, [canvasLoadStatus, dimensions, maxWidth])
+
   return (
     <div className={'App container ' + themeClass}>
       <Navigation />
-      <main className={mainClass}>
+      <main className={mainClass} style={style}>
         <Route path='/' exact render={() => <Main />} />
         <Route path='/options' render={() => <CanvasList />} />
         <Route path='/download' render={() => <ProcessedCanvas />} />
