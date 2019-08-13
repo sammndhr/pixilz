@@ -7,7 +7,7 @@ import Resize from '../common/ResizeForm'
 class CanvasList extends Component {
   static contextType = DataContext
   canvasRefs = []
-
+  canvasDivRef = null
   state = {
     canvases: [],
     images: [],
@@ -17,7 +17,11 @@ class CanvasList extends Component {
   }
 
   componentDidMount() {
-    this.context.setContextState({ canvasDivRef: this.refs.canvasDiv })
+    if (this.canvasDivRef) {
+      this.context.setContextState({
+        canvasDivRef: this.canvasDivRef
+      })
+    }
     this.processImages(this.context.dataUrls)
   }
 
@@ -92,7 +96,9 @@ class CanvasList extends Component {
         {this.state.clickStatus && <ProcessedCanvas />}
 
         <div
-          ref='canvasDiv'
+          ref={e => {
+            this.canvasDivRef = e
+          }}
           className='canvas-wrapper'
           style={{ maxWidth: this.state.maxWidth }}>
           {this.state.canvases}
