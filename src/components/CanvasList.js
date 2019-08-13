@@ -1,126 +1,128 @@
-import React, { Component, Fragment } from 'react'
+import React, {
+  Fragment,
+  useContext,
+  useState,
+  useEffect,
+  useCallback,
+  useRef
+} from 'react'
 import DataContext from '../context/DataContext'
 import ProcessedCanvas from './ProcessedCanvas'
 import { calculateDimensions } from '../utils/'
 import Resize from '../common/ResizeForm'
 
-class CanvasList extends Component {
-  static contextType = DataContext
-  canvasRefs = []
-  canvasDivRef = null
-  state = {
-    canvases: [],
-    images: [],
-    canvasLoadStatus: false,
-    clickStatus: false,
-    maxWidth: 0
-  }
+const CanvasList = () => {
+  const dataContext = useContext(DataContext)
+  const [clickStatus, setClickStatus] = useState(false)
+  const [canvases, setCanvases] = useState([])
+  const [images, setImages] = useState([])
+  const [imgCount, setImgCount] = useState(0)
+  const [canvasLoadStatus, setCanvasLoadStatus] = useState(false)
+  const [maxWidth, setMaxWidth] = useState(0)
+  const [dimensions, setDimensions] = useState({})
+  const canvasRefs = useRef([])
 
-  componentDidMount() {
-    if (this.canvasDivRef) {
-      this.context.setContextState({
-        canvasDivRef: this.canvasDivRef
+  const canvasDivRef = useCallback(node => {
+    if (node !== null) {
+      dataContext.setContextState({
+        canvasDivRef: node
       })
     }
-    this.processImages(this.context.dataUrls)
-  }
+    //adding dataContext as a dependency will cause maximum call stack error.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
-  componentDidUpdate(prevProps, prevState) {
-    const currStatus = this.state.canvasLoadStatus,
-      prevStatus = prevState.canvasLoadStatus,
-      images = this.state.images,
-      imgsLen = images.length
-
-    if (currStatus === prevStatus) return
-    const dimensions = calculateDimensions(this.state.images)
-    const newContextState = { dimensions }
-    this.setState({ maxWidth: dimensions.w.max })
-    newContextState.canvasLoadStatus = this.state.canvasLoadStatus
-    this.context.setContextState(newContextState)
-
-    for (let i = 0; i < imgsLen; i++) {
-      const img = images[i]
-      this.drawCanvas(img, i)
-    }
-  }
-
-  processImages = dataUrls => {
-    const images = [],
-      canvases = [],
-      len = dataUrls.length
-
-    for (let i = 0; i < len; i++) {
-      const img = new Image()
-      img.src = dataUrls[i]
-      img.className += 'images'
-      images.push(img)
-      // eslint-disable-next-line no-loop-func
-      img.onload = () => {
-        const canvas = this.createCanvas(img, i)
-        canvases.push(canvas)
-        if (i === len - 1) {
-          this.setState({
-            images,
-            canvases,
-            canvasLoadStatus: true
-          })
-        }
-      }
-    }
-  }
-
-  createCanvas = (img, i) => {
+  const createCanvas = (img, i) => {
     const canvas = (
       <canvas
         key={i}
         width={img.width}
         height={img.height}
         className='canvas-item'
-        ref={ref => {
-          this.canvasRefs[i] = ref
+        ref={el => {
+          canvasRefs.current[i] = el
         }}
       />
     )
     return canvas
   }
 
-  drawCanvas = (img, i) => {
-    const canvas = this.canvasRefs[i]
+  const drawCanvas = (img, i) => {
+    const canvas = canvasRefs.current[i]
     const ctx = canvas.getContext('2d')
     ctx.drawImage(img, 0, 0)
   }
 
-  render() {
-    return (
-      <Fragment>
-        {this.state.clickStatus && <ProcessedCanvas />}
+  useEffect(() => {
+    canvasRefs.current = canvasRefs.current.slice(0, imgCount)
+  }, [imgCount])
 
-        <div
-          ref={e => {
-            this.canvasDivRef = e
-          }}
-          className='canvas-wrapper'
-          style={{ maxWidth: this.state.maxWidth }}>
-          {this.state.canvases}
-        </div>
-        {/* {!this.state.clickStatus && this.state.canvasLoadStatus && ( */}
+  useEffect(() => {
+    const processImages = async dataUrls => {
+      const imgsArr = [],
+        canvases = [],
+        len = dataUrls.length
+      for (let i = 0; i < len; i++) {
+        const img = new Image()
+        img.src = dataUrls[i]
+        img.className += 'imgsArr'
+        imgsArr.push(img)
+        img.onload = () => {
+          const canvas = createCanvas(img, i)
+          canvases.push(canvas)
+          if (i === len - 1) {
+            setImages(imgsArr)
+            setCanvases(canvases)
+            setCanvasLoadStatus(true)
+            setImgCount(len)
+          }
+        }
+      }
+    }
+    if (!dataContext.dataUrls) return
+    processImages(dataContext.dataUrls)
+  }, [dataContext.dataUrls])
+
+  useEffect(() => {
+    const imgsLen = images.length
+    if (!canvasLoadStatus) return
+    const dimensions = calculateDimensions(images)
+    setMaxWidth(dimensions.w.max)
+    setDimensions(dimensions)
+    for (let i = 0; i < imgsLen; i++) {
+      const img = images[i]
+      drawCanvas(img, i)
+    }
+  }, [canvasLoadStatus, images])
+
+  useEffect(() => {
+    const newContextState = { dimensions }
+    newContextState.canvasLoadStatus = canvasLoadStatus
+    dataContext.setContextState(newContextState)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dimensions, canvasLoadStatus])
+
+  return (
+    <Fragment>
+      {clickStatus && <ProcessedCanvas />}
+      <div ref={canvasDivRef} className='canvas-wrapper' style={{ maxWidth }}>
+        {canvases}
+      </div>
+      {!clickStatus && canvasLoadStatus && (
         <aside className='aside'>
           <Resize />
           <div className='button-container'>
             <button
               onClick={e => {
-                this.setState(prevState => ({
-                  clickStatus: !prevState.clickStatus
-                }))
+                setClickStatus(true)
               }}>
               Stitch n Slice
             </button>
           </div>
         </aside>
-        {/* )} */}
-      </Fragment>
-    )
-  }
+      )}
+    </Fragment>
+  )
 }
 
 export default CanvasList

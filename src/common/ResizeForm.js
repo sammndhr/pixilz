@@ -1,8 +1,8 @@
-import React, { Fragment, useState, useContext, useEffect } from 'react'
-import DataContext from '../context/DataContext'
+import React, { useState, useEffect } from 'react'
+// import DataContext from '../context/DataContext'
 
 const Resize = () => {
-  const dimensions = useContext(DataContext).dimensions
+  // const dimensions = useContext(DataContext).dimensions
   const [errors, setErrors] = useState({
     width: false,
     height: false
@@ -70,7 +70,6 @@ const Resize = () => {
     // if (dimensions.avgWidth) {
     //   const minMaxWidth = dimensions.minMaxWidth
     // }
-    console.log(errors)
   }, [errors])
   //     setWidth(dimensions.avgWidth)
   //     setwidth({

@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { Route } from 'react-router-dom'
-import styles from '../styles/App.scss'
+import '../styles/App.scss'
 import ThemeContext from '../context/ThemeContext'
 import DataContext from '../context/DataContext'
 import Navigation from './Navigation'
@@ -37,8 +37,6 @@ const App = () => {
         gridTemplateColumns: `minmax(66%, max-content) minmax(min-content,  512px)`
       })
     }
-    console.log('canvasLoadStatus, dimensions, maxWidth')
-    console.log(canvasLoadStatus, dimensions, maxWidth)
   }, [canvasLoadStatus, dimensions, maxWidth])
 
   return (
