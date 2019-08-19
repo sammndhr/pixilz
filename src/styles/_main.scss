@@ -10,8 +10,9 @@
   grid-template-rows: 1fr;
   grid-gap: 1.5rem;
   position: relative;
+  justify-items: center;
 
-  aside {
+  .aside {
     justify-self: stretch;
     min-height: 0;
     grid-area: options;
@@ -28,13 +29,12 @@
     align-items: center;
     .canvas-item {
       min-width: 0;
-      width: 100%;
     }
   }
 }
 @media all and (max-width: 820px) {
   .main-grid {
-    aside {
+    .aside {
       max-width: 820px;
     }
     grid-template-areas:
@@ -46,12 +46,16 @@
     ) !important; //TODO: fix with some library(https://github.com/contra/react-responsive) that allows condiitional media query styling with react.
   }
 }
-@media all and (min-width: 1920px) {
+@media all and (min-width: 820px) {
   .main-grid {
-    max-width: $max-canvas-width;
-    aside {
+    .aside {
       position: sticky;
       top: $header-height;
     }
+  }
+}
+@media all and (min-width: 1920px) {
+  .main-grid {
+    max-width: $max-canvas-width;
   }
 }
