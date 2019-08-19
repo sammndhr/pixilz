@@ -99,6 +99,10 @@ const CanvasList = () => {
     const newContextState = { dimensions }
     newContextState.canvasLoadStatus = canvasLoadStatus
     dataContext.setContextState(newContextState)
+    const cleanup = () => {
+      dataContext.setContextState({ canvasLoadStatus: false })
+    }
+    return cleanup
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dimensions, canvasLoadStatus])
 

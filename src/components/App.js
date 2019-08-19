@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useState, useContext, useEffect } from 'react'
 import { Route } from 'react-router-dom'
 import '../styles/App.scss'
 import ThemeContext from '../context/ThemeContext'
@@ -11,20 +11,33 @@ import Footer from './Footer'
 
 const App = () => {
   const theme = useContext(ThemeContext)
-  const { canvasLoadStatus } = useContext(DataContext)
+  const { canvasLoadStatus, uploadStatus } = useContext(DataContext)
   const { dark } = theme
+  const [themeClass, setThemeClass] = useState('')
+  const [mainClass, setMainClass] = useState('')
 
-  let themeClass = '',
-    mainClass = ''
+  useEffect(() => {
+    if (canvasLoadStatus && !mainClass) {
+      setMainClass('main-grid')
+    }
+    if (!canvasLoadStatus && !!mainClass) {
+      setMainClass('')
+    }
+    const cleanup = () => {
+      if (!canvasLoadStatus && !!mainClass) {
+        setMainClass('')
+      }
+    }
+    return cleanup
+  }, [canvasLoadStatus, uploadStatus, mainClass])
 
-  if (canvasLoadStatus) {
-    mainClass = 'main-grid'
-  }
-  if (!dark) {
-    themeClass = 'light'
-  } else {
-    themeClass = 'dark'
-  }
+  useEffect(() => {
+    if (!dark) {
+      setThemeClass('light')
+    } else {
+      setThemeClass('dark')
+    }
+  }, [themeClass, dark])
 
   return (
     <div className={'App container ' + themeClass}>
