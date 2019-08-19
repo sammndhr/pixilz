@@ -2,17 +2,18 @@
   display: grid;
   // max-width: 1900px;
   background-color: rgba(233, 198, 198, 0.377);
-  grid-template-areas: 'canvas options';
-  grid-template-columns: minmax(70%, max-content) minmax(30%, 33%); //set max width of canvas in CanvasList.js
+  grid-template-areas: 'options canvas';
+  grid-template-columns: minmax(min-content, max-content) minmax(
+      min-content,
+      max-content
+    ); //set max width of canvas in CanvasList.js
   grid-template-rows: 1fr;
   grid-gap: 1.5rem;
-  justify-content: center;
   position: relative;
 
   aside {
     justify-self: stretch;
     min-height: 0;
-    max-width: 32rem;
     grid-area: options;
     background-color: rgb(212, 209, 209);
     padding: 1.375rem 0 0.875rem;
@@ -21,10 +22,9 @@
   .canvas-wrapper {
     min-width: 0;
     min-height: 0;
-    width: 100%;
     grid-area: canvas;
     display: grid;
-    justify-content: center;
+    justify-items: center;
     align-items: center;
     .canvas-item {
       min-width: 0;

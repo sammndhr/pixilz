@@ -6,8 +6,11 @@ export const defaultState = {
   loadStatus: false,
   canvasLoadStatus: false,
   canvasDivRef: null,
+  optionsDimensions: null,
   canvasProcessStatus: false,
-  checked: true,
+  sort: true,
+  scaleDown: false,
+  scaleUp: false,
   dimensions: {
     w: { min: 0, max: 0, avg: 0 },
     h: { min: 0, max: 0, avg: 0 }
@@ -25,8 +28,14 @@ class DataProvider extends Component {
     canvasLoadStatus: false,
     canvasProcessStatus: false,
     canvasDivRef: null,
-    dimensions: {},
-    checked: true
+    optionsDimensions: null,
+    sort: true,
+    scaleDown: false,
+    scaleUp: false,
+    dimensions: {
+      w: { min: 0, max: 0, avg: 0 },
+      h: { min: 0, max: 0, avg: 0 }
+    }
   }
 
   setContextState = args => {

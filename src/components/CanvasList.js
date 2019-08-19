@@ -104,10 +104,6 @@ const CanvasList = () => {
 
   return (
     <Fragment>
-      {clickStatus && <ProcessedCanvas />}
-      <div ref={canvasDivRef} className='canvas-wrapper' style={{ maxWidth }}>
-        {canvases}
-      </div>
       {!clickStatus && canvasLoadStatus && (
         <aside className='aside'>
           <Resize />
@@ -121,6 +117,10 @@ const CanvasList = () => {
           </div>
         </aside>
       )}
+      {clickStatus && <ProcessedCanvas />}
+      <div ref={canvasDivRef} className='canvas-wrapper' style={{ maxWidth }}>
+        {canvases}
+      </div>
     </Fragment>
   )
 }

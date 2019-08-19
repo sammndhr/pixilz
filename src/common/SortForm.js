@@ -4,14 +4,14 @@ import DataContext from '../context/DataContext'
 
 const SortForm = ({ handleCheckboxChange }) => {
   const data = useContext(DataContext)
-  const { checked } = data
+  const { sort } = data
   const handleChange = e => {
-    data.setContextState({ checked: e.target.checked })
+    data.setContextState({ sort: e.target.checked })
   }
 
   useEffect(() => {
-    handleCheckboxChange(checked)
-  }, [handleCheckboxChange, checked])
+    handleCheckboxChange(sort)
+  }, [handleCheckboxChange, sort])
 
   return (
     <Fragment>
@@ -24,7 +24,7 @@ const SortForm = ({ handleCheckboxChange }) => {
               type='checkbox'
               name='sorted'
               id='sorted'
-              checked={checked}
+              checked={sort}
               onChange={handleChange}
             />
             <span>Auto sort after uploading</span>

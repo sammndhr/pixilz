@@ -8,7 +8,7 @@ import { sortFiles } from '../utils/'
 class Main extends Component {
   static contextType = DataContext
 
-  state = { dataUrls: [], uploadStatus: false, checked: true }
+  state = { dataUrls: [], uploadStatus: false, sort: true }
 
   readFile = file => {
     return new Promise((resolve, reject) => {
@@ -26,7 +26,7 @@ class Main extends Component {
 
   readMultipleFiles = async files => {
     const filesArr = Array.from(files)
-    const filesToProcess = this.state.checked ? sortFiles(filesArr) : filesArr
+    const filesToProcess = this.state.sort ? sortFiles(filesArr) : filesArr
     const promises = filesToProcess.map(async file => {
       const data = await this.readFile(file)
       return data
@@ -54,8 +54,8 @@ class Main extends Component {
         console.error('Error:', err)
       })
   }
-  handleCheckboxChange = checked => {
-    this.setState({ checked })
+  handleCheckboxChange = sort => {
+    this.setState({ sort })
   }
   render() {
     const { history } = this.props

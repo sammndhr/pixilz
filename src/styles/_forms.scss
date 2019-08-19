@@ -9,7 +9,8 @@
     line-height: 2.5;
     font-size: 1.3em;
   }
-  [type='checkbox'] {
+  [type='checkbox'],
+  [type='radio'] {
     border: 0;
     clip: rect(0 0 0 0);
     height: 1px;
@@ -54,7 +55,7 @@
   fieldset {
     font-size: 1em;
     border: 2px solid $grey-8;
-    padding: 1em;
+    padding: 1em 4em;
     border-radius: 0.5em;
   }
 
@@ -69,6 +70,8 @@
   }
 }
 
-.range {
-  width: 300px;
+.aside {
+  fieldset {
+    padding: 1em 2em;
+  }
 }
