@@ -9,6 +9,8 @@ const stitchProcessing = (
 ) => {
   const processedCanvases = []
   console.log(resize, dimensions)
+  const resizeWidth = resize.scaleDown ? dimensions.w.min : dimensions.w.max
+  console.log(resizeWidth)
   const combineSlicedImgs = arr => {
     const canvas = document.createElement('canvas')
     const canvases = []

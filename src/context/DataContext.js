@@ -5,6 +5,7 @@ export const defaultState = {
   uploadStatus: false,
   loadStatus: false,
   canvasLoadStatus: false,
+  imgsLoadStatus: false,
   canvasDivRef: null,
   optionsDimensions: null,
   canvasProcessStatus: false,
@@ -26,8 +27,8 @@ class DataProvider extends Component {
   state = {
     dataUrls: [],
     uploadStatus: false,
-    imgsLoadStatus: false,
     canvasLoadStatus: false,
+    imgsLoadStatus: false,
     canvasProcessStatus: false,
     canvasDivRef: null,
     optionsDimensions: null,

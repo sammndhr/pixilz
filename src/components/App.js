@@ -5,31 +5,56 @@ import ThemeContext from '../context/ThemeContext'
 import DataContext from '../context/DataContext'
 import Navigation from './Navigation'
 import Main from './Main'
-import CanvasList from './CanvasList'
+import ImageList from './ImageList'
 import ProcessedCanvas from './ProcessedCanvas'
 import Footer from './Footer'
 
 const App = () => {
   const theme = useContext(ThemeContext)
-  const { canvasLoadStatus, canvasProcessStatus } = useContext(DataContext)
+  const {
+    canvasLoadStatus,
+    canvasProcessStatus,
+    dataUrls,
+    imgsLoadStatus
+  } = useContext(DataContext)
   const { dark } = theme
   const [themeClass, setThemeClass] = useState('')
   const [mainClass, setMainClass] = useState('')
+  const [dataUrlsProps, setDataUrlsProps] = useState([])
 
   useEffect(() => {
-    if ((canvasLoadStatus || canvasProcessStatus) && !mainClass) {
+    if (dataUrls.length && !dataUrlsProps.length) {
+      setDataUrlsProps(dataUrls)
+    }
+  }, [dataUrls, dataUrlsProps])
+
+  useEffect(() => {
+    if (
+      (imgsLoadStatus || canvasLoadStatus || canvasProcessStatus) &&
+      !mainClass
+    ) {
       setMainClass('main-grid')
     }
-    if (!canvasLoadStatus && !canvasProcessStatus && !!mainClass) {
+    if (
+      !imgsLoadStatus &&
+      !canvasLoadStatus &&
+      !canvasProcessStatus &&
+      !!mainClass
+    ) {
       setMainClass('')
     }
     const cleanup = () => {
-      if (!canvasLoadStatus && !canvasProcessStatus && !!mainClass) {
+      if (
+        !imgsLoadStatus &&
+        !canvasLoadStatus &&
+        !canvasProcessStatus &&
+        !!mainClass
+      ) {
         setMainClass('')
       }
     }
     return cleanup
-  }, [canvasLoadStatus, canvasProcessStatus, mainClass])
+  }, [imgsLoadStatus, canvasLoadStatus, canvasProcessStatus, mainClass])
 
   useEffect(() => {
     if (!dark) {
@@ -44,7 +69,10 @@ const App = () => {
       <Navigation />
       <main className={mainClass}>
         <Route path='/' exact render={() => <Main />} />
-        <Route path='/options' render={() => <CanvasList />} />
+        <Route
+          path='/options'
+          render={() => <ImageList dataUrls={dataUrlsProps} />}
+        />
         <Route path='/download' render={() => <ProcessedCanvas />} />
       </main>
       {/* https://reacttraining.com/react-router/web/api/Route/render-func */}
