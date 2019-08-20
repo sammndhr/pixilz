@@ -27,6 +27,18 @@ const Resize = () => {
   const handleChange = event => {
     setselectedVal(event.target.value)
   }
+
+  useEffect(() => {
+    const resize = { scaleDown: false, scaleUp: false }
+    if (selectedVal === 'scaleUp' && !data.resize.scaleUp) {
+      resize.scaleUp = true
+      data.setContextState({ resize })
+    } else if (selectedVal === 'scaleDown' && !data.resize.scaleDown) {
+      resize.scaleDown = true
+      data.setContextState({ resize })
+    }
+  }, [selectedVal, data])
+
   // const handleWidthChange = event => {
   //   const error = !validate({ width: event.target.value }).width
   //   if (error) {

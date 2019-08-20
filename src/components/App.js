@@ -11,25 +11,25 @@ import Footer from './Footer'
 
 const App = () => {
   const theme = useContext(ThemeContext)
-  const { canvasLoadStatus, uploadStatus } = useContext(DataContext)
+  const { canvasLoadStatus, canvasProcessStatus } = useContext(DataContext)
   const { dark } = theme
   const [themeClass, setThemeClass] = useState('')
   const [mainClass, setMainClass] = useState('')
 
   useEffect(() => {
-    if (canvasLoadStatus && !mainClass) {
+    if ((canvasLoadStatus || canvasProcessStatus) && !mainClass) {
       setMainClass('main-grid')
     }
-    if (!canvasLoadStatus && !!mainClass) {
+    if (!canvasLoadStatus && !canvasProcessStatus && !!mainClass) {
       setMainClass('')
     }
     const cleanup = () => {
-      if (!canvasLoadStatus && !!mainClass) {
+      if (!canvasLoadStatus && !canvasProcessStatus && !!mainClass) {
         setMainClass('')
       }
     }
     return cleanup
-  }, [canvasLoadStatus, uploadStatus, mainClass])
+  }, [canvasLoadStatus, canvasProcessStatus, mainClass])
 
   useEffect(() => {
     if (!dark) {

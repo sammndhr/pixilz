@@ -52,13 +52,15 @@ class ProcessedCanvas extends Component {
   }
 
   componentDidMount() {
-    const { canvasDivRef } = this.context,
+    const { canvasDivRef, resize, dimensions } = this.context,
       avgHeight = this.context.dimensions.h.avg,
       canvasList = Array.from(canvasDivRef.children),
       { processedCanvases } = stitchProcessing(
         canvasList,
         avgHeight,
-        this.canvasRefs
+        this.canvasRefs,
+        resize,
+        dimensions
       )
     this.setState({
       processedCanvases,
@@ -69,7 +71,9 @@ class ProcessedCanvas extends Component {
     })
     this.pushToHistoryState(this.props.history)
   }
-
+  componentWillUnmount() {
+    this.context.setContextState({ canvasProcessStatus: false })
+  }
   pushToHistoryState = history => {
     history.push('/download')
   }
@@ -120,12 +124,16 @@ class ProcessedCanvas extends Component {
   render() {
     return (
       <Fragment>
-        <div className='button-container'>
-          <button onClick={this.handleDownloadClick}>Download</button>
+        <aside className='aside'>
+          <div className='button-container'>
+            <button onClick={this.handleDownloadClick}>Download</button>
+          </div>
+        </aside>
+        <div className='canvas-wrapper'>
+          {this.state.processedCanvases.map((processedCan, i) => {
+            return processedCan.canvas
+          })}
         </div>
-        {this.state.processedCanvases.map((processedCan, i) => {
-          return processedCan.canvas
-        })}
       </Fragment>
     )
   }

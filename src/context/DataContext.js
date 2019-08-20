@@ -9,8 +9,10 @@ export const defaultState = {
   optionsDimensions: null,
   canvasProcessStatus: false,
   sort: true,
-  scaleDown: false,
-  scaleUp: false,
+  resize: {
+    scaleDown: false,
+    scaleUp: false
+  },
   dimensions: {
     w: { min: 0, max: 0, avg: 0 },
     h: { min: 0, max: 0, avg: 0 }
@@ -30,8 +32,10 @@ class DataProvider extends Component {
     canvasDivRef: null,
     optionsDimensions: null,
     sort: true,
-    scaleDown: false,
-    scaleUp: false,
+    resize: {
+      scaleDown: false,
+      scaleUp: false
+    },
     dimensions: {
       w: { min: 0, max: 0, avg: 0 },
       h: { min: 0, max: 0, avg: 0 }

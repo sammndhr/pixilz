@@ -1,8 +1,14 @@
 import React from 'react'
 
-const stitchProcessing = (canvasList, avgHeight, canvasRefs) => {
+const stitchProcessing = (
+  canvasList,
+  avgHeight,
+  canvasRefs,
+  resize,
+  dimensions
+) => {
   const processedCanvases = []
-
+  console.log(resize, dimensions)
   const combineSlicedImgs = arr => {
     const canvas = document.createElement('canvas')
     const canvases = []
@@ -42,6 +48,7 @@ const stitchProcessing = (canvasList, avgHeight, canvasRefs) => {
 
   const combineSmallerImgs = (first, height, images) => {
     let comb = first
+
     while (comb.height < height && images.length >= 1) {
       const next = images.shift()
       comb = combineSlicedImgs([comb, next])
