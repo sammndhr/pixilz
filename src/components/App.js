@@ -5,28 +5,19 @@ import ThemeContext from '../context/ThemeContext'
 import DataContext from '../context/DataContext'
 import Navigation from './Navigation'
 import Main from './Main'
-import ImageList from './ImageList'
+
 import ProcessedCanvas from './ProcessedCanvas'
 import Footer from './Footer'
+import CanvasList from './CanvasList'
 
 const App = () => {
   const theme = useContext(ThemeContext)
-  const {
-    canvasLoadStatus,
-    canvasProcessStatus,
-    dataUrls,
-    imgsLoadStatus
-  } = useContext(DataContext)
+  const { canvasLoadStatus, canvasProcessStatus, imgsLoadStatus } = useContext(
+    DataContext
+  )
   const { dark } = theme
   const [themeClass, setThemeClass] = useState('')
   const [mainClass, setMainClass] = useState('')
-  const [dataUrlsProps, setDataUrlsProps] = useState([])
-
-  useEffect(() => {
-    if (dataUrls.length && !dataUrlsProps.length) {
-      setDataUrlsProps(dataUrls)
-    }
-  }, [dataUrls, dataUrlsProps])
 
   useEffect(() => {
     if (
@@ -69,10 +60,7 @@ const App = () => {
       <Navigation />
       <main className={mainClass}>
         <Route path='/' exact render={() => <Main />} />
-        <Route
-          path='/options'
-          render={() => <ImageList dataUrls={dataUrlsProps} />}
-        />
+        <Route path='/options' render={() => <CanvasList />} />
         <Route path='/download' render={() => <ProcessedCanvas />} />
       </main>
       {/* https://reacttraining.com/react-router/web/api/Route/render-func */}

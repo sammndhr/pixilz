@@ -3,11 +3,9 @@ import React, {
   useContext,
   useState,
   useEffect,
-  useCallback,
-  useRef
+  useCallback
 } from 'react'
 import DataContext from '../context/DataContext'
-import ProcessedCanvas from './ProcessedCanvas'
 import { calculateDimensions } from '../utils/'
 import Resize from '../common/ResizeForm'
 
@@ -19,7 +17,15 @@ const ImageList = ({ dataUrls }) => {
   const [dimensions, setDimensions] = useState({})
   const [imgsLoadStatus, setImgsLoadStatus] = useState([])
   const [imgsLoadPromises, setImgsLoadPromises] = useState([])
-
+  const imgsDivRef = useCallback(node => {
+    if (node !== null) {
+      data.setContextState({
+        imgsDivRef: node
+      })
+    }
+    //adding dataContext as a dependency will cause maximum call stack error.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
   // const canvasDivRef = useCallback(node => {
   //   if (node !== null) {
   //     data.setContextState({
@@ -93,21 +99,7 @@ const ImageList = ({ dataUrls }) => {
 
   return (
     <Fragment>
-      {!clickStatus && imgsLoadStatus && (
-        <aside className='aside'>
-          <Resize />
-          <div className='button-container'>
-            <button
-              onClick={e => {
-                setClickStatus(true)
-              }}>
-              Stitch n Slice
-            </button>
-          </div>
-        </aside>
-      )}
-      {/* {clickStatus && <ProcessedCanvas />} */}
-      <div className='image-wrapper' style={{ maxWidth }}>
+      <div className='image-wrapper' ref={imgsDivRef} style={{ maxWidth }}>
         {dataUrls.map((img, i) => {
           const image = (
             <img

@@ -7,7 +7,7 @@ export const defaultState = {
   canvasLoadStatus: false,
   imgsLoadStatus: false,
   canvasDivRef: null,
-  optionsDimensions: null,
+  imgsDivRef: null,
   canvasProcessStatus: false,
   sort: true,
   resize: {
@@ -31,7 +31,7 @@ class DataProvider extends Component {
     imgsLoadStatus: false,
     canvasProcessStatus: false,
     canvasDivRef: null,
-    optionsDimensions: null,
+    imgsDivRef: null,
     sort: true,
     resize: {
       scaleDown: false,

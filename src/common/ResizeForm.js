@@ -14,10 +14,11 @@ const Resize = () => {
   const [selectedVal, setselectedVal] = useState('scaleUp')
 
   useEffect(() => {
-    if (data.dimensions.w && data.dimensions.h) {
+    if (data.dimensions.w && data.dimensions.h && !w.min) {
+      // console.log(data.dimensions)
       setWidth(data.dimensions.w)
     }
-  }, [data])
+  }, [data, w.min])
   // const validate = ({ width = 0, height = 0 }) => {
   //   return {
   //     width: width <= 1080 && width >= 100,
@@ -37,7 +38,7 @@ const Resize = () => {
       resize.scaleDown = true
       data.setContextState({ resize })
     }
-  }, [selectedVal, data])
+  }, [selectedVal, data.resize])
 
   // const handleWidthChange = event => {
   //   const error = !validate({ width: event.target.value }).width
