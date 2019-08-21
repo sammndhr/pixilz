@@ -2,11 +2,12 @@ import React, { useState, useEffect, useContext } from 'react'
 import DataContext from '../context/DataContext'
 
 const Resize = () => {
-  const data = useContext(DataContext)
+  const { state, dispatch } = useContext(DataContext)
+  const { dimensions, resizePrefs } = state
   // const [errors, setErrors] = useState({
   // width: false
   // })
-  const [w, setWidth] = useState({
+  const [width, setWidth] = useState({
     min: 0,
     max: 0,
     avg: 0
@@ -14,11 +15,11 @@ const Resize = () => {
   const [selectedVal, setselectedVal] = useState('scaleUp')
 
   useEffect(() => {
-    if (data.dimensions.w && data.dimensions.h && !w.min) {
-      // console.log(data.dimensions)
-      setWidth(data.dimensions.w)
+    if (dimensions.width && dimensions.height && !width.min) {
+      // console.log(dimensions)
+      setWidth(dimensions.width)
     }
-  }, [data, w.min])
+  }, [dimensions, width.min])
   // const validate = ({ width = 0, height = 0 }) => {
   //   return {
   //     width: width <= 1080 && width >= 100,
@@ -30,15 +31,15 @@ const Resize = () => {
   }
 
   useEffect(() => {
-    const resize = { scaleDown: false, scaleUp: false }
-    if (selectedVal === 'scaleUp' && !data.resize.scaleUp) {
-      resize.scaleUp = true
-      data.setContextState({ resize })
-    } else if (selectedVal === 'scaleDown' && !data.resize.scaleDown) {
-      resize.scaleDown = true
-      data.setContextState({ resize })
+    const resizePrefs = { scaleDown: false, scaleUp: false }
+    if (selectedVal === 'scaleUp' && !resizePrefs.scaleUp) {
+      resizePrefs.scaleUp = true
+      dispatch({ action: 'UPDATE_RESIZE_PREFS', payload: resizePrefs })
+    } else if (selectedVal === 'scaleDown' && !resizePrefs.scaleDown) {
+      resizePrefs.scaleDown = true
+      dispatch({ action: 'UPDATE_RESIZE_PREFS', payload: resizePrefs })
     }
-  }, [selectedVal, data.resize])
+  }, [selectedVal, resizePrefs, dispatch])
 
   // const handleWidthChange = event => {
   //   const error = !validate({ width: event.target.value }).width
@@ -73,7 +74,7 @@ const Resize = () => {
             checked={selectedVal === 'scaleDown'}
             onChange={handleChange}
           />
-          <span>Resize to smallest image {w.min}px</span>
+          <span>Resize to smallest image {width.min}px</span>
         </label>
         <label className='form-check-label' htmlFor='largest'>
           <input
@@ -85,7 +86,7 @@ const Resize = () => {
             checked={selectedVal === 'scaleUp'}
             onChange={handleChange}
           />
-          <span>Resize to largest image {w.max}px</span>
+          <span>Resize to largest image {width.max}px</span>
         </label>
         {/* 
         <label className='form-check-label' htmlFor='width'>

@@ -12,32 +12,22 @@ import CanvasList from './CanvasList'
 
 const App = () => {
   const theme = useContext(ThemeContext)
-  const { canvasLoadStatus, canvasProcessStatus, imgsLoadStatus } = useContext(
-    DataContext
-  )
   const { dark } = theme
+  const { state } = useContext(DataContext)
+  const { imgsLoaded, canvasesLoaded, canvasProcessStatus } = state
   const [themeClass, setThemeClass] = useState('')
   const [mainClass, setMainClass] = useState('')
-
   useEffect(() => {
-    if (
-      (imgsLoadStatus || canvasLoadStatus || canvasProcessStatus) &&
-      !mainClass
-    ) {
+    if ((imgsLoaded || canvasesLoaded || canvasProcessStatus) && !mainClass) {
       setMainClass('main-grid')
     }
-    if (
-      !imgsLoadStatus &&
-      !canvasLoadStatus &&
-      !canvasProcessStatus &&
-      !!mainClass
-    ) {
+    if (!imgsLoaded && !canvasesLoaded && !canvasProcessStatus && !!mainClass) {
       setMainClass('')
     }
     const cleanup = () => {
       if (
-        !imgsLoadStatus &&
-        !canvasLoadStatus &&
+        !imgsLoaded &&
+        !canvasesLoaded &&
         !canvasProcessStatus &&
         !!mainClass
       ) {
@@ -45,7 +35,7 @@ const App = () => {
       }
     }
     return cleanup
-  }, [imgsLoadStatus, canvasLoadStatus, canvasProcessStatus, mainClass])
+  }, [imgsLoaded, canvasesLoaded, canvasProcessStatus, mainClass])
 
   useEffect(() => {
     if (!dark) {

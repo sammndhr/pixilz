@@ -9,26 +9,30 @@ import React, {
 import DataContext from '../context/DataContext'
 import { calculateDimensions } from '../utils/'
 
-const ImageList = ({ dataUrls }) => {
-  const data = useContext(DataContext)
+const ImageList = () => {
+  const { state, dispatch } = useContext(DataContext)
+
   // const [clickStatus, setClickStatus] = useState(false)
+  const { dataUrls } = state
+
   const [images, setImages] = useState([])
   const [maxWidth, setMaxWidth] = useState(0)
   const [dimensions, setDimensions] = useState({})
-  const [imgsLoadStatus, setImgsLoadStatus] = useState([])
+  const [imgsLoaded, setImgsLoaded] = useState([])
   const [imgsLoadPromises, setImgsLoadPromises] = useState([])
   const imgsRefs = useRef([])
 
-  const imgsDivRef = useCallback(node => {
-    if (node !== null) {
-      data.setContextState({
-        imgsDivRef: node
-      })
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  const imgsWrapperRef = useCallback(
+    node => {
+      if (node !== null) {
+        dispatch({ type: 'SET_IMGS_WRAPPER_REF', payload: node })
+      }
+    },
+    [dispatch]
+  )
 
   useEffect(() => {
+    if (!dataUrls.length) return
     const images = [],
       dataUrlsLen = dataUrls.length
     for (let i = 0; i < dataUrlsLen; i++) {
@@ -55,7 +59,7 @@ const ImageList = ({ dataUrls }) => {
     }
     if (images.length === dataUrlsLen) {
       setImages(images)
-      setImgsLoadStatus(true)
+      setImgsLoaded(true)
     }
   }, [dataUrls, imgsLoadPromises])
 
@@ -66,42 +70,35 @@ const ImageList = ({ dataUrls }) => {
       dataUrlsLen = dataUrls.length
     if (dataUrlsLen && imgsLen === dataUrlsLen && imgsLoadPromises) {
       const dimensions = calculateDimensions(images)
-      setMaxWidth(dimensions.w.max)
+      setMaxWidth(dimensions.width.max)
       setDimensions(dimensions)
     }
   }, [imgsRefs, dataUrls, imgsLoadPromises])
 
   useEffect(() => {
-    if (!imgsLoadStatus) return
-    const newContextState = {
-      dimensions,
-      imgsLoadStatus
-    }
-    data.setContextState(newContextState)
+    if (!imgsLoaded) return
+    dispatch({ type: 'UPDATE_IMGS_LOAD_STATUS', payload: imgsLoaded })
     const cleanup = () => {
-      data.setContextState({
-        imgsLoadStatus: false
-      })
+      dispatch({ type: 'UPDATE_IMGS_LOAD_STATUS', payload: false })
     }
     return cleanup
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dimensions, maxWidth])
+  }, [imgsLoaded, dispatch])
+
+  useEffect(() => {
+    dispatch({ type: 'UPDATE_DIMENSIONS', payload: dimensions })
+  }, [dimensions, dispatch])
 
   useEffect(() => {
     if (dataUrls.length && dataUrls.length === imgsLoadPromises.length) {
       Promise.all(imgsLoadPromises).then(() => {
-        setImgsLoadStatus(true)
-        data.setContextState({
-          imgsLoadStatus: true
-        })
+        setImgsLoaded(true)
       })
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [imgsLoadPromises, dataUrls])
+  }, [dataUrls, imgsLoadPromises])
 
   return (
     <Fragment>
-      <div className='image-wrapper' ref={imgsDivRef} style={{ maxWidth }}>
+      <div className='images-wrapper' ref={imgsWrapperRef} style={{ maxWidth }}>
         {images}
       </div>
     </Fragment>

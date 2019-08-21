@@ -12,40 +12,39 @@ import Resize from '../common/ResizeForm'
 import ImageList from './ImageList'
 
 const CanvasList = () => {
-  const data = useContext(DataContext)
-  const { dimensions, imgsDivRef, resize, imgsLoadStatus } = data
+  const { state, dispatch } = useContext(DataContext)
+  const {
+    dimensions,
+    imgsWrapperRef,
+    resizePrefs,
+    imgsLoaded,
+    dataUrls
+  } = state
   const [clickStatus, setClickStatus] = useState(false)
-  const [dataUrlsProps, setDataUrlsProps] = useState([])
   const [canvases, setCanvases] = useState([])
-  const [canvasLoadStatus, setCanvasLoadStatus] = useState(false)
+  const [canvasesLoaded, setCanvasLoadStatus] = useState(false)
   const [imgsResizeDimensions, setImgsResizeDimensions] = useState([])
 
   const canvasRefs = useRef([])
 
   useEffect(() => {
-    if (data.dataUrls.length && !dataUrlsProps.length) {
-      setDataUrlsProps(data.dataUrls)
-    }
-  }, [data.dataUrls, dataUrlsProps])
-
-  useEffect(() => {
-    if (dataUrlsProps.length === canvases.length) return
+    if (dataUrls.length === canvases.length) return
     const resizeImage = (img, oWidth) => {
-      const minWidth = dimensions.w.min,
-        maxWidth = dimensions.w.max
-      if (resize.scaleDown === true && oWidth > minWidth) {
+      const minWidth = dimensions.width.min,
+        maxWidth = dimensions.width.max
+      if (resizePrefs.scaleDown === true && oWidth > minWidth) {
         img.width = minWidth
       }
-      if (resize.scaleUp === true && oWidth < maxWidth) {
+      if (resizePrefs.scaleUp === true && oWidth < maxWidth) {
         img.width = maxWidth
       }
       return img
     }
 
-    const createCanvas = imgsDivRef => {
+    const createCanvas = imgsWrapperRef => {
       const canvasesLocal = [],
         imgsResizeDimensions = [],
-        imgsList = Array.from(imgsDivRef.children),
+        imgsList = Array.from(imgsWrapperRef.children),
         imgsLen = imgsList.length,
         createCanvas = (img, i) => {
           const oWidth = img.width,
@@ -84,20 +83,20 @@ const CanvasList = () => {
       }
     }
 
-    if (!imgsLoadStatus || !dimensions.w) return
-    if (imgsDivRef !== null) {
-      createCanvas(imgsDivRef, dimensions)
+    if (!imgsLoaded || !dimensions.width) return
+    if (imgsWrapperRef !== null) {
+      createCanvas(imgsWrapperRef, dimensions)
     }
-  }, [imgsDivRef, dataUrlsProps, imgsLoadStatus, dimensions, resize, canvases])
+  }, [imgsWrapperRef, dataUrls, imgsLoaded, dimensions, resizePrefs, canvases])
 
-  const canvasDivRef = useCallback(node => {
-    if (node !== null) {
-      data.setContextState({
-        canvasDivRef: node
-      })
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  const canvasesWrapperRef = useCallback(
+    node => {
+      if (node !== null) {
+        dispatch({ action: 'UPDATE_CANVASES_WRAPPER_REF', payload: node })
+      }
+    },
+    [dispatch]
+  )
 
   useEffect(() => {
     const drawCanvas = (img, i) => {
@@ -106,21 +105,27 @@ const CanvasList = () => {
         ctx = canvas.getContext('2d')
       ctx.drawImage(img, 0, 0, oWidth, oHeight, 0, 0, nWidth, nHeight)
     }
-    if (imgsDivRef === null || !clickStatus) return
-    const images = imgsDivRef.children,
+    if (imgsWrapperRef === null || !clickStatus) return
+    const images = imgsWrapperRef.children,
       imgsLen = images.length
-    if (!canvasLoadStatus) return
-    data.setContextState({ canvasLoadStatus })
+    if (!canvasesLoaded) return
+    dispatch({ action: 'UPDATE_CANVASES_LOADED', payload: canvasesLoaded })
+
     for (let i = 0; i < imgsLen; i++) {
       const img = images[i]
       drawCanvas(img, i)
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [canvasLoadStatus, imgsDivRef, clickStatus, imgsResizeDimensions])
+  }, [
+    canvasesLoaded,
+    imgsWrapperRef,
+    clickStatus,
+    imgsResizeDimensions,
+    dispatch
+  ])
 
   useEffect(() => {
-    canvasRefs.current = canvasRefs.current.slice(0, dataUrlsProps.length)
-  }, [dataUrlsProps.length])
+    canvasRefs.current = canvasRefs.current.slice(0, dataUrls.length)
+  }, [dataUrls.length])
 
   return (
     <Fragment>
@@ -137,15 +142,15 @@ const CanvasList = () => {
               </button>
             </div>
           </aside>
-          <ImageList dataUrls={dataUrlsProps} />
+          <ImageList />
         </Fragment>
       )}
       {/* {clickStatus && <ProcessedCanvas />} */}
       {clickStatus && (
         <div
-          ref={canvasDivRef}
-          className='canvas-wrapper'
-          style={{ maxWidth: dimensions.w.max }}>
+          ref={canvasesWrapperRef}
+          className='canvases-wrapper'
+          style={{ maxWidth: dimensions.width.max }}>
           {canvases}
         </div>
       )}

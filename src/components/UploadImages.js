@@ -1,14 +1,12 @@
 import React, { Component, Fragment } from 'react'
 import { withRouter } from 'react-router'
-
 import DataContext from '../context/DataContext'
 import SortForm from '../common/SortForm'
 import { sortFiles } from '../utils/'
 
 class Main extends Component {
   static contextType = DataContext
-
-  state = { dataUrls: [], uploadStatus: false, sort: true }
+  state = { dataUrls: [], imgsUploaded: false, sort: true }
 
   readFile = file => {
     return new Promise((resolve, reject) => {
@@ -36,27 +34,42 @@ class Main extends Component {
     })
   }
 
+  updateUplaodStatus = dispatch => {
+    dispatch({
+      type: 'UPDATE_UPLOAD_STATUS',
+      payload: this.state.imgsUploaded
+    })
+  }
+
+  setDataUrls = dispatch => {
+    dispatch({ type: 'SET_DATA_URLS', payload: this.state.dataUrls })
+  }
+
   uploadFiles = (e, history) => {
-    const dataContext = this.context
+    const { state, dispatch } = this.context
     this.readMultipleFiles(e.target.files)
       .then(results => {
         this.setState(prevState => ({
           dataUrls: results,
-          uploadStatus: !prevState.uploadStatus
+          imgsUploaded: !prevState.imgsUploaded
         }))
-        dataContext.setContextState({
-          dataUrls: this.state.dataUrls,
-          uploadStatus: this.state.uploadStatus
-        })
+        if (!state.dataUrls.length) {
+          this.setDataUrls(dispatch)
+        }
+        if (!state.imgsUploaded) {
+          this.updateUplaodStatus(dispatch)
+        }
         history.push('/options')
       })
       .catch(err => {
         console.error('Error:', err)
       })
   }
+
   handleCheckboxChange = sort => {
     this.setState({ sort })
   }
+
   render() {
     const { history } = this.props
     return (

@@ -3,11 +3,9 @@ import UploadImages from './UploadImages'
 import DataContext from '../context/DataContext'
 
 export default function Main() {
-  const { canvasLoadStatus, imgsLoadStatus, uploadStatus } = useContext(
-    DataContext
-  )
+  const { canvasesLoaded, imgsLoaded, imgsUploaded } = useContext(DataContext)
   let uploadImages = null
-  if (!(canvasLoadStatus && imgsLoadStatus && uploadStatus)) {
+  if (!(canvasesLoaded && imgsLoaded && imgsUploaded)) {
     uploadImages = <UploadImages />
   }
   return <Fragment>{uploadImages}</Fragment>

@@ -52,9 +52,9 @@ class ProcessedCanvas extends Component {
   }
 
   componentDidMount() {
-    const { canvasDivRef, resize, dimensions } = this.context,
-      avgHeight = this.context.dimensions.h.avg,
-      canvasList = Array.from(canvasDivRef.children),
+    const { canvasesWrapperRef, resize, dimensions } = this.context,
+      avgHeight = this.context.dimensions.height.avg,
+      canvasList = Array.from(canvasesWrapperRef.children),
       { processedCanvases } = stitchProcessing(
         canvasList,
         avgHeight,
@@ -129,7 +129,7 @@ class ProcessedCanvas extends Component {
             <button onClick={this.handleDownloadClick}>Download</button>
           </div>
         </aside>
-        <div className='canvas-wrapper'>
+        <div className='canvases-wrapper'>
           {this.state.processedCanvases.map((processedCan, i) => {
             return processedCan.canvas
           })}

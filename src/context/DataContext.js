@@ -1,66 +1,58 @@
-import React, { Component } from 'react'
+import React, { createContext, useReducer } from 'react'
 
-export const defaultState = {
-  dataUrls: [],
-  uploadStatus: false,
-  loadStatus: false,
-  canvasLoadStatus: false,
-  imgsLoadStatus: false,
-  canvasDivRef: null,
-  imgsDivRef: null,
-  canvasProcessStatus: false,
-  sort: true,
-  resize: {
-    scaleDown: false,
-    scaleUp: false
-  },
-  dimensions: {
-    w: { min: 0, max: 0, avg: 0 },
-    h: { min: 0, max: 0, avg: 0 }
-  },
-  setContextState: () => {}
-}
+const DataContext = createContext()
+const DataConsumer = DataContext.Consumer
 
-const DataContext = React.createContext(defaultState)
-
-class DataProvider extends Component {
-  state = {
+const DataProvider = ({ children }) => {
+  const initialState = {
     dataUrls: [],
-    uploadStatus: false,
-    canvasLoadStatus: false,
-    imgsLoadStatus: false,
-    canvasProcessStatus: false,
-    canvasDivRef: null,
-    imgsDivRef: null,
-    sort: true,
-    resize: {
+    imgsUploaded: false,
+    imgsWrapperRef: null,
+    imgsLoaded: false,
+    dimensions: {
+      width: { min: 0, max: 0, avg: 0 },
+      height: { min: 0, max: 0, avg: 0 }
+    },
+    resizePrefs: {
       scaleDown: false,
       scaleUp: false
     },
-    dimensions: {
-      w: { min: 0, max: 0, avg: 0 },
-      h: { min: 0, max: 0, avg: 0 }
+    canvasesLoaded: false,
+
+    canvasesWrapperRef: null,
+    canvasProcessStatus: false,
+    sort: true
+  }
+
+  const reducer = (state, action) => {
+    switch (action.type) {
+      case 'RESET':
+        return initialState
+      case 'SET_DATA_URLS':
+        return { ...state, dataUrls: action.payload }
+      case 'UPDATE_UPLOAD_STATUS':
+        return { ...state, imgsUploaded: action.payload }
+      case 'SET_IMGS_WRAPPER_REF':
+        return { ...state, imgsWrapperRef: action.payload }
+      case 'UPDATE_IMGS_LOAD_STATUS':
+        return { ...state, imgsLoaded: action.payload }
+      case 'UPDATE_DIMENSIONS':
+        return { ...state, dimensions: action.payload }
+      case 'UPDATE_RESIZE_PREFS':
+        return { ...state, resizePrefs: action.payload }
+      case 'UPDATE_CANVASES_LOADED':
+        return { ...state, canvasesLoaded: action.payload }
+      case 'UPDATE_CANVASES_WRAPPER_REF':
+        return { ...state, canvasesWrapperRef: action.payload }
+      default:
+        return { ...state }
     }
   }
+  const [state, dispatch] = useReducer(reducer, initialState)
+  const value = { state, dispatch }
 
-  setContextState = args => {
-    this.setState(args)
-  }
-
-  render() {
-    const { children } = this.props
-
-    return (
-      <DataContext.Provider
-        value={{
-          setContextState: this.setContextState,
-          ...this.state
-        }}>
-        {children}
-      </DataContext.Provider>
-    )
-  }
+  return <DataContext.Provider value={value}>{children}</DataContext.Provider>
 }
 
 export default DataContext
-export { DataProvider }
+export { DataProvider, DataConsumer }
