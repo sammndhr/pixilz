@@ -3,70 +3,73 @@ import React, {
   useContext,
   useState,
   useEffect,
-  useCallback
+  useCallback,
+  useRef
 } from 'react'
 import DataContext from '../context/DataContext'
 import { calculateDimensions } from '../utils/'
-import Resize from '../common/ResizeForm'
 
 const ImageList = ({ dataUrls }) => {
   const data = useContext(DataContext)
-  const [clickStatus, setClickStatus] = useState(false)
+  // const [clickStatus, setClickStatus] = useState(false)
   const [images, setImages] = useState([])
   const [maxWidth, setMaxWidth] = useState(0)
   const [dimensions, setDimensions] = useState({})
   const [imgsLoadStatus, setImgsLoadStatus] = useState([])
   const [imgsLoadPromises, setImgsLoadPromises] = useState([])
+  const imgsRefs = useRef([])
+
   const imgsDivRef = useCallback(node => {
     if (node !== null) {
       data.setContextState({
         imgsDivRef: node
       })
     }
-    //adding dataContext as a dependency will cause maximum call stack error.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
-  // const canvasDivRef = useCallback(node => {
-  //   if (node !== null) {
-  //     data.setContextState({
-  //       canvasDivRef: node
-  //     })
-  //   }
-  //   //adding data as a dependency will cause maximum call stack error.
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [])
-
-  // const createCanvas = (img, i) => {
-  //   const canvas = (
-  //     <canvas
-  //       key={i}
-  //       width={img.width}
-  //       height={img.height}
-  //       className='canvas-item'
-  //       ref={el => {
-  //         canvasRefs.current[i] = el
-  //       }}
-  //     />
-  //   )
-  //   return canvas
-  // }
-
-  // const drawCanvas = (img, i) => {
-  //   const canvas = canvasRefs.current[i]
-  //   const ctx = canvas.getContext('2d')
-  //   ctx.drawImage(img, 0, 0)
-  // }
-
-  // useEffect(() => {
-  //   canvasRefs.current = canvasRefs.current.slice(0, imgCount)
-  // }, [imgCount])
 
   useEffect(() => {
-    if (!imgsLoadStatus) return
-    const dimensions = calculateDimensions(images)
-    setMaxWidth(dimensions.w.max)
-    setDimensions(dimensions)
-  }, [imgsLoadStatus, images])
+    const images = [],
+      dataUrlsLen = dataUrls.length
+    for (let i = 0; i < dataUrlsLen; i++) {
+      const img = dataUrls[i],
+        image = (
+          <img
+            src={img}
+            alt={i.toString()}
+            key={i}
+            className='img-item'
+            ref={el => {
+              imgsRefs.current[i] = el
+            }}
+            onLoad={() => {
+              const imgsLoadPromisesCopy = imgsLoadPromises.slice()
+              imgsLoadPromisesCopy[i] = new Promise((resolve, reject) => {
+                resolve(true)
+              })
+              setImgsLoadPromises(imgsLoadPromisesCopy)
+            }}
+          />
+        )
+      images.push(image)
+    }
+    if (images.length === dataUrlsLen) {
+      setImages(images)
+      setImgsLoadStatus(true)
+    }
+  }, [dataUrls, imgsLoadPromises])
+
+  useEffect(() => {
+    // Can't use images from state because they are React objects
+    const images = imgsRefs.current,
+      imgsLen = images.length,
+      dataUrlsLen = dataUrls.length
+    if (dataUrlsLen && imgsLen === dataUrlsLen && imgsLoadPromises) {
+      const dimensions = calculateDimensions(images)
+      setMaxWidth(dimensions.w.max)
+      setDimensions(dimensions)
+    }
+  }, [imgsRefs, dataUrls, imgsLoadPromises])
 
   useEffect(() => {
     if (!imgsLoadStatus) return
@@ -93,34 +96,13 @@ const ImageList = ({ dataUrls }) => {
         })
       })
     }
-    //adding data as a dependency will cause maximum call stack error.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [imgsLoadPromises, dataUrls])
 
   return (
     <Fragment>
       <div className='image-wrapper' ref={imgsDivRef} style={{ maxWidth }}>
-        {dataUrls.map((img, i) => {
-          const image = (
-            <img
-              src={img}
-              alt={i.toString()}
-              key={i}
-              className='img-item'
-              onLoad={() => {
-                const imgsLoadPromisesCopy = imgsLoadPromises.slice()
-                imgsLoadPromisesCopy[i] = new Promise((resolve, reject) => {
-                  resolve(true)
-                })
-                setImgsLoadPromises(imgsLoadPromisesCopy)
-              }}
-            />
-          )
-          const imagesCopy = images.slice()
-          imagesCopy[i] = image
-          if (!images[i]) setImages(imagesCopy)
-          return image
-        })}
+        {images}
       </div>
     </Fragment>
   )
