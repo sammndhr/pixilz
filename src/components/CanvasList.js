@@ -13,17 +13,19 @@ import ImageList from './ImageList'
 
 const CanvasList = () => {
   const { state, dispatch } = useContext(DataContext)
-  const {
-    dimensions,
-    imgsWrapperRef,
-    resizePrefs,
-    imgsLoaded,
-    dataUrls
-  } = state
+  const { dimensions, imgsWrapperRef, imgsLoaded, dataUrls } = state
   const [clickStatus, setClickStatus] = useState(false)
   const [canvases, setCanvases] = useState([])
   const [canvasesLoaded, setCanvasLoadStatus] = useState(false)
   const [imgsResizeDimensions, setImgsResizeDimensions] = useState([])
+  const [resizePrefs, setResizePrefs] = useState({
+    scaleDown: true,
+    scaleUp: false
+  })
+  const handleRadioButtonChange = resizePrefs => {
+    console.log(resizePrefs)
+    setResizePrefs(resizePrefs)
+  }
 
   const canvasRefs = useRef([])
 
@@ -132,7 +134,7 @@ const CanvasList = () => {
       {!clickStatus && (
         <Fragment>
           <aside className='aside'>
-            <Resize />
+            <Resize handleRadioButtonChange={handleRadioButtonChange} />
             <div className='button-container'>
               <button
                 onClick={e => {

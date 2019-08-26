@@ -13,12 +13,7 @@ const DataProvider = ({ children }) => {
       width: { min: 0, max: 0, avg: 0 },
       height: { min: 0, max: 0, avg: 0 }
     },
-    resizePrefs: {
-      scaleDown: false,
-      scaleUp: false
-    },
     canvasesLoaded: false,
-
     canvasesWrapperRef: null,
     canvasProcessStatus: false
   }
@@ -37,8 +32,6 @@ const DataProvider = ({ children }) => {
         return { ...state, imgsLoaded: action.payload }
       case 'UPDATE_DIMENSIONS':
         return { ...state, dimensions: action.payload }
-      case 'UPDATE_RESIZE_PREFS':
-        return { ...state, resizePrefs: action.payload }
       case 'UPDATE_CANVASES_LOADED':
         return { ...state, canvasesLoaded: action.payload }
       case 'UPDATE_CANVASES_WRAPPER_REF':

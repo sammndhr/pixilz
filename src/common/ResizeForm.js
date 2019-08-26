@@ -1,22 +1,26 @@
 import React, { useState, useEffect, useContext } from 'react'
 import DataContext from '../context/DataContext'
 
-const Resize = () => {
-  const { state, dispatch } = useContext(DataContext)
-  const { dimensions, resizePrefs } = state
+const Resize = ({ handleRadioButtonChange }) => {
+  const { state } = useContext(DataContext)
+  const { dimensions } = state
   // const [errors, setErrors] = useState({
   // width: false
   // })
+  const [resizePrefs, setResizePrefs] = useState({
+    scaleDown: true,
+    scaleUp: false
+  })
   const [width, setWidth] = useState({
     min: 0,
     max: 0,
     avg: 0
   })
-  const [selectedVal, setselectedVal] = useState('scaleUp')
-
+  const [selectedVal, setselectedVal] = useState(
+    resizePrefs.scaleDown ? 'scaleDown' : 'scaleUp'
+  )
   useEffect(() => {
     if (dimensions.width && dimensions.height && !width.min) {
-      // console.log(dimensions)
       setWidth(dimensions.width)
     }
   }, [dimensions, width.min])
@@ -31,15 +35,19 @@ const Resize = () => {
   }
 
   useEffect(() => {
-    const resizePrefs = { scaleDown: false, scaleUp: false }
-    if (selectedVal === 'scaleUp' && !resizePrefs.scaleUp) {
-      resizePrefs.scaleUp = true
-      dispatch({ action: 'UPDATE_RESIZE_PREFS', payload: resizePrefs })
-    } else if (selectedVal === 'scaleDown' && !resizePrefs.scaleDown) {
-      resizePrefs.scaleDown = true
-      dispatch({ action: 'UPDATE_RESIZE_PREFS', payload: resizePrefs })
+    const localResizePrefs = { scaleDown: false, scaleUp: false }
+    if (selectedVal === 'scaleUp') {
+      localResizePrefs.scaleUp = true
+      localResizePrefs.scaleDown = false
+    } else if (selectedVal === 'scaleDown') {
+      localResizePrefs.scaleDown = true
+      localResizePrefs.scaleUp = false
     }
-  }, [selectedVal, resizePrefs, dispatch])
+    if (resizePrefs.scaleDown !== localResizePrefs.scaleDown) {
+      setResizePrefs(localResizePrefs)
+      handleRadioButtonChange(localResizePrefs)
+    }
+  }, [selectedVal, resizePrefs, handleRadioButtonChange])
 
   // const handleWidthChange = event => {
   //   const error = !validate({ width: event.target.value }).width
