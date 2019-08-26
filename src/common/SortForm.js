@@ -1,12 +1,11 @@
-import React, { Fragment, useEffect, useContext } from 'react'
+import React, { Fragment, useState, useEffect } from 'react'
 import Button from './Button'
-import DataContext from '../context/DataContext'
 
 const SortForm = ({ handleCheckboxChange }) => {
-  const data = useContext(DataContext)
-  const { sort } = data
+  const [sort, setSort] = useState(true)
+
   const handleChange = e => {
-    data.setContextState({ sort: e.target.checked })
+    setSort(e.target.checked)
   }
 
   useEffect(() => {
