@@ -17,6 +17,8 @@ const calculateDimensions = images => {
   const len = images.length
   for (let i = 0; i < len; i++) {
     const img = images[i]
+    img.removeAttribute('width')
+    img.removeAttribute('height')
     totalHeight += img.height
     totalWidth += img.width
     if (!minMaxWidth || !minMaxHeight) {

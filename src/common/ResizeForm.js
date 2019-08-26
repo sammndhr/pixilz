@@ -31,6 +31,7 @@ const Resize = ({ handleRadioButtonChange }) => {
   //   }
   // }
   const handleChange = event => {
+    handleRadioButtonChange(event.target.value)
     setselectedVal(event.target.value)
   }
 

@@ -23,73 +23,52 @@ const CanvasList = () => {
     scaleUp: false
   })
   const handleRadioButtonChange = resizePrefs => {
-    console.log(resizePrefs)
     setResizePrefs(resizePrefs)
   }
 
   const canvasRefs = useRef([])
 
   useEffect(() => {
-    if (dataUrls.length === canvases.length) return
-    const resizeImage = (img, oWidth) => {
-      const minWidth = dimensions.width.min,
-        maxWidth = dimensions.width.max
-      if (resizePrefs.scaleDown === true && oWidth > minWidth) {
-        img.width = minWidth
-      }
-      if (resizePrefs.scaleUp === true && oWidth < maxWidth) {
-        img.width = maxWidth
-      }
-      return img
-    }
-
-    const createCanvas = imgsWrapperRef => {
-      const canvasesLocal = [],
-        imgsResizeDimensions = [],
-        imgsList = Array.from(imgsWrapperRef.children),
+    if (imgsWrapperRef !== null && dimensions.width) {
+      const imgsList = Array.from(imgsWrapperRef.children),
         imgsLen = imgsList.length,
-        createCanvas = (img, i) => {
-          const oWidth = img.width,
-            oHeight = img.height,
-            resized = resizeImage(img, oWidth)
-          const resizeDimension = {
-            oWidth,
-            oHeight,
-            nWidth: resized.width,
-            nHeight: resized.height
-          }
-          const canvas = (
-            <canvas
-              key={i}
-              width={img.width}
-              height={img.height}
-              className='canvas-item'
-              ref={el => {
-                canvasRefs.current[i] = el
-              }}
-            />
-          )
-          img.removeAttribute('width')
-          return { canvas, resizeDimension }
+        imgsResizeDimensions = []
+      const resizeImage = (img, oWidth) => {
+        const minWidth = dimensions.width.min,
+          maxWidth = dimensions.width.max
+        if (resizePrefs.scaleDown === true && oWidth > minWidth) {
+          img.width = minWidth
         }
+        if (resizePrefs.scaleUp === true && oWidth < maxWidth) {
+          img.width = maxWidth
+        }
+        return img
+      }
       for (let i = 0; i < imgsLen; i++) {
         const img = imgsList[i]
-        const { canvas, resizeDimension } = createCanvas(img, i)
-        canvasesLocal.push(canvas)
+        img.removeAttribute('width')
+        const oWidth = img.width
+        const oHeight = img.height
+        resizeImage(img, img.width)
+        const resizeDimension = {
+          oWidth,
+          oHeight,
+          nWidth: img.width,
+          nHeight: img.height
+        }
         imgsResizeDimensions.push(resizeDimension)
       }
-      if (canvasesLocal.length === imgsLen && canvases.length === 0) {
-        setCanvases(canvasesLocal)
-        setCanvasLoadStatus(true)
+      if (imgsLen) {
         setImgsResizeDimensions(imgsResizeDimensions)
       }
     }
-
-    if (!imgsLoaded || !dimensions.width) return
-    if (imgsWrapperRef !== null) {
-      createCanvas(imgsWrapperRef, dimensions)
-    }
-  }, [imgsWrapperRef, dataUrls, imgsLoaded, dimensions, resizePrefs, canvases])
+  }, [
+    resizePrefs,
+    imgsWrapperRef,
+    dimensions.width,
+    dataUrls.length,
+    canvases.length
+  ])
 
   const canvasesWrapperRef = useCallback(
     node => {
