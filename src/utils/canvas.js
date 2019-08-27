@@ -1,18 +1,8 @@
 import React from 'react'
 
-const stitchProcessing = (
-  canvasList,
-  avgHeight,
-  canvasRefs,
-  resize,
-  dimensions
-) => {
+const stitchProcessing = (canvasList, canvasRefs, dimensions) => {
   const processedCanvases = []
-  console.log(resize, dimensions)
-  const resizeWidth = resize.scaleDown
-    ? dimensions.width.min
-    : dimensions.width.max
-  console.log(resizeWidth)
+  const minHeight = dimensions.height.min
   const combineSlicedImgs = arr => {
     const canvas = document.createElement('canvas')
     const canvases = []
@@ -206,8 +196,7 @@ const stitchProcessing = (
     }
     recurse(cnvsCopy, avgHeight)
   }
-  recurse(canvasList, avgHeight)
-
+  recurse(canvasList, minHeight)
   return { processedCanvases }
 }
 

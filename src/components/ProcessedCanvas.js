@@ -16,9 +16,29 @@ class ProcessedCanvas extends Component {
     canvasProcessStatus: false
   }
   componentDidUpdate(prevProps, prevState) {
+    const { state, dispatch } = this.context
+    const { canvasesWrapperRef, dimensions } = state
+    if (!canvasesWrapperRef) return
+    const canvasList = Array.from(canvasesWrapperRef.children),
+      { processedCanvases } = stitchProcessing(
+        canvasList,
+        this.canvasRefs,
+        dimensions
+      )
+
+    if (!this.state.processedCanvases.length) {
+      this.setState({
+        processedCanvases,
+        canvasProcessStatus: true
+      })
+      dispatch({
+        type: 'UPDATE_CANVAS_PROCESS_STATUS',
+        payload: true
+      })
+    }
+
     const currStatus = this.state.canvasProcessStatus,
       prevStatus = prevState.canvasProcessStatus,
-      processedCanvases = this.state.processedCanvases,
       canLen = processedCanvases.length,
       blobs = []
 
@@ -49,30 +69,15 @@ class ProcessedCanvas extends Component {
     this.setState({
       blobs
     })
-  }
-
-  componentDidMount() {
-    const { canvasesWrapperRef, resize, dimensions } = this.context,
-      avgHeight = this.context.dimensions.height.avg,
-      canvasList = Array.from(canvasesWrapperRef.children),
-      { processedCanvases } = stitchProcessing(
-        canvasList,
-        avgHeight,
-        this.canvasRefs,
-        resize,
-        dimensions
-      )
-    this.setState({
-      processedCanvases,
-      canvasProcessStatus: true
-    })
-    this.context.setContextState({
-      canvasProcessStatus: true
-    })
     this.pushToHistoryState(this.props.history)
   }
+
   componentWillUnmount() {
-    this.context.setContextState({ canvasProcessStatus: false })
+    const { dispatch } = this.context
+    dispatch({
+      type: 'UPDATE_CANVAS_PROCESS_STATUS',
+      payload: false
+    })
   }
   pushToHistoryState = history => {
     history.push('/download')

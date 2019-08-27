@@ -69,7 +69,7 @@ const ImageList = () => {
       imgsLen = images.length,
       dataUrlsLen = dataUrls.length
     if (dataUrlsLen && imgsLen === dataUrlsLen && imgsLoadPromises) {
-      const dimensions = calculateDimensions(images)
+      const dimensions = calculateDimensions(images, true)
       setMaxWidth(dimensions.width.max)
       setDimensions(dimensions)
     }

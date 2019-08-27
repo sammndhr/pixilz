@@ -9,7 +9,7 @@ const findMinMax = (curr, { min, max }) => {
   return minMax
 }
 
-const calculateDimensions = images => {
+const calculateDimensions = (images, realAvg) => {
   let totalHeight = 0,
     totalWidth = 0,
     minMaxWidth,
@@ -17,8 +17,10 @@ const calculateDimensions = images => {
   const len = images.length
   for (let i = 0; i < len; i++) {
     const img = images[i]
-    img.removeAttribute('width')
-    img.removeAttribute('height')
+    if (realAvg) {
+      img.removeAttribute('width')
+      img.removeAttribute('height')
+    }
     totalHeight += img.height
     totalWidth += img.width
     if (!minMaxWidth || !minMaxHeight) {
