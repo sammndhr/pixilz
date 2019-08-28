@@ -1,5 +1,4 @@
 import React, { Fragment, useState, useEffect } from 'react'
-import Button from './Button'
 
 const SortForm = ({ handleCheckboxChange }) => {
   const [sort, setSort] = useState(true)
@@ -30,7 +29,6 @@ const SortForm = ({ handleCheckboxChange }) => {
           </label>
         </fieldset>
       </div>
-      <Button />
     </Fragment>
   )
 }

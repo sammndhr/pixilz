@@ -1,9 +1,9 @@
 import React from 'react'
 
-const Button = () => {
+const Button = ({ htmlFor, content }) => {
   return (
     <div className='button-container'>
-      <label htmlFor='upload-images'>Upload Images</label>
+      <label htmlFor={htmlFor}>{content}</label>
     </div>
   )
 }
