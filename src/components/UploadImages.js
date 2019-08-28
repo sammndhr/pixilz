@@ -1,14 +1,25 @@
-import React, { Component, Fragment } from 'react'
+import React, { Fragment, useState, useContext, useEffect } from 'react'
 import { withRouter } from 'react-router'
 import DataContext from '../context/DataContext'
 import SortForm from '../common/SortForm'
 import { sortFiles } from '../utils/'
 
-class Main extends Component {
-  static contextType = DataContext
-  state = { dataUrls: [], imgsUploaded: false, sort: true }
+const UploadImages = ({ history }) => {
+  const { state, dispatch } = useContext(DataContext)
+  const [dataUrls, setDataUrls] = useState([])
+  const [imgsUploaded, setImgsUploaded] = useState(false)
+  const [sort, setSort] = useState(true)
 
-  readFile = file => {
+  useEffect(() => {
+    if (!state.dataUrls.length) {
+      dispatch({ type: 'SET_DATA_URLS', payload: dataUrls })
+    }
+    if (!state.imgsUploaded) {
+      dispatch({ type: 'UPDATE_UPLOAD_STATUS', payload: imgsUploaded })
+    }
+  }, [dataUrls, state.dataUrls, state.imgsUploaded, imgsUploaded, dispatch])
+
+  const readFile = file => {
     return new Promise((resolve, reject) => {
       const reader = new FileReader()
       reader.onload = evt => {
@@ -22,11 +33,11 @@ class Main extends Component {
     })
   }
 
-  readMultipleFiles = async files => {
+  const readMultipleFiles = async files => {
     const filesArr = Array.from(files)
-    const filesToProcess = this.state.sort ? sortFiles(filesArr) : filesArr
+    const filesToProcess = sort ? sortFiles(filesArr) : filesArr
     const promises = filesToProcess.map(async file => {
-      const data = await this.readFile(file)
+      const data = await readFile(file)
       return data
     })
     return Promise.all(promises).then(results => {
@@ -34,31 +45,12 @@ class Main extends Component {
     })
   }
 
-  updateUplaodStatus = dispatch => {
-    dispatch({
-      type: 'UPDATE_UPLOAD_STATUS',
-      payload: this.state.imgsUploaded
-    })
-  }
-
-  setDataUrls = dispatch => {
-    dispatch({ type: 'SET_DATA_URLS', payload: this.state.dataUrls })
-  }
-
-  uploadFiles = (e, history) => {
-    const { state, dispatch } = this.context
-    this.readMultipleFiles(e.target.files)
+  const uploadFiles = (e, history) => {
+    readMultipleFiles(e.target.files)
       .then(results => {
-        this.setState(prevState => ({
-          dataUrls: results,
-          imgsUploaded: !prevState.imgsUploaded
-        }))
-        if (!state.dataUrls.length) {
-          this.setDataUrls(dispatch)
-        }
-        if (!state.imgsUploaded) {
-          this.updateUplaodStatus(dispatch)
-        }
+        setDataUrls(results)
+        setImgsUploaded(true)
+
         history.push('/options')
       })
       .catch(err => {
@@ -66,26 +58,23 @@ class Main extends Component {
       })
   }
 
-  handleCheckboxChange = sort => {
-    this.setState({ sort })
+  const handleCheckboxChange = sort => {
+    setSort({ sort })
   }
 
-  render() {
-    const { history } = this.props
-    return (
-      <Fragment>
-        <SortForm handleCheckboxChange={this.handleCheckboxChange} />
-        <input
-          id='upload-images'
-          type='file'
-          multiple='multiple'
-          onChange={e => {
-            this.uploadFiles(e, history)
-          }}
-        />
-      </Fragment>
-    )
-  }
+  return (
+    <Fragment>
+      <SortForm handleCheckboxChange={handleCheckboxChange} />
+      <input
+        id='upload-images'
+        type='file'
+        multiple='multiple'
+        onChange={e => {
+          uploadFiles(e, history)
+        }}
+      />
+    </Fragment>
+  )
 }
 
-export default withRouter(Main)
+export default withRouter(UploadImages)
