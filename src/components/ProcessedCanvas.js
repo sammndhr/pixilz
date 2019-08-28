@@ -18,7 +18,10 @@ class ProcessedCanvas extends Component {
   componentDidUpdate(prevProps, prevState) {
     const { state, dispatch } = this.context
     const { canvasesWrapperRef, dimensions } = state
+
+    if (!dimensions.width || !dimensions.height) return
     if (!canvasesWrapperRef) return
+
     const canvasList = Array.from(canvasesWrapperRef.children),
       { processedCanvases } = stitchProcessing(
         canvasList,
