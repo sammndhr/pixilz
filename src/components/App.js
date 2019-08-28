@@ -4,11 +4,10 @@ import '../styles/App.scss'
 import ThemeContext from '../context/ThemeContext'
 import DataContext from '../context/DataContext'
 import Navigation from './Navigation'
-import Main from './Main'
-
 import ProcessedCanvas from './ProcessedCanvas'
 import Footer from './Footer'
 import CanvasList from './CanvasList'
+import UploadImages from './UploadImages'
 
 const App = () => {
   const theme = useContext(ThemeContext)
@@ -49,7 +48,7 @@ const App = () => {
     <div className={'App container ' + themeClass}>
       <Navigation />
       <main className={mainClass}>
-        <Route path='/' exact render={() => <Main />} />
+        <Route path='/' exact render={() => <UploadImages />} />
         <Route path='/options' render={() => <CanvasList />} />
         <Route path='/download' render={() => <ProcessedCanvas />} />
       </main>
