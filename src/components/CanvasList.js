@@ -21,6 +21,10 @@ const CanvasList = () => {
   const [canvasesLoaded, setCanvasLoadStatus] = useState(false)
   const [imgsResizeDimensions, setImgsResizeDimensions] = useState([])
   const [canvasesDrawn, setCanvasesDrawn] = useState(false)
+  const [resizePrefs, setResizePrefs] = useState({
+    scaleDown: true,
+    scaleUp: false
+  })
 
   const canvasRefs = useRef([])
   const canvasesWrapperRef = useCallback(
@@ -31,74 +35,22 @@ const CanvasList = () => {
     },
     [dispatch]
   )
-  const [resizePrefs, setResizePrefs] = useState({
-    scaleDown: true,
-    scaleUp: false
-  })
-  const handleRadioButtonChange = resizePrefs => {
-    setResizePrefs(resizePrefs)
-  }
-  const handleClick = e => {
-    dispatch({
-      type: 'UPDATE_DIMENSIONS',
-      payload: calculateDimensions(images)
-    })
-    const createCanvas = (img, i) => {
-      const canvas = (
-        <canvas
-          key={i}
-          width={img.width}
-          height={img.height}
-          className='canvas-item'
-          ref={el => {
-            canvasRefs.current[i] = el
-          }}
-        />
-      )
-      return canvas
-    }
 
-    const imgsLen = images.length,
-      canvases = []
-    // if (!canvasesLoaded) return
-    // dispatch({ type: 'UPDATE_CANVASES_LOADED', payload: canvasesLoaded })
-
-    for (let i = 0; i < imgsLen; i++) {
-      const img = images[i],
-        canvas = createCanvas(img, i)
-      canvases.push(canvas)
-
-      if (i === imgsLen - 1) {
-        setCanvases(canvases)
-        setCanvasLoadStatus(true)
-      }
-    }
-    setClickStatus(true)
-  }
   useEffect(() => {
     const imgsLen = images.length
-    if (!canvasesLoaded) return
-    if (!canvasesDrawn) {
-      const drawCanvas = (img, i) => {
-        const canvas = canvasRefs.current[i],
-          { oWidth, oHeight, nWidth, nHeight } = imgsResizeDimensions[i],
-          ctx = canvas.getContext('2d')
-        ctx.drawImage(img, 0, 0, oWidth, oHeight, 0, 0, nWidth, nHeight)
-      }
-      for (let i = 0; i < imgsLen; i++) {
-        const img = images[i]
-        drawCanvas(img, i)
-      }
-      setCanvasesDrawn(true)
+    if (!canvasesLoaded || canvasesDrawn) return
+    const drawCanvas = (img, i) => {
+      const canvas = canvasRefs.current[i],
+        { oWidth, oHeight, nWidth, nHeight } = imgsResizeDimensions[i],
+        ctx = canvas.getContext('2d')
+      ctx.drawImage(img, 0, 0, oWidth, oHeight, 0, 0, nWidth, nHeight)
     }
-  }, [
-    canvases,
-    canvasesLoaded,
-    imgsResizeDimensions,
-    canvasRefs,
-    images,
-    canvasesDrawn
-  ])
+    for (let i = 0; i < imgsLen; i++) {
+      const img = images[i]
+      drawCanvas(img, i)
+    }
+    setCanvasesDrawn(true)
+  }, [canvasesLoaded, imgsResizeDimensions, canvasRefs, images, canvasesDrawn])
 
   useEffect(() => {
     if (images.length && dimensions.width) {
@@ -148,6 +100,46 @@ const CanvasList = () => {
     }
     return cleanup
   }, [dispatch])
+
+  const handleRadioButtonChange = resizePrefs => {
+    setResizePrefs(resizePrefs)
+  }
+
+  const handleClick = e => {
+    const imgsLen = images.length,
+      canvases = [],
+      createCanvas = (img, i) => {
+        const canvas = (
+          <canvas
+            key={i}
+            width={img.width}
+            height={img.height}
+            className='canvas-item'
+            ref={el => {
+              canvasRefs.current[i] = el
+            }}
+          />
+        )
+        return canvas
+      }
+
+    dispatch({
+      type: 'UPDATE_DIMENSIONS',
+      payload: calculateDimensions(images)
+    })
+
+    for (let i = 0; i < imgsLen; i++) {
+      const img = images[i],
+        canvas = createCanvas(img, i)
+      canvases.push(canvas)
+
+      if (i === imgsLen - 1) {
+        setCanvases(canvases)
+        setCanvasLoadStatus(true)
+      }
+    }
+    setClickStatus(true)
+  }
 
   return (
     <Fragment>
