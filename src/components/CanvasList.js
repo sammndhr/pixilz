@@ -12,7 +12,7 @@ import Resize from '../common/ResizeForm'
 import ImageList from './ImageList'
 import { calculateDimensions } from '../utils/'
 
-const CanvasList = () => {
+const CanvasList = ({ handleLoading }) => {
   const { state, dispatch } = useContext(DataContext)
   const { dimensions, imgsWrapperRef, dataUrls } = state
   const images = imgsWrapperRef ? imgsWrapperRef.children : []
@@ -21,6 +21,8 @@ const CanvasList = () => {
   const [canvasesLoaded, setCanvasLoadStatus] = useState(false)
   const [imgsResizeDimensions, setImgsResizeDimensions] = useState([])
   const [canvasesDrawn, setCanvasesDrawn] = useState(false)
+  const [showLoader, setShowLoader] = useState(false)
+
   const [resizePrefs, setResizePrefs] = useState({
     scaleDown: true,
     scaleUp: false
@@ -35,6 +37,14 @@ const CanvasList = () => {
     },
     [dispatch]
   )
+  useEffect(() => {
+    handleLoading(showLoader)
+    const cleanup = () => {
+      setShowLoader(false)
+      // handleLoading(false)
+    }
+    return cleanup
+  }, [handleLoading, showLoader])
 
   useEffect(() => {
     const imgsLen = images.length
@@ -106,6 +116,8 @@ const CanvasList = () => {
   }
 
   const handleClick = e => {
+    setClickStatus(true)
+    setShowLoader(true)
     const imgsLen = images.length,
       canvases = [],
       createCanvas = (img, i) => {
@@ -138,7 +150,6 @@ const CanvasList = () => {
         setCanvasLoadStatus(true)
       }
     }
-    setClickStatus(true)
   }
 
   return (
