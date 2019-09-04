@@ -14,14 +14,9 @@ const App = () => {
   const theme = useContext(ThemeContext)
   const { dark } = theme
   const { state } = useContext(DataContext)
-  const { imgsLoaded, canvasesLoaded, canvasProcessStatus } = state
+  const { imgsLoaded, canvasesLoaded, canvasProcessStatus, loader } = state
   const [themeClass, setThemeClass] = useState('')
   const [mainClass, setMainClass] = useState('')
-  const [showLoader, setShowLoader] = useState(false)
-
-  const handleLoading = showLoader => {
-    setShowLoader(showLoader)
-  }
 
   useEffect(() => {
     if ((imgsLoaded || canvasesLoaded || canvasProcessStatus) && !mainClass) {
@@ -55,24 +50,9 @@ const App = () => {
     <div className={'App container ' + themeClass}>
       <Navigation />
       <main className={mainClass}>
-        {showLoader && (
-          <div
-            className='testing'
-            style={{
-              backgroundColor: 'red',
-              zIndex: 1000000,
-              position: 'absolute',
-              top: '100px',
-              width: '500px'
-            }}>
-            TESTING YO
-          </div>
-        )}
+        {loader && <Loader />}
         <Route path='/' exact render={() => <UploadImages />} />
-        <Route
-          path='/options'
-          render={() => <CanvasList handleLoading={handleLoading} />}
-        />
+        <Route path='/options' render={() => <CanvasList />} />
         <Route path='/download' render={() => <ProcessedCanvas />} />
       </main>
       {/* https://reacttraining.com/react-router/web/api/Route/render-func */}

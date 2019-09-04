@@ -4,8 +4,17 @@ const Loader = () => {
   return (
     <Fragment>
       <div
-        className='loader'
-        style={{ zIndex: 1000, position: 'absolute', top: '100px' }}></div>
+        className='loader-wrapper'
+        style={{
+          zIndex: 1000,
+          height: window.innerHeight,
+          width: window.innerWidth
+        }}>
+        <div
+          className='loader'
+          // style={{ position: 'absolute', top: '100px' }}
+        />
+      </div>
     </Fragment>
   )
 }

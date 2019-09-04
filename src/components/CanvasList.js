@@ -12,9 +12,9 @@ import Resize from '../common/ResizeForm'
 import ImageList from './ImageList'
 import { calculateDimensions } from '../utils/'
 
-const CanvasList = ({ handleLoading }) => {
+const CanvasList = () => {
   const { state, dispatch } = useContext(DataContext)
-  const { dimensions, imgsWrapperRef, dataUrls } = state
+  const { dimensions, imgsWrapperRef, dataUrls, loader } = state
   const images = imgsWrapperRef ? imgsWrapperRef.children : []
   const [clickStatus, setClickStatus] = useState(false)
   const [canvases, setCanvases] = useState([])
@@ -38,13 +38,13 @@ const CanvasList = ({ handleLoading }) => {
     [dispatch]
   )
   useEffect(() => {
-    handleLoading(showLoader)
+    dispatch({ type: 'SHOW_LOADER', payload: showLoader })
     const cleanup = () => {
       setShowLoader(false)
-      // handleLoading(false)
+      dispatch({ type: 'SHOW_LOADER', payload: false })
     }
     return cleanup
-  }, [handleLoading, showLoader])
+  }, [dispatch, showLoader])
 
   useEffect(() => {
     const imgsLen = images.length

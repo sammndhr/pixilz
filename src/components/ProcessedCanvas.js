@@ -132,16 +132,20 @@ class ProcessedCanvas extends Component {
   render() {
     return (
       <Fragment>
-        <aside className='aside'>
-          <div className='button-container'>
-            <button onClick={this.handleDownloadClick}>Download</button>
-          </div>
-        </aside>
-        <div className='canvases-wrapper'>
-          {this.state.processedCanvases.map((processedCan, i) => {
-            return processedCan.canvas
-          })}
-        </div>
+        {!this.context.state.loader && (
+          <Fragment>
+            <aside className='aside'>
+              <div className='button-container'>
+                <button onClick={this.handleDownloadClick}>Download</button>
+              </div>
+            </aside>
+            <div className='canvases-wrapper'>
+              {this.state.processedCanvases.map((processedCan, i) => {
+                return processedCan.canvas
+              })}
+            </div>
+          </Fragment>
+        )}
       </Fragment>
     )
   }

@@ -15,7 +15,8 @@ const DataProvider = ({ children }) => {
     },
     canvasesLoaded: false,
     canvasesWrapperRef: null,
-    canvasProcessStatus: false
+    canvasProcessStatus: false,
+    loader: false
   }
 
   const reducer = (state, action) => {
@@ -38,6 +39,8 @@ const DataProvider = ({ children }) => {
         return { ...state, canvasesWrapperRef: action.payload }
       case 'UPDATE_CANVAS_PROCESS_STATUS':
         return { ...state, canvasProcessStatus: action.payload }
+      case 'SHOW_LOADER':
+        return { ...state, loader: action.payload }
       default:
         return { ...state }
     }

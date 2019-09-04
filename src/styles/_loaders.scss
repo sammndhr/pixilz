@@ -63,5 +63,5 @@
 }
 
 .loader {
-  @include loader($size: 56px, $border-size: 2px, $align: middle);
+  @include loader($size: 100px, $border-size: 2px, $align: middle);
 }
