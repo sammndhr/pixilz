@@ -16,7 +16,11 @@ const DataProvider = ({ children }) => {
     canvasesLoaded: false,
     canvasesWrapperRef: null,
     canvasProcessStatus: false,
-    loader: false
+    loader: false,
+    resizePrefs: {
+      scaleDown: false,
+      scaleUp: true
+    }
   }
 
   const reducer = (state, action) => {
@@ -41,6 +45,8 @@ const DataProvider = ({ children }) => {
         return { ...state, canvasProcessStatus: action.payload }
       case 'SHOW_LOADER':
         return { ...state, loader: action.payload }
+      case 'UPDATE_RESIZE_PREFS':
+        return { ...state, resizePrefs: action.payload }
       default:
         return { ...state }
     }
