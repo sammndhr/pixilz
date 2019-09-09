@@ -8,14 +8,16 @@ import ProcessedCanvas from './ProcessedCanvas'
 import Footer from './Footer'
 import CanvasList from './CanvasList'
 import UploadImages from './UploadImages'
+import Loader from '../common/Loader'
 
 const App = () => {
   const theme = useContext(ThemeContext)
   const { dark } = theme
   const { state } = useContext(DataContext)
-  const { imgsLoaded, canvasesLoaded, canvasProcessStatus } = state
+  const { imgsLoaded, canvasesLoaded, canvasProcessStatus, loader } = state
   const [themeClass, setThemeClass] = useState('')
   const [mainClass, setMainClass] = useState('')
+
   useEffect(() => {
     if ((imgsLoaded || canvasesLoaded || canvasProcessStatus) && !mainClass) {
       setMainClass('main-grid')
@@ -48,6 +50,7 @@ const App = () => {
     <div className={'App container ' + themeClass}>
       <Navigation />
       <main className={mainClass}>
+        {loader && <Loader />}
         <Route path='/' exact render={() => <UploadImages />} />
         <Route path='/options' render={() => <CanvasList />} />
         <Route path='/download' render={() => <ProcessedCanvas />} />

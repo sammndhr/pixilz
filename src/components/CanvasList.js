@@ -14,13 +14,15 @@ import { calculateDimensions } from '../utils/'
 
 const CanvasList = () => {
   const { state, dispatch } = useContext(DataContext)
-  const { dimensions, imgsWrapperRef, dataUrls } = state
+  const { dimensions, imgsWrapperRef, dataUrls, loader } = state
   const images = imgsWrapperRef ? imgsWrapperRef.children : []
   const [clickStatus, setClickStatus] = useState(false)
   const [canvases, setCanvases] = useState([])
   const [canvasesLoaded, setCanvasLoadStatus] = useState(false)
   const [imgsResizeDimensions, setImgsResizeDimensions] = useState([])
   const [canvasesDrawn, setCanvasesDrawn] = useState(false)
+  const [showLoader, setShowLoader] = useState(false)
+
   const [resizePrefs, setResizePrefs] = useState({
     scaleDown: true,
     scaleUp: false
@@ -35,6 +37,14 @@ const CanvasList = () => {
     },
     [dispatch]
   )
+  useEffect(() => {
+    dispatch({ type: 'SHOW_LOADER', payload: showLoader })
+    const cleanup = () => {
+      setShowLoader(false)
+      dispatch({ type: 'SHOW_LOADER', payload: false })
+    }
+    return cleanup
+  }, [dispatch, showLoader])
 
   useEffect(() => {
     const imgsLen = images.length
@@ -106,6 +116,8 @@ const CanvasList = () => {
   }
 
   const handleClick = e => {
+    setClickStatus(true)
+    setShowLoader(true)
     const imgsLen = images.length,
       canvases = [],
       createCanvas = (img, i) => {
@@ -138,7 +150,6 @@ const CanvasList = () => {
         setCanvasLoadStatus(true)
       }
     }
-    setClickStatus(true)
   }
 
   return (
