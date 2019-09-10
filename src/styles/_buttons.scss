@@ -19,7 +19,8 @@
     height: 4.375rem;
     border: $border-width solid $button;
     border-radius: 2.5rem;
-    background: transparent;
+    // background: transparent;
+    background-color: rgba($teal-6, 0.12);
     color: $button;
     letter-spacing: 1px;
     font-size: 1.3rem;

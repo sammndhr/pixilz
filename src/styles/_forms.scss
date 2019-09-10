@@ -2,6 +2,7 @@
   margin: 3rem auto;
   min-width: 250px;
   max-width: 32rem;
+  padding: 0 1rem;
 
   label {
     display: block;
@@ -57,6 +58,7 @@
     border: 2px solid $grey-8;
     padding: 1em 4em;
     border-radius: 0.5em;
+    background-color: rgba($blue-4, 0.2);
   }
 
   legend {
@@ -73,5 +75,46 @@
 .aside {
   fieldset {
     padding: 1em 2em;
+  }
+  .options {
+    [type='checkbox'],
+    [type='radio'] {
+      + span {
+        color: $grey-1;
+        &:before {
+          width: 1.1em;
+          height: 1.1em;
+          border: 0.125em solid $white;
+          box-shadow: 0 0 0 0.15em $grey-8;
+        }
+      }
+    }
+    [type='checkbox'],
+    [type='radio'] {
+      + span {
+        color: $default-dark-color;
+      }
+    }
+    [type='checkbox']:checked,
+    [type='radio']:checked {
+      + span {
+        &:before {
+          background: $blue-5;
+          // box-shadow: 0 0 0 0.15em $grey-1;
+          box-shadow: 0 0 0 0.25em rgba($grey-9, 0.6);
+        }
+        &:after {
+          content: '';
+        }
+      }
+    }
+    fieldset {
+      background-color: rgba($blue-4, 0.2);
+      border: 2px solid $grey-1;
+    }
+    legend {
+      color: $dark-background;
+      background: $grey-1;
+    }
   }
 }
