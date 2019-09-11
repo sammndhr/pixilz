@@ -1,5 +1,9 @@
 //Colors-used #12C47C as base color on https://palx.jxnblk.com/12C47C to get other colors and shades
-//teals Primary "green"
+
+$white: #ffffff;
+$jet-black: #000000;
+
+/*  teals Primary "green" */
 $teal-0: #e4f8ef;
 $teal-1: #c6f0df;
 $teal-2: #a5e8cc;
@@ -10,6 +14,7 @@ $teal-6: #10b16e;
 $teal-7: #0e9b60;
 $teal-8: #0b8150;
 $teal-9: #085d39;
+
 //greys
 $grey-0: #f8f9f9;
 $grey-1: #ecedef;
@@ -49,19 +54,31 @@ $cyan-7: #0e8f9b;
 $cyan-8: #0b7780;
 $cyan-9: #08555c;
 
-$red: #ef5b5b;
+// yellows
+$yellow-0: #f5f7e0;
+$yellow-1: #eaeebe;
+$yellow-2: #dfe59a;
+$yellow-3: #d3db72;
+$yellow-4: #c5d045;
+$yellow-5: #b5c412;
+$yellow-6: #a3b110;
+$yellow-7: #8f9b0e;
+$yellow-8: #77810b;
+$yellow-9: #565d08;
 
-$dark-background: $grey-9;
-$background: $grey-0;
-$default-color: $grey-7;
-$default-dark-color: $grey-1;
-$primary: $teal-7;
-$primary-dark: $teal-5;
+$red-0: #f9eae9;
+$red-1: #f3d4d1;
+$red-2: #ecbab5;
+$red-3: #e49a93;
+$red-4: #d97066;
+$red-5: #c42112;
+$red-6: #b01d10;
+$red-7: #9a1a0e;
+$red-8: #7f150b;
+$red-9: #5a0f08;
 
-$white: #ffffff;
-$jet-black: #000000;
-
-/* Links */
-$link: $blue-7;
-$link-hover: $blue-4;
-$link-active: $blue-8;
+/* Hightlighter */
+$yellow-hl: #f0d461;
+$red-hl: #ef5b5b;
+$green-hl: #00d287;
+$blue-hl: #5183f5;

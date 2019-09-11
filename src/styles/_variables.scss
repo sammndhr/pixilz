@@ -21,3 +21,19 @@ $loader-height: 20px !default;
 $loader-border-size: 8px !default;
 $loader-gap: 12px !default;
 $loader-animation-duration: 1s !default;
+
+/* Forms */
+$fieldset-border: $blue-9;
+$fieldset-bg: rgba(lighten($blue-5, 25%), 0.85);
+
+$dark-background: $grey-9;
+$background: $grey-0;
+$default-color: $grey-7;
+$default-dark-color: $grey-1;
+$primary: $teal-7;
+$primary-dark: $teal-5;
+
+/* Links */
+$link: $blue-7;
+$link-hover: $blue-4;
+$link-active: $blue-8;

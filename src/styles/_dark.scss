@@ -27,38 +27,6 @@
     }
   }
 
-  .options {
-    [type='checkbox'] + span {
-      color: $grey-1;
-
-      &:before {
-        width: 1.1em;
-        height: 1.1em;
-        border: 0.25em solid $dark-background;
-        box-shadow: 0 0 0 0.15em $grey-1;
-      }
-    }
-
-    [type='checkbox']:checked + span {
-      &:before {
-        background: $blue-5;
-        box-shadow: 0 0 0 0.15em $grey-1;
-      }
-      &:after {
-        content: '';
-      }
-    }
-
-    fieldset {
-      background-color: rgba($blue-4, 0.2);
-      border: 2px solid $grey-1;
-    }
-    legend {
-      color: $dark-background;
-      background: $grey-1;
-    }
-  }
-
   .main-grid {
     background-color: rgba($cyan-2, 0.2);
   }
