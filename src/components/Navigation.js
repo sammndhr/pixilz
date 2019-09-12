@@ -1,63 +1,69 @@
-import React, { Component } from 'react'
-import { Link } from 'react-router-dom'
-import sun from '../images/sun.svg'
-import moon from '../images/moon.svg'
-import ThemeContext from '../context/ThemeContext'
+import React from 'react'
+import PropTypes from 'prop-types'
+import AppBar from '@material-ui/core/AppBar'
+import Toolbar from '@material-ui/core/Toolbar'
+import Typography from '@material-ui/core/Typography'
+import { makeStyles } from '@material-ui/core/styles'
+import CssBaseline from '@material-ui/core/CssBaseline'
+import useScrollTrigger from '@material-ui/core/useScrollTrigger'
+import Fab from '@material-ui/core/Fab'
+import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp'
+import Zoom from '@material-ui/core/Zoom'
 
-export default class Navigation extends Component {
-  static contextType = ThemeContext
-
-  state = {
-    scrolled: false
+const useStyles = makeStyles(theme => ({
+  root: {
+    position: 'fixed',
+    bottom: theme.spacing(2),
+    right: theme.spacing(2)
   }
+}))
 
-  componentDidMount() {
-    window.addEventListener('scroll', this.handleScroll)
-  }
-  componentWillUnmount() {
-    window.removeEventListener('scroll', this.handleScroll)
-  }
+function ScrollTop(props) {
+  const { children } = props
+  const classes = useStyles()
+  const trigger = useScrollTrigger({
+    disableHysteresis: true,
+    threshold: 100
+  })
 
-  handleScroll = () => {
-    if (window.scrollY > 20) {
-      this.setState({ scrolled: true })
-    } else {
-      this.setState({ scrolled: false })
+  const handleClick = event => {
+    const anchor = (event.target.ownerDocument || document).querySelector(
+      '#back-to-top-anchor'
+    )
+
+    if (anchor) {
+      anchor.scrollIntoView({ behavior: 'smooth', block: 'center' })
     }
   }
 
-  renderThemeButton = theme => {
-    return theme.dark ? (
-      <span>
-        <img src={sun} className='theme-icon' alt='Light Mode' />
-      </span>
-    ) : (
-      <span>
-        <img src={moon} className='theme-icon' alt='Dark Mode' />
-      </span>
-    )
-  }
-  render() {
-    const { scrolled } = this.state
-    const theme = this.context
+  return (
+    <Zoom in={trigger}>
+      <div onClick={handleClick} role='presentation' className={classes.root}>
+        {children}
+      </div>
+    </Zoom>
+  )
+}
 
-    return (
-      <header className={scrolled ? 'header scroll' : 'header'}>
-        <nav className='nav'>
-          <div className='brand'>
-            <Link to='/'>
-              <span className='text'>STITCH 'N' SLICE</span>
-            </Link>
-          </div>
-          <div className='links'>
-            <div className='cta-btn'>
-              <button className='dark-switcher' onClick={theme.toggleTheme}>
-                {this.renderThemeButton(theme)}
-              </button>
-            </div>
-          </div>
-        </nav>
-      </header>
-    )
-  }
+ScrollTop.propTypes = {
+  children: PropTypes.element.isRequired
+}
+
+export default function BackToTop(props) {
+  return (
+    <React.Fragment>
+      <CssBaseline />
+      <AppBar color='primary'>
+        <Toolbar>
+          <Typography variant='h6'>STIZZZ</Typography>
+        </Toolbar>
+      </AppBar>
+      <Toolbar id='back-to-top-anchor' />
+      <ScrollTop {...props}>
+        <Fab color='secondary' size='small' aria-label='scroll back to top'>
+          <KeyboardArrowUpIcon />
+        </Fab>
+      </ScrollTop>
+    </React.Fragment>
+  )
 }

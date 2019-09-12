@@ -4,14 +4,18 @@ import App from './components/App'
 
 import { BrowserRouter as Router } from 'react-router-dom'
 import * as serviceWorker from './serviceWorker'
-import { ThemeProvider } from './context/ThemeContext'
+import { ThemeProvider } from '@material-ui/styles'
 import { DataProvider } from './context/DataContext'
+import CssBaseline from '@material-ui/core/CssBaseline'
 
+import theme from './theme'
+console.log(theme)
 ReactDOM.render(
   //todo: change to use history instead of forceRefresh
   // <Router forceRefresh={true}>
   <Router>
-    <ThemeProvider>
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
       <DataProvider>
         <App />
       </DataProvider>
