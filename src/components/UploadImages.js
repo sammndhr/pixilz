@@ -36,6 +36,7 @@ const UploadImages = ({ history }) => {
 
   const readMultipleFiles = async files => {
     const filesArr = Array.from(files)
+    console.log(sort, 'should be false here')
     const filesToProcess = sort ? sortFiles(filesArr) : filesArr
     const promises = filesToProcess.map(async file => {
       const data = await readFile(file)
@@ -60,7 +61,7 @@ const UploadImages = ({ history }) => {
   }
 
   const handleCheckboxChange = sort => {
-    setSort({ sort })
+    setSort(sort)
   }
 
   return (
