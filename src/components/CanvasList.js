@@ -14,7 +14,7 @@ import { calculateDimensions } from '../utils/'
 
 const CanvasList = () => {
   const { state, dispatch } = useContext(DataContext)
-  const { dimensions, imgsWrapperRef, dataUrls, loader } = state
+  const { dimensions, imgsWrapperRef, dataUrls } = state
   const images = imgsWrapperRef ? imgsWrapperRef.children : []
   const [clickStatus, setClickStatus] = useState(false)
   const [canvases, setCanvases] = useState([])

@@ -9,7 +9,6 @@ import { DataProvider } from './context/DataContext'
 import CssBaseline from '@material-ui/core/CssBaseline'
 
 import theme from './theme'
-console.log(theme)
 ReactDOM.render(
   //todo: change to use history instead of forceRefresh
   // <Router forceRefresh={true}>
