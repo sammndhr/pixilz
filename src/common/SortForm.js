@@ -58,7 +58,7 @@ const SortForm = ({ handleCheckboxChange, uploadFiles }) => {
                 checked={sort}
                 onChange={handleChange}
                 value='sort'
-                color='primary'
+                color='secondary'
               />
             }
             label={
