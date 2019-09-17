@@ -9,7 +9,7 @@ import DataContext from '../context/DataContext'
 import { calculateDimensions, useWindowSize } from '../utils/'
 import { Grid } from '@material-ui/core/'
 
-const ImageList = ({ gridSpace }) => {
+const ImageList = ({ gridSpace, imgResizeWidth }) => {
   const size = useWindowSize()
   const { state, dispatch } = useContext(DataContext)
   const { dataUrls } = state
@@ -60,21 +60,39 @@ const ImageList = ({ gridSpace }) => {
       setImgsLoaded(true)
     }
   }, [dataUrls, imgsLoadPromises])
-  useEffect(() => {
-    console.log(size)
-  }, [size])
 
   useEffect(() => {
     // Can't use images from state because they are React objects
     const images = imgsRefs.current,
-      padding = 2 * (4 * gridSpace)
+      imgsLen = images.length,
+      padding = 2 * (4 * gridSpace),
+      resizeImages = newWidth => {
+        for (let i = 0; i < imgsLen; i++) {
+          const img = images[i]
+          img.width = newWidth
+        }
+      }
 
     if (imgsLoaded) {
-      const dimensions = calculateDimensions(images, true)
+      console.log(imgResizeWidth)
+      const dimensions = calculateDimensions(images, true),
+        windowWidth = size.width - padding
+      let reSizeWidth = imgResizeWidth
       setMaxWidth(dimensions.width.max + padding) //multiply by 4 cause Material UI does it that way
       setDimensions(dimensions)
+      if (windowWidth < imgResizeWidth) {
+        reSizeWidth = windowWidth
+      }
+      resizeImages(reSizeWidth)
     }
-  }, [imgsRefs, imgsLoaded, gridSpace])
+    // if (matches && imgsLoadPromises) {
+    //   const newWidth = document.body.clientWidth - padding
+    //   for (let i = 0; i < imgsLen; i++) {
+    //     const img = images[i]
+    //     img.setAttribute('width', newWidth)
+    //   }
+    // }
+  }, [imgsRefs, imgsLoaded, gridSpace, size, imgResizeWidth])
 
   useEffect(() => {
     if (!imgsLoaded) return

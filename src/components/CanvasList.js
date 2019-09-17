@@ -28,6 +28,7 @@ const useStyles = makeStyles(theme => ({
 
 const CanvasList = () => {
   const classes = useStyles()
+  const gridSpace = 3
   const { state, dispatch } = useContext(DataContext)
   const { dimensions, imgsWrapperRef, dataUrls } = state
   const images = imgsWrapperRef ? imgsWrapperRef.children : []
@@ -37,12 +38,11 @@ const CanvasList = () => {
   const [imgsResizeDimensions, setImgsResizeDimensions] = useState([])
   const [canvasesDrawn, setCanvasesDrawn] = useState(false)
   const [showLoader, setShowLoader] = useState(false)
-  const gridSpace = 3
   const [resizePrefs, setResizePrefs] = useState({
     scaleDown: true,
     scaleUp: false
   })
-
+  const [imgResizeWidth, setImgResizeWidth] = useState(0)
   const canvasRefs = useRef([])
   const canvasesWrapperRef = useCallback(
     node => {
@@ -52,6 +52,7 @@ const CanvasList = () => {
     },
     [dispatch]
   )
+
   useEffect(() => {
     dispatch({ type: 'SHOW_LOADER', payload: showLoader })
     const cleanup = () => {
@@ -82,6 +83,12 @@ const CanvasList = () => {
   }, [dataUrls.length])
 
   useEffect(() => {
+    if (dimensions.width && !imgResizeWidth) {
+      setImgResizeWidth(dimensions.width.min)
+    }
+  }, [dimensions, imgResizeWidth])
+
+  useEffect(() => {
     const cleanup = () => {
       dispatch({ type: 'SET_DATA_URLS', payload: [] })
       dispatch({ type: 'UPDATE_UPLOAD_STATUS', payload: false })
@@ -92,7 +99,14 @@ const CanvasList = () => {
 
   const handleRadioButtonChange = resizePrefs => {
     setResizePrefs(resizePrefs)
+    if (!dimensions.width) return
+    if (resizePrefs.scaleDown) {
+      setImgResizeWidth(dimensions.width.min)
+    } else {
+      setImgResizeWidth(dimensions.width.max)
+    }
   }
+
   const resizeImages = () => {
     if (images.length && dimensions.width) {
       const imgsList = Array.from(images),
@@ -183,7 +197,7 @@ const CanvasList = () => {
               </div>
             </aside>
           </Grid>
-          <ImageList gridSpace={gridSpace} />
+          <ImageList gridSpace={gridSpace} imgResizeWidth={imgResizeWidth} />
         </Grid>
       )}
       <Grid item xs={6} sm={3}>
