@@ -7,8 +7,8 @@ const Loader = () => {
         className='loader-wrapper'
         style={{
           zIndex: 1000,
-          height: window.innerHeight,
-          width: window.innerWidth
+          height: document.body.clientHeight,
+          width: document.body.clientWidth
         }}>
         <div
           className='loader'

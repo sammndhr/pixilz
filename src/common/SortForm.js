@@ -1,14 +1,17 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
-import Paper from '@material-ui/core/Paper'
-import Container from '@material-ui/core/Container'
-import Button from '@material-ui/core/Button'
-import FormGroup from '@material-ui/core/FormGroup'
-import FormControlLabel from '@material-ui/core/FormControlLabel'
-import Typography from '@material-ui/core/Typography'
-import Checkbox from '@material-ui/core/Checkbox'
+
+import {
+  Container,
+  Paper,
+  Button,
+  FormGroup,
+  FormControlLabel,
+  Typography,
+  Checkbox,
+  useMediaQuery
+} from '@material-ui/core/'
 import CloudUploadSharpIcon from '@material-ui/icons/CloudUploadSharp'
-import useMediaQuery from '@material-ui/core/useMediaQuery'
 
 const useStyles = makeStyles(theme => ({
   paper: {

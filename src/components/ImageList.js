@@ -9,7 +9,7 @@ import DataContext from '../context/DataContext'
 import { calculateDimensions } from '../utils/'
 import { Grid, useMediaQuery } from '@material-ui/core/'
 
-const ImageList = () => {
+const ImageList = ({ gridSpace }) => {
   const matches = useMediaQuery('(max-width:640px)')
   const { state, dispatch } = useContext(DataContext)
   const { dataUrls } = state
@@ -65,7 +65,8 @@ const ImageList = () => {
     // Can't use images from state because they are React objects
     const images = imgsRefs.current,
       imgsLen = images.length,
-      dataUrlsLen = dataUrls.length
+      dataUrlsLen = dataUrls.length,
+      padding = 2 * (4 * gridSpace)
     if (
       dataUrlsLen &&
       imgsLen === dataUrlsLen &&
@@ -73,17 +74,18 @@ const ImageList = () => {
       !matches
     ) {
       const dimensions = calculateDimensions(images, true)
-      setMaxWidth(dimensions.width.max + 12 + 12)
+      setMaxWidth(dimensions.width.max + padding) //multiply by 4 cause Material UI does it that way
       setDimensions(dimensions)
     }
     if (matches && imgsLoadPromises) {
+      const newWidth = document.body.clientWidth - padding
       const len = images.length
       for (let i = 0; i < len; i++) {
         const img = images[i]
-        img.setAttribute('width', document.body.clientWidth - 12 - 12)
+        img.setAttribute('width', newWidth)
       }
     }
-  }, [imgsRefs, dataUrls, imgsLoadPromises, matches])
+  }, [imgsRefs, dataUrls, imgsLoadPromises, matches, gridSpace])
 
   useEffect(() => {
     if (!imgsLoaded) return

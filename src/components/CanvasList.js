@@ -12,7 +12,6 @@ import Resize from '../common/ResizeForm'
 import ImageList from './ImageList'
 import { calculateDimensions } from '../utils/'
 import { makeStyles } from '@material-ui/core/styles'
-import Paper from '@material-ui/core/Paper'
 import Grid from '@material-ui/core/Grid'
 
 const useStyles = makeStyles(theme => ({
@@ -38,7 +37,7 @@ const CanvasList = () => {
   const [imgsResizeDimensions, setImgsResizeDimensions] = useState([])
   const [canvasesDrawn, setCanvasesDrawn] = useState(false)
   const [showLoader, setShowLoader] = useState(false)
-
+  const gridSpace = 3
   const [resizePrefs, setResizePrefs] = useState({
     scaleDown: true,
     scaleUp: false
@@ -171,7 +170,11 @@ const CanvasList = () => {
   return (
     <Fragment>
       {!clickStatus && (
-        <Grid container spacing={3} className={classes.grid} justify='center'>
+        <Grid
+          container
+          spacing={gridSpace}
+          className={classes.grid}
+          justify='center'>
           <Grid item md={4} sm={12}>
             <aside className='aside'>
               <Resize handleRadioButtonChange={handleRadioButtonChange} />
@@ -180,7 +183,7 @@ const CanvasList = () => {
               </div>
             </aside>
           </Grid>
-          <ImageList />
+          <ImageList gridSpace={gridSpace} />
         </Grid>
       )}
       <Grid item xs={6} sm={3}>
