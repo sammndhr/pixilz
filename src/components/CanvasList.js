@@ -78,6 +78,22 @@ const CanvasList = () => {
   }, [canvasesLoaded, imgsResizeDimensions, canvasRefs, images, canvasesDrawn])
 
   useEffect(() => {
+    canvasRefs.current = canvasRefs.current.slice(0, dataUrls.length)
+  }, [dataUrls.length])
+
+  useEffect(() => {
+    const cleanup = () => {
+      dispatch({ type: 'SET_DATA_URLS', payload: [] })
+      dispatch({ type: 'UPDATE_UPLOAD_STATUS', payload: false })
+      dispatch({ type: 'UPDATE_IMGS_LOAD_STATUS', payload: false })
+    }
+    return cleanup
+  }, [dispatch])
+
+  const handleRadioButtonChange = resizePrefs => {
+    setResizePrefs(resizePrefs)
+  }
+  const resizeImages = () => {
     if (images.length && dimensions.width) {
       const imgsList = Array.from(images),
         imgsLen = imgsList.length,
@@ -111,26 +127,10 @@ const CanvasList = () => {
         setImgsResizeDimensions(imgsResizeDimensions)
       }
     }
-  }, [resizePrefs, images, dimensions.width, dataUrls.length, canvases.length])
-
-  useEffect(() => {
-    canvasRefs.current = canvasRefs.current.slice(0, dataUrls.length)
-  }, [dataUrls.length])
-
-  useEffect(() => {
-    const cleanup = () => {
-      dispatch({ type: 'SET_DATA_URLS', payload: [] })
-      dispatch({ type: 'UPDATE_UPLOAD_STATUS', payload: false })
-      dispatch({ type: 'UPDATE_IMGS_LOAD_STATUS', payload: false })
-    }
-    return cleanup
-  }, [dispatch])
-
-  const handleRadioButtonChange = resizePrefs => {
-    setResizePrefs(resizePrefs)
   }
 
   const handleClick = e => {
+    resizeImages()
     setClickStatus(true)
     setShowLoader(true)
     const imgsLen = images.length,

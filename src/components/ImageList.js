@@ -6,17 +6,17 @@ import React, {
   useRef
 } from 'react'
 import DataContext from '../context/DataContext'
-import { calculateDimensions } from '../utils/'
-import { Grid, useMediaQuery } from '@material-ui/core/'
+import { calculateDimensions, useWindowSize } from '../utils/'
+import { Grid } from '@material-ui/core/'
 
 const ImageList = ({ gridSpace }) => {
-  const matches = useMediaQuery('(max-width:640px)')
+  const size = useWindowSize()
   const { state, dispatch } = useContext(DataContext)
   const { dataUrls } = state
   const [images, setImages] = useState([])
   const [maxWidth, setMaxWidth] = useState(document.body.clientWidth)
   const [dimensions, setDimensions] = useState({})
-  const [imgsLoaded, setImgsLoaded] = useState([])
+  const [imgsLoaded, setImgsLoaded] = useState(false)
   const [imgsLoadPromises, setImgsLoadPromises] = useState([])
 
   const imgsRefs = useRef([])
@@ -60,32 +60,21 @@ const ImageList = ({ gridSpace }) => {
       setImgsLoaded(true)
     }
   }, [dataUrls, imgsLoadPromises])
+  useEffect(() => {
+    console.log(size)
+  }, [size])
 
   useEffect(() => {
     // Can't use images from state because they are React objects
     const images = imgsRefs.current,
-      imgsLen = images.length,
-      dataUrlsLen = dataUrls.length,
       padding = 2 * (4 * gridSpace)
-    if (
-      dataUrlsLen &&
-      imgsLen === dataUrlsLen &&
-      imgsLoadPromises &&
-      !matches
-    ) {
+
+    if (imgsLoaded) {
       const dimensions = calculateDimensions(images, true)
       setMaxWidth(dimensions.width.max + padding) //multiply by 4 cause Material UI does it that way
       setDimensions(dimensions)
     }
-    if (matches && imgsLoadPromises) {
-      const newWidth = document.body.clientWidth - padding
-      const len = images.length
-      for (let i = 0; i < len; i++) {
-        const img = images[i]
-        img.setAttribute('width', newWidth)
-      }
-    }
-  }, [imgsRefs, dataUrls, imgsLoadPromises, matches, gridSpace])
+  }, [imgsRefs, imgsLoaded, gridSpace])
 
   useEffect(() => {
     if (!imgsLoaded) return

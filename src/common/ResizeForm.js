@@ -4,6 +4,8 @@ import DataContext from '../context/DataContext'
 const Resize = ({ handleRadioButtonChange }) => {
   const { state } = useContext(DataContext)
   const { dimensions } = state
+  const [disabled, setDisabled] = useState(false)
+
   // const [errors, setErrors] = useState({
   // width: false
   // })
@@ -21,6 +23,11 @@ const Resize = ({ handleRadioButtonChange }) => {
   )
   useEffect(() => {
     if (dimensions.width && dimensions.height && !width.min) {
+      if (dimensions.width.min === dimensions.width.max) {
+        setDisabled(true)
+      } else {
+        setDisabled(false)
+      }
       setWidth(dimensions.width)
     }
   }, [dimensions, width.min])
@@ -71,7 +78,7 @@ const Resize = ({ handleRadioButtonChange }) => {
 
   return (
     <div className='options'>
-      <fieldset>
+      <fieldset disabled={disabled}>
         <legend>Options</legend>
         <label className='form-check-label' htmlFor='smallest'>
           <input
