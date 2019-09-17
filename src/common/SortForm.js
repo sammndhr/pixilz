@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import Paper from '@material-ui/core/Paper'
 import Container from '@material-ui/core/Container'
@@ -39,9 +39,11 @@ const useStyles = makeStyles(theme => ({
 const SortForm = ({ handleCheckboxChange, uploadFiles }) => {
   const matches = useMediaQuery('(max-width:400px)')
   const classes = useStyles()
+
   if (matches) {
-    classes.label = {}
+    classes.label = '{}' //needs to be string otherwise will throw error
   }
+
   const [sort, setSort] = useState(true)
   const handleChange = e => {
     setSort(e.target.checked)

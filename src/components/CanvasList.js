@@ -11,8 +11,24 @@ import ProcessedCanvas from './ProcessedCanvas'
 import Resize from '../common/ResizeForm'
 import ImageList from './ImageList'
 import { calculateDimensions } from '../utils/'
+import { makeStyles } from '@material-ui/core/styles'
+import Paper from '@material-ui/core/Paper'
+import Grid from '@material-ui/core/Grid'
+
+const useStyles = makeStyles(theme => ({
+  root: {
+    flexGrow: 1
+  },
+  grid: { backgroundColor: '#e986a2' },
+  paper: {
+    padding: theme.spacing(2),
+    textAlign: 'center',
+    color: theme.palette.text.secondary
+  }
+}))
 
 const CanvasList = () => {
+  const classes = useStyles()
   const { state, dispatch } = useContext(DataContext)
   const { dimensions, imgsWrapperRef, dataUrls } = state
   const images = imgsWrapperRef ? imgsWrapperRef.children : []
@@ -155,27 +171,31 @@ const CanvasList = () => {
   return (
     <Fragment>
       {!clickStatus && (
-        <Fragment>
-          <aside className='aside'>
-            <Resize handleRadioButtonChange={handleRadioButtonChange} />
-            <div className='button-container'>
-              <button onClick={handleClick}>Stitch n Slice</button>
-            </div>
-          </aside>
+        <Grid container spacing={3} className={classes.grid} justify='center'>
+          <Grid item md={4} sm={12}>
+            <aside className='aside'>
+              <Resize handleRadioButtonChange={handleRadioButtonChange} />
+              <div className='button-container'>
+                <button onClick={handleClick}>Stitch n Slice</button>
+              </div>
+            </aside>
+          </Grid>
           <ImageList />
-        </Fragment>
+        </Grid>
       )}
-      {clickStatus && canvasesDrawn && (
-        <ProcessedCanvas resizePrefs={resizePrefs} />
-      )}
-      {clickStatus && !canvasesDrawn && (
-        <div
-          ref={canvasesWrapperRef}
-          className='canvases-wrapper'
-          style={{ maxWidth: dimensions.width.max }}>
-          {canvases}
-        </div>
-      )}
+      <Grid item xs={6} sm={3}>
+        {clickStatus && canvasesDrawn && (
+          <ProcessedCanvas resizePrefs={resizePrefs} />
+        )}
+        {clickStatus && !canvasesDrawn && (
+          <div
+            ref={canvasesWrapperRef}
+            className='canvases-wrapper'
+            style={{ maxWidth: dimensions.width.max }}>
+            {canvases}
+          </div>
+        )}
+      </Grid>
     </Fragment>
   )
 }

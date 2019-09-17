@@ -1,5 +1,4 @@
 import React, {
-  Fragment,
   useContext,
   useState,
   useEffect,
@@ -8,18 +7,18 @@ import React, {
 } from 'react'
 import DataContext from '../context/DataContext'
 import { calculateDimensions } from '../utils/'
+import { Grid, useMediaQuery } from '@material-ui/core/'
 
 const ImageList = () => {
+  const matches = useMediaQuery('(max-width:640px)')
   const { state, dispatch } = useContext(DataContext)
-
-  // const [clickStatus, setClickStatus] = useState(false)
   const { dataUrls } = state
-
   const [images, setImages] = useState([])
-  const [maxWidth, setMaxWidth] = useState(0)
+  const [maxWidth, setMaxWidth] = useState(document.body.clientWidth)
   const [dimensions, setDimensions] = useState({})
   const [imgsLoaded, setImgsLoaded] = useState([])
   const [imgsLoadPromises, setImgsLoadPromises] = useState([])
+
   const imgsRefs = useRef([])
 
   const imgsWrapperRef = useCallback(
@@ -42,7 +41,6 @@ const ImageList = () => {
             src={img}
             alt={i.toString()}
             key={i}
-            className='img-item'
             ref={el => {
               imgsRefs.current[i] = el
             }}
@@ -68,12 +66,24 @@ const ImageList = () => {
     const images = imgsRefs.current,
       imgsLen = images.length,
       dataUrlsLen = dataUrls.length
-    if (dataUrlsLen && imgsLen === dataUrlsLen && imgsLoadPromises) {
+    if (
+      dataUrlsLen &&
+      imgsLen === dataUrlsLen &&
+      imgsLoadPromises &&
+      !matches
+    ) {
       const dimensions = calculateDimensions(images, true)
-      setMaxWidth(dimensions.width.max)
+      setMaxWidth(dimensions.width.max + 12 + 12)
       setDimensions(dimensions)
     }
-  }, [imgsRefs, dataUrls, imgsLoadPromises])
+    if (matches && imgsLoadPromises) {
+      const len = images.length
+      for (let i = 0; i < len; i++) {
+        const img = images[i]
+        img.setAttribute('width', document.body.clientWidth - 12 - 12)
+      }
+    }
+  }, [imgsRefs, dataUrls, imgsLoadPromises, matches])
 
   useEffect(() => {
     if (!imgsLoaded) return
@@ -97,11 +107,11 @@ const ImageList = () => {
   }, [dataUrls, imgsLoadPromises])
 
   return (
-    <Fragment>
-      <div className='images-wrapper' ref={imgsWrapperRef} style={{ maxWidth }}>
+    <Grid item md={8} sm={12} style={{ maxWidth }}>
+      <div className='images-wrapper' ref={imgsWrapperRef}>
         {images}
       </div>
-    </Fragment>
+    </Grid>
   )
 }
 
