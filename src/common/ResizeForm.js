@@ -30,7 +30,18 @@ const Resize = ({ handleRadioButtonChange }) => {
       }
       setWidth(dimensions.width)
     }
-  }, [dimensions, width.min])
+    const cleanup = () => {
+      if (!!width.min) {
+        setWidth({
+          min: 0,
+          max: 0,
+          avg: 0
+        })
+      }
+    }
+    return cleanup
+  }, [dimensions, width])
+
   // const validate = ({ width = 0, height = 0 }) => {
   //   return {
   //     width: width <= 1080 && width >= 100,

@@ -7,9 +7,18 @@ import React, {
 } from 'react'
 import DataContext from '../context/DataContext'
 import { calculateDimensions, useWindowSize } from '../utils/'
-import { Grid } from '@material-ui/core/'
+import { Paper, Grid } from '@material-ui/core/'
+import ImageSizeWarning from '../common/ImageSizeWarning'
+import { makeStyles } from '@material-ui/core/styles'
+
+const useStyles = makeStyles(theme => ({
+  imgsWrapper: {
+    marginTop: theme.spacing(2)
+  }
+}))
 
 const ImageList = ({ gridSpace, imgResizeWidth }) => {
+  const classes = useStyles()
   const size = useWindowSize()
   const { state, dispatch } = useContext(DataContext)
   const { dataUrls } = state
@@ -18,9 +27,8 @@ const ImageList = ({ gridSpace, imgResizeWidth }) => {
   const [dimensions, setDimensions] = useState({})
   const [imgsLoaded, setImgsLoaded] = useState(false)
   const [imgsLoadPromises, setImgsLoadPromises] = useState([])
-
+  const [displaySizeWarning, setDisplaySizeWarning] = useState(false)
   const imgsRefs = useRef([])
-
   const imgsWrapperRef = useCallback(
     node => {
       if (node !== null) {
@@ -65,7 +73,7 @@ const ImageList = ({ gridSpace, imgResizeWidth }) => {
     // Can't use images from state because they are React objects
     const images = imgsRefs.current,
       imgsLen = images.length,
-      padding = 2 * (4 * gridSpace),
+      padding = 2 * (4 * gridSpace) + 16,
       resizeImages = newWidth => {
         for (let i = 0; i < imgsLen; i++) {
           const img = images[i]
@@ -74,7 +82,6 @@ const ImageList = ({ gridSpace, imgResizeWidth }) => {
       }
 
     if (imgsLoaded) {
-      console.log(imgResizeWidth)
       const dimensions = calculateDimensions(images, true),
         windowWidth = size.width - padding
       let reSizeWidth = imgResizeWidth
@@ -83,16 +90,21 @@ const ImageList = ({ gridSpace, imgResizeWidth }) => {
       if (windowWidth < imgResizeWidth) {
         reSizeWidth = windowWidth
       }
+      if (reSizeWidth !== imgResizeWidth) {
+        setDisplaySizeWarning(true)
+      } else {
+        setDisplaySizeWarning(false)
+      }
       resizeImages(reSizeWidth)
     }
-    // if (matches && imgsLoadPromises) {
-    //   const newWidth = document.body.clientWidth - padding
-    //   for (let i = 0; i < imgsLen; i++) {
-    //     const img = images[i]
-    //     img.setAttribute('width', newWidth)
-    //   }
-    // }
-  }, [imgsRefs, imgsLoaded, gridSpace, size, imgResizeWidth])
+  }, [
+    imgsRefs,
+    imgsLoaded,
+    gridSpace,
+    size,
+    imgResizeWidth,
+    displaySizeWarning
+  ])
 
   useEffect(() => {
     if (!imgsLoaded) return
@@ -117,9 +129,10 @@ const ImageList = ({ gridSpace, imgResizeWidth }) => {
 
   return (
     <Grid item md={8} sm={12} style={{ maxWidth }}>
-      <div className='images-wrapper' ref={imgsWrapperRef}>
+      {displaySizeWarning ? <ImageSizeWarning /> : null}
+      <Paper className={classes.imgsWrapper} ref={imgsWrapperRef}>
         {images}
-      </div>
+      </Paper>
     </Grid>
   )
 }
