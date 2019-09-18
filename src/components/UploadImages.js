@@ -70,6 +70,7 @@ const UploadImages = ({ history }) => {
       <input
         id='upload-images'
         type='file'
+        accept='image/*'
         multiple='multiple'
         onChange={e => {
           uploadFiles(e, history)

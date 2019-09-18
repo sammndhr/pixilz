@@ -17,62 +17,75 @@
       font-size: 1.3em;
       font-weight: 500;
     }
-  }
 
-  legend {
-    font-size: 1.12em;
-    width: auto;
-    margin-left: auto;
-    margin-right: auto;
-    color: $white;
-    background: $fieldset-border;
-    padding: 0.25em 1em;
-    border-radius: 1em;
-  }
-
-  [type='checkbox'],
-  [type='radio'] {
-    border: 0;
-    clip: rect(0 0 0 0);
-    height: 1px;
-    margin: -1px;
-    overflow: hidden;
-    padding: 0;
-    position: absolute;
-    width: 1px;
-
-    + span {
-      display: block;
-      color: $fieldset-border;
-      white-space: nowrap;
-      &:before {
-        content: '';
-        display: inline-block;
-        width: 1.1em;
-        height: 1.1em;
-        vertical-align: -0.25em;
-        border-radius: 1.1em;
-        box-shadow: 0 0 0 0.15em $fieldset-border;
-        margin-right: 0.75em;
-        transition: 0.5s ease all;
-      }
-
-      &:after {
-        font-size: 1.5em;
-        line-height: 1;
-        vertical-align: -0.125em;
-      }
+    legend {
+      font-size: 1.12em;
+      width: auto;
+      margin-left: auto;
+      margin-right: auto;
+      color: $white;
+      background: $fieldset-border;
+      padding: 0.25em 1em;
+      border-radius: 1em;
     }
 
-    &:checked + span {
-      &:before {
-        background: darken($red-hl, 5%);
-        box-shadow: 0 0 0 0.25em $fieldset-border;
-        border: 0.125em solid $fieldset-bg;
+    [type='checkbox'],
+    [type='radio'] {
+      border: 0;
+      clip: rect(0 0 0 0);
+      height: 1px;
+      margin: -1px;
+      overflow: hidden;
+      padding: 0;
+      position: absolute;
+      width: 1px;
+
+      + span {
+        display: block;
+        color: $fieldset-border;
+        white-space: nowrap;
+        &:before {
+          content: '';
+          display: inline-block;
+          width: 1.1em;
+          height: 1.1em;
+          vertical-align: -0.25em;
+          border-radius: 1.1em;
+          box-shadow: 0 0 0 0.15em $fieldset-border;
+          margin-right: 0.75em;
+          transition: 0.5s ease all;
+        }
+
+        &:after {
+          font-size: 1.5em;
+          line-height: 1;
+          vertical-align: -0.125em;
+        }
       }
 
-      &:after {
-        content: '';
+      &:checked + span {
+        &:before {
+          background: darken($red-hl, 5%);
+          box-shadow: 0 0 0 0.25em $fieldset-border;
+          border: 0.125em solid $fieldset-bg;
+        }
+
+        &:after {
+          content: '';
+        }
+      }
+    }
+  }
+  fieldset:disabled {
+    legend {
+      color: $grey-7;
+    }
+    label {
+      [type='checkbox'],
+      [type='radio'] {
+        + span {
+          color: $grey-7;
+        }
       }
     }
   }

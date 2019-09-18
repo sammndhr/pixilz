@@ -7,11 +7,11 @@ import React, {
   useRef
 } from 'react'
 import DataContext from '../context/DataContext'
-import { calculateDimensions } from '../utils/'
+import { calculateDimensions, useWindowSize } from '../utils/'
 
-const ImageList = () => {
+const ImageList = ({ imgResizeWidth }) => {
+  const size = useWindowSize()
   const { state, dispatch } = useContext(DataContext)
-
   // const [clickStatus, setClickStatus] = useState(false)
   const { dataUrls } = state
 
@@ -30,7 +30,6 @@ const ImageList = () => {
     },
     [dispatch]
   )
-
   useEffect(() => {
     if (!dataUrls.length) return
     const images = [],
@@ -42,7 +41,6 @@ const ImageList = () => {
             src={img}
             alt={i.toString()}
             key={i}
-            className='img-item'
             ref={el => {
               imgsRefs.current[i] = el
             }}
@@ -67,13 +65,35 @@ const ImageList = () => {
     // Can't use images from state because they are React objects
     const images = imgsRefs.current,
       imgsLen = images.length,
-      dataUrlsLen = dataUrls.length
-    if (dataUrlsLen && imgsLen === dataUrlsLen && imgsLoadPromises) {
-      const dimensions = calculateDimensions(images, true)
-      setMaxWidth(dimensions.width.max)
+      resizeImages = newWidth => {
+        for (let i = 0; i < imgsLen; i++) {
+          const img = images[i]
+          img.width = newWidth
+        }
+      }
+
+    if (imgsLoaded) {
+      const dimensions = calculateDimensions(images, true),
+        padding = 3 * 24
+      let asideWidth = 0
+      if (size.width > 1067) {
+        asideWidth = 453.142 + padding
+      }
+      const windowWidth = size.width - asideWidth
+      let reSizeWidth = imgResizeWidth
+      setMaxWidth(dimensions.width.max) //multiply by 4 cause Material UI does it that way
       setDimensions(dimensions)
+      if (windowWidth < imgResizeWidth) {
+        reSizeWidth = windowWidth
+      }
+      // if (reSizeWidth !== imgResizeWidth) {
+      //   setDisplaySizeWarning(true)
+      // } else {
+      //   setDisplaySizeWarning(false)
+      // }
+      resizeImages(reSizeWidth)
     }
-  }, [imgsRefs, dataUrls, imgsLoadPromises])
+  }, [imgsRefs, imgsLoaded, size, imgResizeWidth])
 
   useEffect(() => {
     if (!imgsLoaded) return

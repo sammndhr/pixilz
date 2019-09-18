@@ -14,7 +14,7 @@ import { calculateDimensions } from '../utils/'
 
 const CanvasList = () => {
   const { state, dispatch } = useContext(DataContext)
-  const { dimensions, imgsWrapperRef, dataUrls, loader } = state
+  const { dimensions, imgsWrapperRef, dataUrls } = state
   const images = imgsWrapperRef ? imgsWrapperRef.children : []
   const [clickStatus, setClickStatus] = useState(false)
   const [canvases, setCanvases] = useState([])
@@ -27,7 +27,7 @@ const CanvasList = () => {
     scaleDown: true,
     scaleUp: false
   })
-
+  const [imgResizeWidth, setImgResizeWidth] = useState(0)
   const canvasRefs = useRef([])
   const canvasesWrapperRef = useCallback(
     node => {
@@ -63,6 +63,35 @@ const CanvasList = () => {
   }, [canvasesLoaded, imgsResizeDimensions, canvasRefs, images, canvasesDrawn])
 
   useEffect(() => {
+    canvasRefs.current = canvasRefs.current.slice(0, dataUrls.length)
+  }, [dataUrls.length])
+
+  useEffect(() => {
+    if (dimensions.width && !imgResizeWidth) {
+      setImgResizeWidth(dimensions.width.min)
+    }
+  }, [dimensions, imgResizeWidth])
+
+  useEffect(() => {
+    const cleanup = () => {
+      dispatch({ type: 'SET_DATA_URLS', payload: [] })
+      dispatch({ type: 'UPDATE_UPLOAD_STATUS', payload: false })
+      dispatch({ type: 'UPDATE_IMGS_LOAD_STATUS', payload: false })
+    }
+    return cleanup
+  }, [dispatch])
+
+  const handleRadioButtonChange = resizePrefs => {
+    setResizePrefs(resizePrefs)
+    if (!dimensions.width) return
+    if (resizePrefs.scaleDown) {
+      setImgResizeWidth(dimensions.width.min)
+    } else {
+      setImgResizeWidth(dimensions.width.max)
+    }
+  }
+
+  const resizeImages = () => {
     if (images.length && dimensions.width) {
       const imgsList = Array.from(images),
         imgsLen = imgsList.length,
@@ -96,26 +125,10 @@ const CanvasList = () => {
         setImgsResizeDimensions(imgsResizeDimensions)
       }
     }
-  }, [resizePrefs, images, dimensions.width, dataUrls.length, canvases.length])
-
-  useEffect(() => {
-    canvasRefs.current = canvasRefs.current.slice(0, dataUrls.length)
-  }, [dataUrls.length])
-
-  useEffect(() => {
-    const cleanup = () => {
-      dispatch({ type: 'SET_DATA_URLS', payload: [] })
-      dispatch({ type: 'UPDATE_UPLOAD_STATUS', payload: false })
-      dispatch({ type: 'UPDATE_IMGS_LOAD_STATUS', payload: false })
-    }
-    return cleanup
-  }, [dispatch])
-
-  const handleRadioButtonChange = resizePrefs => {
-    setResizePrefs(resizePrefs)
   }
 
   const handleClick = e => {
+    resizeImages()
     setClickStatus(true)
     setShowLoader(true)
     const imgsLen = images.length,
@@ -156,13 +169,15 @@ const CanvasList = () => {
     <Fragment>
       {!clickStatus && (
         <Fragment>
-          <aside className='aside'>
-            <Resize handleRadioButtonChange={handleRadioButtonChange} />
-            <div className='button-container'>
-              <button onClick={handleClick}>Stitch n Slice</button>
-            </div>
-          </aside>
-          <ImageList />
+          <div>
+            <aside className='aside'>
+              <Resize handleRadioButtonChange={handleRadioButtonChange} />
+              <div className='button-container'>
+                <button onClick={handleClick}>Stitch n Slice</button>
+              </div>
+            </aside>
+          </div>
+          <ImageList imgResizeWidth={imgResizeWidth} />
         </Fragment>
       )}
       {clickStatus && canvasesDrawn && (
