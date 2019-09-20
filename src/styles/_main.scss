@@ -1,6 +1,6 @@
 .main-grid {
   display: grid;
-  background-color: rgba($teal-3, 0.25);
+  background-color: rgba($green-3, 0.25);
   grid-template-areas: 'options canvas';
   grid-template-columns: minmax(min-content, max-content) minmax(
       min-content,

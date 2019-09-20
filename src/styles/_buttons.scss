@@ -1,48 +1,93 @@
-/* Button container */
 .button-container {
-  position: relative;
-  display: inline-block;
-  text-align: center;
-  width: 45%;
-  min-width: 250px;
-  margin: 10px;
-
-  & label {
-    padding: 1.5rem;
-  }
-  & label,
+  label,
   button {
-    position: relative;
+    display: inline-block;
+    text-align: center;
+    align-items: center;
+    margin: 1.5rem 0 1rem;
+    padding: 6px 3rem;
     cursor: pointer;
-    margin: 0 auto;
-    width: 15rem;
-    height: 4.375rem;
-    border: $border-width solid $button;
-    border-radius: 2.5rem;
-    // background: transparent;
-    background-color: rgba($teal-6, 0.12);
-    color: $button;
-    letter-spacing: 1px;
-    font-size: 1.3rem;
-    font-family: $font-family;
+    color: #fff;
+    background-color: $button;
+    position: relative;
+    font-size: 1.25rem;
+    font-weight: 600;
+    min-width: 64px;
+    box-sizing: border-box;
+    transition: background-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,
+      box-shadow 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,
+      border 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+    font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif;
+    line-height: 1.75;
+    border-radius: 4px;
+    letter-spacing: 0.02857em;
+    // text-transform: uppercase;
+    &:active {
+      box-shadow: 0px 1px 3px 0px rgba(0, 0, 0, 0.2),
+        0px 2px 2px 0px rgba(0, 0, 0, 0.14),
+        0px 3px 1px -2px rgba(0, 0, 0, 0.12);
+    }
 
-    transition: background-color 0.3s, color 0.3s, width 0.3s, border-width 0.3s,
-      border-color 0.3s;
+    span {
+      width: 100%;
+    }
+    &:hover {
+      text-decoration: none;
+      background-color: $button-hover;
+    }
+  }
+
+  @media (hover: none) {
+    button:hover {
+      background-color: transparent;
+    }
+  }
+
+  @media (hover: none) {
+    button:hover {
+      background-color: $button;
+    }
+  }
+}
+
+.upload-btn {
+  position: relative;
+
+  label,
+  button {
+    .cloud-cover {
+      display: inline-block;
+      height: 40px;
+      width: 40px;
+      position: absolute;
+      background-color: $background;
+      left: -19%;
+    }
+
+    span {
+      position: relative;
+      left: 0;
+      transition: all 0.3s;
+    }
 
     &:hover {
-      background-color: $button-hover;
-      border-color: $button-hover;
-      color: $white;
-      text-decoration: none;
+      span {
+        position: relative;
+        left: 20.5px;
+      }
     }
-    &:active {
-      background-color: $button-active;
-      color: $white;
-      border-color: $button-active;
+
+    &::before {
+      content: url("data:image/svg+xml;charset=UTF-8, <svg xmlns='http://www.w3.org/2000/svg' x='0px' y='0px' viewBox='0 0 24 24'  width='30' height='46.42' xml:space='preserve'><path style='fill:white' d='M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM14 13v4h-4v-4H7l5-5 5 5h-3z'></path></svg>");
+      position: absolute;
+      top: 0px;
+      right: 260px;
+      transition: all 0.3s;
     }
-    &:focus {
-      outline: none;
-      text-decoration: none;
+
+    &:hover::before {
+      display: inline-block;
+      right: 188.19px;
     }
   }
 }

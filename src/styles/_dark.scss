@@ -17,10 +17,10 @@
         a {
           color: $primary;
           &:hover {
-            color: $teal-5;
+            color: $green-5;
           }
           &:active {
-            color: $teal-8;
+            color: $green-8;
           }
         }
       }
@@ -29,5 +29,14 @@
 
   .main-grid {
     background-color: rgba($cyan-2, 0.2);
+  }
+
+  .upload-btn {
+    label,
+    button {
+      .cloud-cover {
+        background-color: $dark-background;
+      }
+    }
   }
 }

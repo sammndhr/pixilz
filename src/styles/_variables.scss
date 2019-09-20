@@ -2,12 +2,10 @@ $max-canvas-width: 2000px;
 $width: 1450px;
 $header-height: 3.5rem;
 $font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-
+$primary: $green;
 /* Buttons */
-$button: $teal-7;
-$button-hover: $teal-6;
-$button-active: $teal-9;
-$border-width: 0.125rem;
+$button: $primary;
+$button-hover: $green-7;
 
 :export {
   width: $width;
@@ -30,8 +28,8 @@ $dark-background: $grey-9;
 $background: $grey-0;
 $default-color: $grey-7;
 $default-dark-color: $grey-1;
-$primary: $teal-7;
-$primary-dark: $teal-5;
+$primary: $green-5;
+$primary-dark: $green-5;
 
 /* Links */
 $link: $blue-7;

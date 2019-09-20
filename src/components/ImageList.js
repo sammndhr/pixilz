@@ -8,6 +8,7 @@ import React, {
 } from 'react'
 import DataContext from '../context/DataContext'
 import { calculateDimensions, useWindowSize } from '../utils/'
+import ImageSizeWarning from '../common/ImageSizeWarning'
 
 const ImageList = ({ imgResizeWidth }) => {
   const size = useWindowSize()
@@ -20,6 +21,7 @@ const ImageList = ({ imgResizeWidth }) => {
   const [dimensions, setDimensions] = useState({})
   const [imgsLoaded, setImgsLoaded] = useState([])
   const [imgsLoadPromises, setImgsLoadPromises] = useState([])
+  const [displaySizeWarning, setDisplaySizeWarning] = useState(false)
   const imgsRefs = useRef([])
 
   const imgsWrapperRef = useCallback(
@@ -86,11 +88,11 @@ const ImageList = ({ imgResizeWidth }) => {
       if (windowWidth < imgResizeWidth) {
         reSizeWidth = windowWidth
       }
-      // if (reSizeWidth !== imgResizeWidth) {
-      //   setDisplaySizeWarning(true)
-      // } else {
-      //   setDisplaySizeWarning(false)
-      // }
+      if (reSizeWidth !== imgResizeWidth) {
+        setDisplaySizeWarning(true)
+      } else {
+        setDisplaySizeWarning(false)
+      }
       resizeImages(reSizeWidth)
     }
   }, [imgsRefs, imgsLoaded, size, imgResizeWidth])
@@ -119,6 +121,7 @@ const ImageList = ({ imgResizeWidth }) => {
   return (
     <Fragment>
       <div className='images-wrapper' ref={imgsWrapperRef} style={{ maxWidth }}>
+        {displaySizeWarning ? <ImageSizeWarning /> : null}
         {images}
       </div>
     </Fragment>

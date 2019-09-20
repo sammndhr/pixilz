@@ -3,31 +3,32 @@
 $white: #ffffff;
 $jet-black: #000000;
 
-/*  teals Primary "green" */
-$teal-0: #e4f8ef;
-$teal-1: #c6f0df;
-$teal-2: #a5e8cc;
-$teal-3: #7edfb6;
-$teal-4: #4fd39c;
-$teal-5: #12c47a;
-$teal-6: #10b16e;
-$teal-7: #0e9b60;
-$teal-8: #0b8150;
-$teal-9: #085d39;
+/*  greens Primary "green" */
+
+$green: #27ae60;
+$green-1: mix(white, $green, 80);
+$green-2: mix(white, $green, 60);
+$green-3: mix(white, $green, 40);
+$green-4: mix(white, $green, 20);
+$green-5: $green;
+$green-6: mix(black, $green, 20);
+$green-7: mix(black, $green, 40);
+$green-8: mix(black, $green, 60);
+$green-9: mix(black, $green, 80);
 
 //greys
+$grey: #a7b6ad;
 $grey-0: #f8f9f9;
-$grey-1: #ecedef;
-$grey-2: #dee0e3;
-$grey-3: #cfd3d7;
-$grey-4: #bfc4ca;
-$grey-5: #adb3bb;
-$grey-6: #99a0a9;
-$grey-7: #818995;
-$grey-8: #626d7b;
-$grey-9: #292e34;
-$grey-10: darken($grey-9, 7%);
-$grey-11: #121924;
+$grey-1: mix(white, $grey, 80);
+$grey-2: mix(white, $grey, 60);
+$grey-3: mix(white, $grey, 40);
+$grey-4: mix(white, $grey, 20);
+$grey-5: $grey;
+$grey-6: mix(black, $grey, 20);
+$grey-7: mix(black, $grey, 40);
+$grey-8: mix(black, $grey, 60);
+$grey-9: mix(black, $grey, 80);
+$grey-10: mix(black, $grey, 90);
 
 /* blues */
 $blue-0: #e7eef9;
