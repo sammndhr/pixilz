@@ -88,7 +88,6 @@ const Resize = ({ handleRadioButtonChange }) => {
   return (
     <div className='options'>
       <fieldset disabled={disabled}>
-        <legend>Options</legend>
         <label className='form-check-label' htmlFor='smallest'>
           <input
             disabled={disabled}

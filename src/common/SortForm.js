@@ -1,6 +1,6 @@
 import React, { Fragment, useState, useEffect } from 'react'
-
-const SortForm = ({ handleCheckboxChange }) => {
+import Button from './Button'
+const SortForm = ({ handleCheckboxChange, uploadFiles }) => {
   const [sort, setSort] = useState(true)
 
   const handleChange = e => {
@@ -13,9 +13,9 @@ const SortForm = ({ handleCheckboxChange }) => {
 
   return (
     <Fragment>
-      <div className='options'>
-        <fieldset>
-          <legend>Options</legend>
+      <div className='form options'>
+        <fieldset className='form-group'>
+          {/* <legend>Options</legend> */}
           <label className='form-check-label' htmlFor='sorted'>
             <input
               className='input'
@@ -25,9 +25,20 @@ const SortForm = ({ handleCheckboxChange }) => {
               checked={sort}
               onChange={handleChange}
             />
+
             <span>Auto sort after uploading</span>
           </label>
         </fieldset>
+        <Button htmlFor={'upload-images'} content={'Upload Images'} />
+        <input
+          id='upload-images'
+          type='file'
+          accept='image/*'
+          multiple='multiple'
+          onChange={e => {
+            uploadFiles(e)
+          }}
+        />
       </div>
     </Fragment>
   )

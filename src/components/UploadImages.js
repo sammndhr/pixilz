@@ -1,9 +1,8 @@
-import React, { Fragment, useState, useContext, useEffect } from 'react'
+import React, { useState, useContext, useEffect } from 'react'
 import { withRouter } from 'react-router'
 import DataContext from '../context/DataContext'
 import SortForm from '../common/SortForm'
 import { sortFiles } from '../utils/'
-import Button from '../common/Button'
 
 const UploadImages = ({ history }) => {
   const { state, dispatch } = useContext(DataContext)
@@ -64,19 +63,12 @@ const UploadImages = ({ history }) => {
   }
 
   return (
-    <Fragment>
-      <SortForm handleCheckboxChange={handleCheckboxChange} />
-      <Button htmlFor={'upload-images'} content={'Upload Images'} />
-      <input
-        id='upload-images'
-        type='file'
-        accept='image/*'
-        multiple='multiple'
-        onChange={e => {
-          uploadFiles(e, history)
-        }}
-      />
-    </Fragment>
+    <SortForm
+      handleCheckboxChange={handleCheckboxChange}
+      uploadFiles={e => {
+        uploadFiles(e, history)
+      }}
+    />
   )
 }
 

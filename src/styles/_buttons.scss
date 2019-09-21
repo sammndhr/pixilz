@@ -1,5 +1,6 @@
 .button-container {
-  label,
+  .button,
+  label.button,
   button {
     display: inline-block;
     text-align: center;
@@ -19,9 +20,8 @@
       border 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
     font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif;
     line-height: 1.75;
-    border-radius: 4px;
+    border-radius: $border-radius;
     letter-spacing: 0.02857em;
-    // text-transform: uppercase;
     &:active {
       box-shadow: 0px 1px 3px 0px rgba(0, 0, 0, 0.2),
         0px 2px 2px 0px rgba(0, 0, 0, 0.14),
