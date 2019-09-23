@@ -20,7 +20,8 @@ const DataProvider = ({ children }) => {
     resizePrefs: {
       scaleDown: false,
       scaleUp: true
-    }
+    },
+    sort: true
   }
 
   const reducer = (state, action) => {
@@ -47,6 +48,8 @@ const DataProvider = ({ children }) => {
         return { ...state, loader: action.payload }
       case 'UPDATE_RESIZE_PREFS':
         return { ...state, resizePrefs: action.payload }
+      case 'UPDATE_SORT':
+        return { ...state, sort: action.payload }
       default:
         return { ...state }
     }

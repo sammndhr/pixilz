@@ -1,15 +1,14 @@
-import React, { Fragment, useState, useEffect } from 'react'
+import React, { Fragment, useContext } from 'react'
 import Button from './Button'
-const SortForm = ({ handleCheckboxChange, uploadFiles }) => {
-  const [sort, setSort] = useState(true)
+import DataContext from '../context/DataContext'
+
+const SortForm = ({ uploadFiles }) => {
+  const { state, dispatch } = useContext(DataContext)
+  const { sort } = state
 
   const handleChange = e => {
-    setSort(e.target.checked)
+    dispatch({ type: 'UPDATE_SORT', payload: e.target.checked })
   }
-
-  useEffect(() => {
-    handleCheckboxChange(sort)
-  }, [handleCheckboxChange, sort])
 
   return (
     <Fragment>

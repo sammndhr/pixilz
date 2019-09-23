@@ -6,9 +6,9 @@ import { sortFiles } from '../utils/'
 
 const UploadImages = ({ history }) => {
   const { state, dispatch } = useContext(DataContext)
+  const { sort } = state
   const [dataUrls, setDataUrls] = useState([])
   const [imgsUploaded, setImgsUploaded] = useState(false)
-  const [sort, setSort] = useState(true)
 
   useEffect(() => {
     if (!state.dataUrls.length) {
@@ -58,13 +58,8 @@ const UploadImages = ({ history }) => {
       })
   }
 
-  const handleCheckboxChange = sort => {
-    setSort({ sort })
-  }
-
   return (
     <SortForm
-      handleCheckboxChange={handleCheckboxChange}
       uploadFiles={e => {
         uploadFiles(e, history)
       }}
