@@ -14,30 +14,29 @@ const SortForm = ({ uploadFiles }) => {
     <Fragment>
       <div className='form options'>
         <fieldset className='form-group'>
-          {/* <legend>Options</legend> */}
-          <label className='form-check-label' htmlFor='sorted'>
-            <input
-              className='input'
-              type='checkbox'
-              name='sorted'
-              id='sorted'
-              checked={sort}
-              onChange={handleChange}
-            />
-
+          <input
+            type='checkbox'
+            name='sort'
+            id='sort'
+            checked={sort}
+            onChange={handleChange}
+          />
+          <label className='form-check-label' htmlFor='sort'>
+            <span id='cb-span'></span>
             <span>Auto sort after uploading</span>
           </label>
+
+          <Button htmlFor={'upload-images'} content={'Upload Images'} />
+          <input
+            id='upload-images'
+            type='file'
+            accept='image/*'
+            multiple='multiple'
+            onChange={e => {
+              uploadFiles(e)
+            }}
+          />
         </fieldset>
-        <Button htmlFor={'upload-images'} content={'Upload Images'} />
-        <input
-          id='upload-images'
-          type='file'
-          accept='image/*'
-          multiple='multiple'
-          onChange={e => {
-            uploadFiles(e)
-          }}
-        />
       </div>
     </Fragment>
   )

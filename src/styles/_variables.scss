@@ -6,7 +6,9 @@ $primary: $green;
 /* Buttons & forms */
 $border-radius: 4px;
 $button: $primary;
+$hover: $green-7;
 $button-hover: $green-7;
+$font-color: $grey-9;
 
 :export {
   width: $width;
