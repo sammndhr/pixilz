@@ -3,12 +3,21 @@ $width: 1450px;
 $header-height: 3.5rem;
 $font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 $primary: $green;
+$font-color: $grey-11;
+
 /* Buttons & forms */
+/* Forms */
+$checked-color: $blue-5;
+$unchecked-color: $font-color;
+$checkbox-height: 1.25rem;
+$hover-bg-color: $grey-2;
+$form-bg-color: $grey-1;
+
+/* Buttons */
 $border-radius: 4px;
 $button: $primary;
 $hover: $green-7;
 $button-hover: $green-7;
-$font-color: $grey-9;
 
 :export {
   width: $width;
@@ -27,7 +36,7 @@ $loader-animation-duration: 1s !default;
 $fieldset-border: $blue-9;
 $fieldset-bg: rgba(lighten($blue-5, 25%), 0.85);
 
-$dark-background: $grey-9;
+$dark-background: $grey-11;
 $background: $grey-0;
 $default-color: $grey-7;
 $default-dark-color: $grey-1;

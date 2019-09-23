@@ -1,4 +1,8 @@
 .dark.container {
+  $form-bg-color: $grey-10;
+  $checked-color: $blue-4;
+  $hover-bg-color: $grey-9;
+
   background-color: $dark-background;
   color: $default-dark-color;
   a {
@@ -35,7 +39,45 @@
     label,
     button {
       .cloud-cover {
-        background-color: $dark-background;
+        background-color: $form-bg-color;
+      }
+    }
+  }
+  .options,
+  form {
+    color: $default-dark-color;
+    background-color: $form-bg-color;
+    .form-group {
+      input[type='checkbox'] {
+        + .form-check-label {
+          #cb-span {
+            border: $checkbox-height * 0.1 solid $default-dark-color;
+          }
+          &:hover {
+            background-color: $hover-bg-color;
+          }
+        }
+        &:checked + .form-check-label {
+          #cb-span {
+            border-color: $checked-color;
+            &::before,
+            &::after {
+              background-color: $checked-color;
+            }
+            &::before {
+              box-shadow: 0 0 0 $checkbox-height * 0.05 $form-bg-color;
+            }
+          }
+        }
+        + .form-check-label {
+          &:hover {
+            #cb-span {
+              &::before {
+                box-shadow: 0 0 0 $checkbox-height * 0.05 $hover-bg-color;
+              }
+            }
+          }
+        }
       }
     }
   }
