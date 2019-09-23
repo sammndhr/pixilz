@@ -120,9 +120,11 @@ const ImageList = ({ imgResizeWidth }) => {
 
   return (
     <Fragment>
-      <div className='images-wrapper' ref={imgsWrapperRef} style={{ maxWidth }}>
+      <div style={{ maxWidth }}>
         {displaySizeWarning ? <ImageSizeWarning /> : null}
-        {images}
+        <div className='images-wrapper' ref={imgsWrapperRef}>
+          {images}
+        </div>
       </div>
     </Fragment>
   )

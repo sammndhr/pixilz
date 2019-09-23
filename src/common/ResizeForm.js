@@ -1,13 +1,11 @@
-import React, { useState, useEffect, useContext } from 'react'
+import React, { useState, useEffect, useContext, Fragment } from 'react'
 import DataContext from '../context/DataContext'
 
-const Resize = ({ handleRadioButtonChange }) => {
+const Resize = ({ handleRadioButtonChange, handleClick }) => {
   const { state } = useContext(DataContext)
   const { dimensions } = state
   const [disabled, setDisabled] = useState(false)
-  // const [errors, setErrors] = useState({
-  // width: false
-  // })
+
   const [resizePrefs, setResizePrefs] = useState({
     scaleDown: true,
     scaleUp: false
@@ -40,12 +38,7 @@ const Resize = ({ handleRadioButtonChange }) => {
     }
     return cleanup
   }, [dimensions, width.min])
-  // const validate = ({ width = 0, height = 0 }) => {
-  //   return {
-  //     width: width <= 1080 && width >= 100,
-  //     height: height <= 3000 && height >= 100
-  //   }
-  // }
+
   const handleChange = event => {
     handleRadioButtonChange(event.target.value)
     setselectedVal(event.target.value)
@@ -66,69 +59,42 @@ const Resize = ({ handleRadioButtonChange }) => {
     }
   }, [selectedVal, resizePrefs, handleRadioButtonChange])
 
-  // const handleWidthChange = event => {
-  //   const error = !validate({ width: event.target.value }).width
-  //   if (error) {
-  //     setErrors({
-  //       ...errors,
-  //       width: error
-  //     })
-  //   } else {
-  //     setErrors({
-  //       ...errors,
-  //       width: false
-  //     })
-  //   }
-  //   setWidth({
-  //     ...w,
-  //     width: event.target.value
-  //   })
-  // }
-
   return (
-    <div className='options'>
-      <fieldset disabled={disabled}>
-        <label className='form-check-label' htmlFor='smallest'>
-          <input
-            disabled={disabled}
-            className='input'
-            type='radio'
-            name='resize'
-            value='scaleDown'
-            id='smallest'
-            checked={selectedVal === 'scaleDown' && !disabled}
-            onChange={handleChange}
-          />
-          <span>Resize to smallest image {width.min}px</span>
-        </label>
-        <label className='form-check-label' htmlFor='largest'>
-          <input
-            disabled={disabled}
-            className='input'
-            type='radio'
-            name='resize'
-            value='scaleUp'
-            id='largest'
-            checked={selectedVal === 'scaleUp' && !disabled}
-            onChange={handleChange}
-          />
-          <span>Resize to largest image {width.max}px</span>
-        </label>
-        {/* 
-        <label className='form-check-label' htmlFor='width'>
-          <div>Exact Width</div>
-          <span>{w.min}px &gt; </span>
-          <input
-            className={errors.width ? 'error input' : 'input'}
-            min={w.min}
-            max={w.max}
-            type='number'
-            onChange={handleWidthChange}
-            value={w.width}
-            name='width'
-          />
-          <span> &lt; {w.max}px</span>
-        </label> */}
+    <div className='form options'>
+      <fieldset className='form-group'>
+        {!disabled ? (
+          <Fragment>
+            <label className='form-radio-label' htmlFor='smallest'>
+              <input
+                disabled={disabled}
+                className='input'
+                type='radio'
+                name='resize'
+                value='scaleDown'
+                id='smallest'
+                checked={selectedVal === 'scaleDown' && !disabled}
+                onChange={handleChange}
+              />
+              <span>Resize to smallest image {width.min}px</span>
+            </label>
+            <label className='form-radio-label' htmlFor='largest'>
+              <input
+                disabled={disabled}
+                className='input'
+                type='radio'
+                name='resize'
+                value='scaleUp'
+                id='largest'
+                checked={selectedVal === 'scaleUp' && !disabled}
+                onChange={handleChange}
+              />
+              <span>Resize to largest image {width.max}px</span>
+            </label>
+          </Fragment>
+        ) : null}
+        <div className='button-container'>
+          <button onClick={handleClick}>Stitch n Slice</button>
+        </div>
       </fieldset>
     </div>
   )

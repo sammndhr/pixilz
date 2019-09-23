@@ -1,117 +1,144 @@
-.options {
+$duration: 0.3s;
+
+.options,
+.form {
+  background-color: $form-bg-color;
   margin: 3rem auto;
   min-width: 250px;
   max-width: 32rem;
   padding: 0 1rem;
+  color: $font-color;
 
-  fieldset {
+  .form-group {
     font-size: 1em;
-    padding: 1em 4em;
-    border-radius: 0.5em;
-    background-color: $fieldset-bg;
-    border: 2px solid $fieldset-border;
-    label {
+    padding: 1em;
+    border-radius: $border-radius;
+    input[type='checkbox'] + .form-check-label,
+    .form-radio-label {
       display: block;
+      white-space: nowrap;
       cursor: pointer;
-      line-height: 2.5;
-      font-size: 1.3em;
-      font-weight: 500;
-    }
-
-    legend {
-      font-size: 1.12em;
-      width: auto;
-      margin-left: auto;
-      margin-right: auto;
-      color: $white;
-      background: $fieldset-border;
-      padding: 0.25em 1em;
-      border-radius: 1em;
-    }
-
-    [type='checkbox'],
-    [type='radio'] {
-      border: 0;
-      clip: rect(0 0 0 0);
-      height: 1px;
-      margin: -1px;
-      overflow: hidden;
-      padding: 0;
-      position: absolute;
-      width: 1px;
-
-      + span {
-        display: block;
-        color: $fieldset-border;
+      display: block;
+      font-size: 1.15rem;
+      padding: 1rem;
+      span {
         white-space: nowrap;
-        &:before {
-          content: '';
-          display: inline-block;
-          width: 1.1em;
-          height: 1.1em;
-          vertical-align: -0.25em;
-          border-radius: 1.1em;
-          box-shadow: 0 0 0 0.15em $fieldset-border;
-          margin-right: 0.75em;
-          transition: 0.5s ease all;
-        }
-
-        &:after {
-          font-size: 1.5em;
-          line-height: 1;
-          vertical-align: -0.125em;
-        }
       }
-
-      &:checked + span {
-        &:before {
-          background: darken($red-hl, 5%);
-          box-shadow: 0 0 0 0.25em $fieldset-border;
-          border: 0.125em solid $fieldset-bg;
-        }
-
-        &:after {
-          content: '';
-        }
+      #cb-span {
+        vertical-align: -0.25rem;
+        margin-right: 0.75rem;
+        height: $checkbox-height;
+        width: $checkbox-height;
+        background-color: transparent;
+        border: $checkbox-height * 0.1 solid $unchecked-color;
+        border-radius: $border-radius - 1;
+        position: relative;
+        display: inline-block;
+        box-sizing: border-box;
+        transition: border-color ease $duration/2;
+        cursor: pointer;
+      }
+      &:hover {
+        background-color: $hover-bg-color;
       }
     }
-  }
-  fieldset:disabled {
-    legend {
-      color: $grey-7;
-    }
-    label {
-      [type='checkbox'],
-      [type='radio'] {
-        + span {
-          color: $grey-7;
+    input[type='checkbox'] {
+      display: none;
+
+      &:checked + .form-check-label {
+        #cb-span {
+          border-color: $checked-color;
+
+          &::before,
+          &::after {
+            content: ' ';
+            box-sizing: border-box;
+            position: absolute;
+            height: 0;
+            width: $checkbox-height * 0.2;
+            background-color: $checked-color;
+            display: inline-block;
+            transform-origin: left top;
+            border-radius: $border-radius - 2;
+          }
+          &::after {
+            top: $checkbox-height * 0.37;
+            left: $checkbox-height * 0.05;
+            transform: rotate(-45deg);
+            animation: bottomcheck $duration/2 ease 0s forwards;
+          }
+
+          &::before {
+            top: $checkbox-height * 0.72;
+            left: $checkbox-height * 0.41;
+            box-shadow: 0 0 0 $checkbox-height * 0.05 $form-bg-color;
+            transform: rotate(-135deg);
+            animation: topcheck $duration ease 0s forwards;
+          }
+        }
+      }
+      + .form-check-label {
+        &:hover {
+          #cb-span {
+            &::before {
+              box-shadow: 0 0 0 $checkbox-height * 0.05 $hover-bg-color;
+            }
+          }
         }
       }
     }
   }
 }
+
+@keyframes bottomcheck {
+  0% {
+    height: 0;
+  }
+  100% {
+    height: $checkbox-height/2;
+  }
+}
+
+@keyframes topcheck {
+  0% {
+    height: 0;
+  }
+  50% {
+    height: 0;
+  }
+  100% {
+    height: $checkbox-height * 1.2;
+  }
+}
+
+// ------
 
 .aside {
+  .form,
   .options {
-    fieldset {
-      padding: 1em 2em;
-    }
+    margin: 0;
+    // fieldset {
+    //   padding: 1em 2em;
+    // }
   }
 }
 
-@media all and (max-width: 400px) {
+@media all and (max-width: 450px) {
+  .options,
+  .form {
+    .form-group {
+      padding: 1em;
+    }
+  }
   .options {
     padding: 0;
     fieldset {
-      padding: 1em 2.3em;
+      padding: 3em 2.3em;
     }
   }
   .aside {
     .options {
       padding: 0;
-      fieldset {
-        padding: 1em 0.8em;
-      }
     }
   }
 }

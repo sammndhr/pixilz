@@ -26,22 +26,24 @@ $grey-4: mix(white, $grey, 20);
 $grey-5: $grey;
 $grey-6: mix(black, $grey, 20);
 $grey-7: mix(black, $grey, 40);
-$grey-8: mix(black, $grey, 60);
-$grey-9: mix(black, $grey, 80);
-$grey-10: mix(black, $grey, 90);
+$grey-8: mix(black, $grey, 50);
+$grey-9: mix(black, $grey, 60);
+$grey-10: mix(black, $grey, 70);
+$grey-11: mix(black, $grey, 80);
+$grey-12: mix(black, $grey, 90);
 
 /* blues */
-$blue-0: #e7eef9;
-$blue-1: #ccdcf2;
-$blue-2: #adc7ea;
-$blue-3: #89aee1;
-$blue-4: #5a8ed6;
-$blue-5: #3682ed;
-$blue-6: #125cc4;
-$blue-7: #1052b0;
-$blue-8: #0e4899;
-$blue-9: #0b3b7d;
-$blue-10: #082957;
+$blue: #3682ed;
+
+$blue-1: mix(white, $blue, 80);
+$blue-2: mix(white, $blue, 60);
+$blue-3: mix(white, $blue, 40);
+$blue-4: mix(white, $blue, 20);
+$blue-5: $blue;
+$blue-6: mix(black, $blue, 20);
+$blue-7: mix(black, $blue, 40);
+$blue-8: mix(black, $blue, 60);
+$blue-9: mix(black, $blue, 80);
 
 /* cyans */
 $cyan-0: #e3f6f8;
