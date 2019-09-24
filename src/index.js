@@ -8,8 +8,6 @@ import { ThemeProvider } from './context/ThemeContext'
 import { DataProvider } from './context/DataContext'
 
 ReactDOM.render(
-  //todo: change to use history instead of forceRefresh
-  // <Router forceRefresh={true}>
   <Router>
     <ThemeProvider>
       <DataProvider>

@@ -59,7 +59,6 @@ class ProcessedCanvas extends Component {
         })
         const blob = this.getCanvasBlob(canvas, 'image/jpeg', 1).then(
           blob => {
-            // blobs.push(blob) //since it's asyc, push the promises so they stay in order
             return blob
           },
           err => {
@@ -72,16 +71,26 @@ class ProcessedCanvas extends Component {
     this.setState({
       blobs
     })
-    this.pushToHistoryState(this.props.history)
+    if (this.props.history.location.pathname !== '/download') {
+      this.pushToHistoryState(this.props.history)
+    }
   }
 
   componentWillUnmount() {
     const { dispatch } = this.context
+
+    if (this.props.history.action === 'POP') {
+      this.props.history.replace('/')
+      dispatch({
+        type: 'RESET'
+      })
+    }
     dispatch({
       type: 'UPDATE_CANVAS_PROCESS_STATUS',
       payload: false
     })
   }
+
   pushToHistoryState = history => {
     history.push('/download')
   }
@@ -147,7 +156,7 @@ class ProcessedCanvas extends Component {
                 </div>
               </aside>
             </div>
-            <div className='canvases-wrapper'>
+            <div className='canvases-wrapper' id='processed-canvases'>
               {this.state.processedCanvases.map((processedCan, i) => {
                 return processedCan.canvas
               })}

@@ -11,8 +11,9 @@ import ProcessedCanvas from './ProcessedCanvas'
 import Resize from '../common/ResizeForm'
 import ImageList from './ImageList'
 import { calculateDimensions } from '../utils/'
+import { withRouter } from 'react-router-dom'
 
-const CanvasList = () => {
+const CanvasList = ({ history }) => {
   const { state, dispatch } = useContext(DataContext)
   const {
     dimensions,
@@ -23,7 +24,6 @@ const CanvasList = () => {
   } = state
   const images = imgsWrapperRef ? imgsWrapperRef.children : []
   const [clickStatus, setClickStatus] = useState(false)
-  // const [canvases, setCanvases] = useState([])
   const [imgsResizeDimensions, setImgsResizeDimensions] = useState([])
   const [canvasesDrawn, setCanvasesDrawn] = useState(false)
   const [showLoader, setShowLoader] = useState(false)
@@ -42,6 +42,7 @@ const CanvasList = () => {
     },
     [dispatch]
   )
+
   useEffect(() => {
     dispatch({ type: 'SHOW_LOADER', payload: showLoader })
     const cleanup = () => {
@@ -53,7 +54,7 @@ const CanvasList = () => {
 
   useEffect(() => {
     const imgsLen = images.length
-    if (!canvasesLoaded || canvasesDrawn) return
+    if (!canvasesLoaded || canvasesDrawn || !imgsResizeDimensions.length) return
     const drawCanvas = (img, i) => {
       const canvas = canvasRefs.current[i],
         { oWidth, oHeight, nWidth, nHeight } = imgsResizeDimensions[i],
@@ -203,4 +204,4 @@ const CanvasList = () => {
   )
 }
 
-export default CanvasList
+export default withRouter(CanvasList)

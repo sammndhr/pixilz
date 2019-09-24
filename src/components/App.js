@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react'
-import { Route } from 'react-router-dom'
+import { Route, withRouter } from 'react-router-dom'
 import '../styles/App.scss'
 import ThemeContext from '../context/ThemeContext'
 import DataContext from '../context/DataContext'
@@ -10,13 +10,21 @@ import CanvasList from './CanvasList'
 import UploadImages from './UploadImages'
 import Loader from '../common/Loader'
 
-const App = () => {
+const App = ({ history }) => {
   const theme = useContext(ThemeContext)
   const { dark } = theme
   const { state } = useContext(DataContext)
   const { imgsLoaded, canvasesLoaded, canvasProcessStatus, loader } = state
   const [themeClass, setThemeClass] = useState('')
   const [mainClass, setMainClass] = useState('')
+
+  useEffect(() => {
+    return () => {
+      if (history.action === 'POP') {
+        history.replace('/')
+      }
+    }
+  }, [history])
 
   useEffect(() => {
     if ((imgsLoaded || canvasesLoaded || canvasProcessStatus) && !mainClass) {
@@ -61,4 +69,4 @@ const App = () => {
   )
 }
 
-export default App
+export default withRouter(App)
