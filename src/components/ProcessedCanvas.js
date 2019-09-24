@@ -71,26 +71,38 @@ class ProcessedCanvas extends Component {
     this.setState({
       blobs
     })
+
     if (this.props.history.location.pathname !== '/download') {
       this.pushToHistoryState(this.props.history)
     }
   }
 
+  componentDidMount() {
+    const { dispatch } = this.context
+    this.replaceHistory(this.props.history, dispatch)
+  }
+
   componentWillUnmount() {
     const { dispatch } = this.context
+    this.replaceHistory(this.props.history, dispatch)
 
-    if (this.props.history.action === 'POP') {
-      this.props.history.replace('/')
-      dispatch({
-        type: 'RESET'
-      })
-    }
     dispatch({
       type: 'UPDATE_CANVAS_PROCESS_STATUS',
       payload: false
     })
+    dispatch({
+      type: 'UPDATE_CANVASES_LOADED',
+      payload: false
+    })
   }
-
+  replaceHistory = (history, dispatch) => {
+    if (history.action === 'POP') {
+      history.replace('/')
+      dispatch({
+        type: 'RESET'
+      })
+    }
+  }
   pushToHistoryState = history => {
     history.push('/download')
   }

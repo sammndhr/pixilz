@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react'
-import { Route, withRouter } from 'react-router-dom'
+import { Route, Redirect } from 'react-router-dom'
 import '../styles/App.scss'
 import ThemeContext from '../context/ThemeContext'
 import DataContext from '../context/DataContext'
@@ -10,21 +10,13 @@ import CanvasList from './CanvasList'
 import UploadImages from './UploadImages'
 import Loader from '../common/Loader'
 
-const App = ({ history }) => {
+const App = () => {
   const theme = useContext(ThemeContext)
   const { dark } = theme
   const { state } = useContext(DataContext)
   const { imgsLoaded, canvasesLoaded, canvasProcessStatus, loader } = state
   const [themeClass, setThemeClass] = useState('')
   const [mainClass, setMainClass] = useState('')
-
-  useEffect(() => {
-    return () => {
-      if (history.action === 'POP') {
-        history.replace('/')
-      }
-    }
-  }, [history])
 
   useEffect(() => {
     if ((imgsLoaded || canvasesLoaded || canvasProcessStatus) && !mainClass) {
@@ -62,6 +54,7 @@ const App = ({ history }) => {
         <Route path='/' exact render={() => <UploadImages />} />
         <Route path='/options' render={() => <CanvasList />} />
         <Route path='/download' render={() => <ProcessedCanvas />} />
+        <Redirect from='*' to='/' />
       </main>
       {/* https://reacttraining.com/react-router/web/api/Route/render-func */}
       <Footer />
@@ -69,4 +62,4 @@ const App = ({ history }) => {
   )
 }
 
-export default withRouter(App)
+export default App

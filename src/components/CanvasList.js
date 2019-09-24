@@ -44,6 +44,13 @@ const CanvasList = ({ history }) => {
   )
 
   useEffect(() => {
+    if (history.action === 'POP') {
+      history.replace('/')
+      dispatch({ type: 'RESET' })
+    }
+  }, [history, dispatch])
+
+  useEffect(() => {
     dispatch({ type: 'SHOW_LOADER', payload: showLoader })
     const cleanup = () => {
       setShowLoader(false)
