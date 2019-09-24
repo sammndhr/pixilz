@@ -48,15 +48,17 @@
     color: $default-dark-color;
     background-color: $form-bg-color;
     .form-group {
-      input[type='checkbox'] {
-        + .form-check-label {
-          #cb-span {
-            border: $checkbox-height * 0.1 solid $default-dark-color;
-          }
-          &:hover {
-            background-color: $hover-bg-color;
-          }
+      input[type='checkbox'] + .form-check-label,
+      .form-radio-label {
+        #cb-span {
+          border: $checkbox-height * 0.1 solid $default-dark-color;
         }
+        &:hover {
+          background-color: $hover-bg-color;
+        }
+      }
+
+      input[type='checkbox'] {
         &:checked + .form-check-label {
           #cb-span {
             border-color: $checked-color;

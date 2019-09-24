@@ -13,35 +13,37 @@ $duration: 0.3s;
     font-size: 1em;
     padding: 1em;
     border-radius: $border-radius;
+    input[type='checkbox'] + .form-check-label,
+    .form-radio-label {
+      display: block;
+      white-space: nowrap;
+      cursor: pointer;
+      display: block;
+      font-size: 1.15rem;
+      padding: 1rem;
+      span {
+        white-space: nowrap;
+      }
+      #cb-span {
+        vertical-align: -0.25rem;
+        margin-right: 0.75rem;
+        height: $checkbox-height;
+        width: $checkbox-height;
+        background-color: transparent;
+        border: $checkbox-height * 0.1 solid $unchecked-color;
+        border-radius: $border-radius - 1;
+        position: relative;
+        display: inline-block;
+        box-sizing: border-box;
+        transition: border-color ease $duration/2;
+        cursor: pointer;
+      }
+      &:hover {
+        background-color: $hover-bg-color;
+      }
+    }
     input[type='checkbox'] {
       display: none;
-      + .form-check-label {
-        white-space: nowrap;
-        cursor: pointer;
-        display: block;
-        font-size: 1.15rem;
-        padding: 1rem;
-        span {
-          white-space: nowrap;
-        }
-        #cb-span {
-          vertical-align: -0.25rem;
-          margin-right: 0.75rem;
-          height: $checkbox-height;
-          width: $checkbox-height;
-          background-color: transparent;
-          border: $checkbox-height * 0.1 solid $unchecked-color;
-          border-radius: $border-radius - 1;
-          position: relative;
-          display: inline-block;
-          box-sizing: border-box;
-          transition: border-color ease $duration/2;
-          cursor: pointer;
-        }
-        &:hover {
-          background-color: $hover-bg-color;
-        }
-      }
 
       &:checked + .form-check-label {
         #cb-span {
@@ -112,26 +114,31 @@ $duration: 0.3s;
 // ------
 
 .aside {
+  .form,
   .options {
-    fieldset {
-      padding: 1em 2em;
-    }
+    margin: 0;
+    // fieldset {
+    //   padding: 1em 2em;
+    // }
   }
 }
 
 @media all and (max-width: 450px) {
+  .options,
+  .form {
+    .form-group {
+      padding: 1em;
+    }
+  }
   .options {
     padding: 0;
     fieldset {
-      padding: 1em 2.3em;
+      padding: 3em 2.3em;
     }
   }
   .aside {
     .options {
       padding: 0;
-      fieldset {
-        padding: 1em 0.8em;
-      }
     }
   }
 }

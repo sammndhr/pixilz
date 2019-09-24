@@ -134,11 +134,19 @@ class ProcessedCanvas extends Component {
       <Fragment>
         {!this.context.state.loader && (
           <Fragment>
-            <aside className='aside'>
-              <div className='button-container'>
-                <button onClick={this.handleDownloadClick}>Download</button>
-              </div>
-            </aside>
+            <div>
+              <aside className='aside'>
+                <div className='button-container'>
+                  <div className='form options'>
+                    <fieldset className='form-group'>
+                      <button onClick={this.handleDownloadClick}>
+                        Download
+                      </button>
+                    </fieldset>
+                  </div>
+                </div>
+              </aside>
+            </div>
             <div className='canvases-wrapper'>
               {this.state.processedCanvases.map((processedCan, i) => {
                 return processedCan.canvas

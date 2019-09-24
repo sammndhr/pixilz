@@ -14,11 +14,16 @@ import { calculateDimensions } from '../utils/'
 
 const CanvasList = () => {
   const { state, dispatch } = useContext(DataContext)
-  const { dimensions, imgsWrapperRef, dataUrls } = state
+  const {
+    dimensions,
+    imgsWrapperRef,
+    dataUrls,
+    canvasesLoaded,
+    canvases
+  } = state
   const images = imgsWrapperRef ? imgsWrapperRef.children : []
   const [clickStatus, setClickStatus] = useState(false)
-  const [canvases, setCanvases] = useState([])
-  const [canvasesLoaded, setCanvasLoadStatus] = useState(false)
+  // const [canvases, setCanvases] = useState([])
   const [imgsResizeDimensions, setImgsResizeDimensions] = useState([])
   const [canvasesDrawn, setCanvasesDrawn] = useState(false)
   const [showLoader, setShowLoader] = useState(false)
@@ -127,7 +132,7 @@ const CanvasList = () => {
     }
   }
 
-  const handleClick = e => {
+  const handleClick = () => {
     resizeImages()
     setClickStatus(true)
     setShowLoader(true)
@@ -159,8 +164,11 @@ const CanvasList = () => {
       canvases.push(canvas)
 
       if (i === imgsLen - 1) {
-        setCanvases(canvases)
-        setCanvasLoadStatus(true)
+        dispatch({ type: 'SET_CANVASES', payload: canvases })
+        dispatch({
+          type: 'UPDATE_CANVASES_LOADED',
+          payload: true
+        })
       }
     }
   }
@@ -171,10 +179,10 @@ const CanvasList = () => {
         <Fragment>
           <div>
             <aside className='aside'>
-              <Resize handleRadioButtonChange={handleRadioButtonChange} />
-              <div className='button-container'>
-                <button onClick={handleClick}>Stitch n Slice</button>
-              </div>
+              <Resize
+                handleClick={handleClick}
+                handleRadioButtonChange={handleRadioButtonChange}
+              />
             </aside>
           </div>
           <ImageList imgResizeWidth={imgResizeWidth} />

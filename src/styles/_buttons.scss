@@ -5,7 +5,7 @@
     display: inline-block;
     text-align: center;
     align-items: center;
-    margin: 1.5rem 0 1rem;
+    margin: 1rem 0;
     padding: 6px 3rem;
     cursor: pointer;
     color: #fff;
@@ -30,6 +30,7 @@
 
     span {
       width: 100%;
+      white-space: nowrap;
     }
     &:hover {
       text-decoration: none;
@@ -93,11 +94,17 @@
 }
 
 @media all and (max-width: 450px) {
-  .button-container {
-    .button,
-    label.button,
+  .upload-btn {
+    position: relative;
+
+    label,
     button {
-      margin: 1rem 1rem 1rem 1rem;
+      &:before {
+        right: 350px;
+      }
+      .cloud-cover {
+        display: none;
+      }
     }
   }
 }
