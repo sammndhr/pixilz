@@ -3,10 +3,12 @@ import { Link } from 'react-router-dom'
 import sun from '../images/sun.svg'
 import moon from '../images/moon.svg'
 import ThemeContext from '../context/ThemeContext'
+import DataContext from '../context/DataContext'
 import { Button } from '../common/Button'
 
 const Navigation = () => {
   const theme = useContext(ThemeContext)
+  const { dispatch } = useContext(DataContext)
   const [scrolled, setscrolled] = useState(false)
   const [headerClass, setheaderClass] = useState('header')
 
@@ -37,14 +39,23 @@ const Navigation = () => {
     )
   }
 
+  const renderBrand = () => {
+    const dispatchReset = () => {
+      dispatch({ type: 'RESET' })
+    }
+    return (
+      <div className='brand'>
+        <Link to='/' onClick={dispatchReset}>
+          <span className='text'>STITCH 'N' SLICE</span>
+        </Link>
+      </div>
+    )
+  }
+
   return (
     <header className={headerClass}>
       <nav className='nav'>
-        <div className='brand'>
-          <Link to='/'>
-            <span className='text'>STITCH 'N' SLICE</span>
-          </Link>
-        </div>
+        {renderBrand()}
         <div className='links'>
           <Button
             className='dark-switcher'
