@@ -13,7 +13,7 @@ $duration: 0.3s;
     font-size: 1em;
     padding: 1em;
     border-radius: $border-radius;
-    input[type='checkbox'] + .form-check-label,
+    .form-check-label,
     .form-radio-label {
       display: block;
       white-space: nowrap;
@@ -24,7 +24,8 @@ $duration: 0.3s;
       span {
         white-space: nowrap;
       }
-      #cb-span {
+
+      .cb-span {
         vertical-align: -0.25rem;
         margin-right: 0.75rem;
         height: $checkbox-height;
@@ -41,45 +42,48 @@ $duration: 0.3s;
       &:hover {
         background-color: $hover-bg-color;
       }
-    }
-    input[type='checkbox'] {
-      display: none;
+      input[type='checkbox'],
+      input[type='radio'] {
+        display: none;
 
-      &:checked + .form-check-label {
-        #cb-span {
-          border-color: $checked-color;
+        &:checked {
+          + .cb-span {
+            border-color: $checked-color;
+            &::before,
+            &::after {
+              content: ' ';
+              box-sizing: border-box;
+              position: absolute;
+              height: 0;
+              width: $checkbox-height * 0.2;
+              background-color: $checked-color;
+              display: inline-block;
+              transform-origin: left top;
+              border-radius: $border-radius - 2;
+            }
+            &::after {
+              top: $checkbox-height * 0.37;
+              left: $checkbox-height * 0.05;
+              transform: rotate(-45deg);
+              animation: bottomcheck $duration/2 ease 0s forwards;
+            }
 
-          &::before,
-          &::after {
-            content: ' ';
-            box-sizing: border-box;
-            position: absolute;
-            height: 0;
-            width: $checkbox-height * 0.2;
-            background-color: $checked-color;
-            display: inline-block;
-            transform-origin: left top;
-            border-radius: $border-radius - 2;
-          }
-          &::after {
-            top: $checkbox-height * 0.37;
-            left: $checkbox-height * 0.05;
-            transform: rotate(-45deg);
-            animation: bottomcheck $duration/2 ease 0s forwards;
-          }
-
-          &::before {
-            top: $checkbox-height * 0.72;
-            left: $checkbox-height * 0.41;
-            box-shadow: 0 0 0 $checkbox-height * 0.05 $form-bg-color;
-            transform: rotate(-135deg);
-            animation: topcheck $duration ease 0s forwards;
+            &::before {
+              top: $checkbox-height * 0.72;
+              left: $checkbox-height * 0.41;
+              box-shadow: 0 0 0 $checkbox-height * 0.05 $form-bg-color;
+              transform: rotate(-135deg);
+              animation: topcheck $duration ease 0s forwards;
+            }
           }
         }
       }
-      + .form-check-label {
-        &:hover {
-          #cb-span {
+    }
+    .form-check-label {
+      &:hover {
+        input[type='checkbox'],
+        input[type='radio'] {
+          + .cb-span {
             &::before {
               box-shadow: 0 0 0 $checkbox-height * 0.05 $hover-bg-color;
             }

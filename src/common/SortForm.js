@@ -14,15 +14,15 @@ const SortForm = ({ uploadFiles }) => {
     <Fragment>
       <div className='form options'>
         <fieldset className='form-group'>
-          <input
-            type='checkbox'
-            name='sort'
-            id='sort'
-            checked={sort}
-            onChange={handleChange}
-          />
           <label className='form-check-label' htmlFor='sort'>
-            <span id='cb-span'></span>
+            <input
+              type='checkbox'
+              name='sort'
+              id='sort'
+              checked={sort}
+              onChange={handleChange}
+            />
+            <span className='cb-span'></span>
             <span>Auto sort after uploading</span>
           </label>
 

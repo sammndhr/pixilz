@@ -49,19 +49,19 @@
     color: $default-dark-color;
     background-color: $form-bg-color;
     .form-group {
-      input[type='checkbox'] + .form-check-label,
+      .form-check-label,
       .form-radio-label {
-        #cb-span {
+        .cb-span {
           border: $checkbox-height * 0.1 solid $default-dark-color;
         }
         &:hover {
           background-color: $hover-bg-color;
         }
       }
-
-      input[type='checkbox'] {
-        &:checked + .form-check-label {
-          #cb-span {
+      input[type='checkbox'],
+      input[type='radio'] {
+        &:checked {
+          + .cb-span {
             border-color: $checked-color;
             &::before,
             &::after {
@@ -72,9 +72,12 @@
             }
           }
         }
-        + .form-check-label {
-          &:hover {
-            #cb-span {
+      }
+      .form-check-label {
+        &:hover {
+          input[type='checkbox'],
+          input[type='radio'] {
+            + .cb-span {
               &::before {
                 box-shadow: 0 0 0 $checkbox-height * 0.05 $hover-bg-color;
               }
