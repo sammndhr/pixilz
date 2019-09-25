@@ -1,5 +1,5 @@
 import React, { Fragment, useContext } from 'react'
-import Button from './Button'
+import { UploadButton } from './Button'
 import DataContext from '../context/DataContext'
 
 const SortForm = ({ uploadFiles }) => {
@@ -26,7 +26,7 @@ const SortForm = ({ uploadFiles }) => {
             <span>Auto sort after uploading</span>
           </label>
 
-          <Button htmlFor={'upload-images'} content={'Upload Images'} />
+          <UploadButton htmlFor={'upload-images'} content={'Upload Images'} />
           <input
             id='upload-images'
             type='file'

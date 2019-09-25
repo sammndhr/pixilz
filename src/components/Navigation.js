@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import sun from '../images/sun.svg'
 import moon from '../images/moon.svg'
 import ThemeContext from '../context/ThemeContext'
+import { Button } from '../common/Button'
 
 const Navigation = () => {
   const theme = useContext(ThemeContext)
@@ -45,11 +46,11 @@ const Navigation = () => {
           </Link>
         </div>
         <div className='links'>
-          <div className='cta-btn'>
-            <button className='dark-switcher' onClick={theme.toggleTheme}>
-              {renderThemeButton(theme)}
-            </button>
-          </div>
+          <Button
+            className='dark-switcher'
+            handleClick={theme.toggleTheme}
+            content={renderThemeButton(theme)}
+          />
         </div>
       </nav>
     </header>

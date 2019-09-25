@@ -4,6 +4,7 @@ import { saveAs } from 'file-saver'
 import { Zip } from '../utils'
 import DataContext from '../context/DataContext'
 import { stitchProcessing } from '../utils/'
+import { Button } from '../common/Button'
 
 class ProcessedCanvas extends Component {
   static contextType = DataContext
@@ -147,9 +148,10 @@ class ProcessedCanvas extends Component {
                 <div className='button-container'>
                   <div className='form options'>
                     <fieldset className='form-group'>
-                      <button onClick={this.handleDownloadClick}>
-                        Download
-                      </button>
+                      <Button
+                        handleClick={this.handleDownloadClick}
+                        content='Download'
+                      />
                     </fieldset>
                   </div>
                 </div>

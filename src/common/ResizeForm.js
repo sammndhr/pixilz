@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useContext, Fragment } from 'react'
 import DataContext from '../context/DataContext'
+import { Button } from './Button'
 
 const Resize = ({ handleRadioButtonChange, handleClick }) => {
   const { state } = useContext(DataContext)
@@ -10,14 +11,17 @@ const Resize = ({ handleRadioButtonChange, handleClick }) => {
     scaleDown: true,
     scaleUp: false
   })
+
   const [width, setWidth] = useState({
     min: 0,
     max: 0,
     avg: 0
   })
+
   const [selectedVal, setselectedVal] = useState(
     resizePrefs.scaleDown ? 'scaleDown' : 'scaleUp'
   )
+
   useEffect(() => {
     if (dimensions.width && dimensions.height && !width.min) {
       if (dimensions.width.min === dimensions.width.max) {
@@ -92,9 +96,7 @@ const Resize = ({ handleRadioButtonChange, handleClick }) => {
             </label>
           </Fragment>
         ) : null}
-        <div className='button-container'>
-          <button onClick={handleClick}>Stitch n Slice</button>
-        </div>
+        <Button handleClick={handleClick} content='Stitch n Slice' />
       </fieldset>
     </div>
   )

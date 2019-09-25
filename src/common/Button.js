@@ -1,6 +1,6 @@
 import React from 'react'
 
-const Button = ({ htmlFor, content }) => {
+const UploadButton = ({ htmlFor, content }) => {
   return (
     <div className='button-container upload-btn'>
       <label className='button' htmlFor={htmlFor}>
@@ -11,5 +11,12 @@ const Button = ({ htmlFor, content }) => {
   )
 }
 
-export default Button
-// height: '30px',width: '50px',position: 'absolute',backgroundColor: 'red',left: 0,
+const Button = ({ handleClick, content, className }) => {
+  return (
+    <div className={className || 'button-container'}>
+      <button onClick={handleClick}>{content}</button>
+    </div>
+  )
+}
+
+export { UploadButton, Button }
