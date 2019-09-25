@@ -54,8 +54,15 @@
         .cb-span {
           border: $checkbox-height * 0.1 solid $default-dark-color;
         }
+        .radio-span {
+          box-shadow: 0 0 0 0.125em $default-dark-color;
+          border-color: $form-bg-color;
+        }
         &:hover {
           background-color: $hover-bg-color;
+          .radio-span {
+            border-color: $hover-bg-color;
+          }
         }
       }
       input[type='checkbox'],

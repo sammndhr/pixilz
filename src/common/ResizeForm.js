@@ -79,6 +79,7 @@ const Resize = ({ handleRadioButtonChange, handleClick }) => {
                 checked={selectedVal === 'scaleDown' && !disabled}
                 onChange={handleChange}
               />
+              <span className='radio-span'></span>
               <span>Resize to smallest image {width.min}px</span>
             </label>
             <label className='form-radio-label' htmlFor='largest'>
@@ -92,6 +93,7 @@ const Resize = ({ handleRadioButtonChange, handleClick }) => {
                 checked={selectedVal === 'scaleUp' && !disabled}
                 onChange={handleChange}
               />
+              <span className='radio-span'></span>
               <span>Resize to largest image {width.max}px</span>
             </label>
           </Fragment>
