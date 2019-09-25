@@ -2,9 +2,10 @@
   $form-bg-color: $grey-10;
   $checked-color: $blue-4;
   $hover-bg-color: $grey-9;
-
+  $paper-bg-color: $grey-10;
   background-color: $dark-background;
   color: $default-dark-color;
+
   a {
     color: $blue-4;
     &:hover {
@@ -32,7 +33,7 @@
   }
 
   .main-grid {
-    background-color: rgba($cyan-2, 0.2);
+    background-color: $paper-bg-color;
   }
 
   .upload-btn {

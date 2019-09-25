@@ -66,6 +66,9 @@
           color: $green-9;
         }
       }
+      span.text {
+        white-space: nowrap;
+      }
     }
 
     .links {

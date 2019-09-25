@@ -1,6 +1,6 @@
 .main-grid {
   display: grid;
-  background-color: rgba($green-3, 0.25);
+  background-color: $paper-bg-color;
   grid-template-areas: 'options canvas';
   grid-template-columns: minmax(min-content, max-content) minmax(
       min-content,
@@ -37,15 +37,14 @@
 @media all and (max-width: 1067px) {
   .main-grid {
     .aside {
+      margin-top: 1rem;
       max-width: 820px;
     }
+    grid-gap: 1rem;
     grid-template-areas:
       'options'
-      'canvas' !important;
-    grid-template-columns: minmax(
-      300px,
-      1fr
-    ) !important; //TODO: fix with some library(https://github.com/contra/react-responsive) that allows condiitional media query styling with react.
+      'canvas';
+    grid-template-columns: minmax(300px, 1fr);
   }
 }
 
