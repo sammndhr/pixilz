@@ -1,7 +1,6 @@
 import React, { Component, Fragment } from 'react'
 import { withRouter } from 'react-router-dom'
 import { saveAs } from 'file-saver'
-
 import { Zip } from '../utils'
 import DataContext from '../context/DataContext'
 import { stitchProcessing } from '../utils/'
@@ -77,14 +76,8 @@ class ProcessedCanvas extends Component {
     }
   }
 
-  componentDidMount() {
-    const { dispatch } = this.context
-    this.replaceHistory(this.props.history, dispatch)
-  }
-
   componentWillUnmount() {
     const { dispatch } = this.context
-    this.replaceHistory(this.props.history, dispatch)
 
     dispatch({
       type: 'UPDATE_CANVAS_PROCESS_STATUS',
@@ -95,14 +88,7 @@ class ProcessedCanvas extends Component {
       payload: false
     })
   }
-  replaceHistory = (history, dispatch) => {
-    if (history.action === 'POP') {
-      history.replace('/')
-      dispatch({
-        type: 'RESET'
-      })
-    }
-  }
+
   pushToHistoryState = history => {
     history.push('/download')
   }
@@ -118,6 +104,7 @@ class ProcessedCanvas extends Component {
       )
     })
   }
+
   drawCanvas = (canvas, { sourceCan, i, width, height }) => {
     const ctx = canvas.getContext('2d')
     ctx.drawImage(sourceCan, 0, 0, width, height, 0, 0, width, height)

@@ -1,5 +1,6 @@
 import React, { useState, useContext, useEffect } from 'react'
 import { Route, Redirect } from 'react-router-dom'
+import { useHistory } from 'react-router'
 import '../styles/App.scss'
 import ThemeContext from '../context/ThemeContext'
 import DataContext from '../context/DataContext'
@@ -9,6 +10,22 @@ import Footer from './Footer'
 import CanvasList from './CanvasList'
 import UploadImages from './UploadImages'
 import Loader from '../common/Loader'
+
+const RedirectRoute = ({ children, ...rest }) => {
+  const history = useHistory()
+  const { dispatch } = useContext(DataContext)
+
+  const renderRedirect = () => {
+    dispatch({ type: 'RESET' })
+    return <Redirect to='/' />
+  }
+
+  return history.action === 'POP' ? (
+    renderRedirect()
+  ) : (
+    <Route {...rest}>{children}</Route>
+  )
+}
 
 const App = () => {
   const theme = useContext(ThemeContext)
@@ -51,12 +68,17 @@ const App = () => {
       <Navigation />
       <main className={mainClass}>
         {loader && <Loader />}
-        <Route path='/' exact render={() => <UploadImages />} />
-        <Route path='/options' render={() => <CanvasList />} />
-        <Route path='/download' render={() => <ProcessedCanvas />} />
+        <RedirectRoute path='/' exact>
+          <UploadImages />
+        </RedirectRoute>
+        <RedirectRoute path='/options' exact>
+          <CanvasList />
+        </RedirectRoute>
+        <RedirectRoute path='/download'>
+          <ProcessedCanvas />
+        </RedirectRoute>
         <Redirect from='*' to='/' />
       </main>
-      {/* https://reacttraining.com/react-router/web/api/Route/render-func */}
       <Footer />
     </div>
   )

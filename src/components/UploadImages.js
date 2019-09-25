@@ -1,10 +1,10 @@
 import React, { useState, useContext, useEffect } from 'react'
-import { withRouter } from 'react-router'
+import { withRouter, useHistory } from 'react-router'
 import DataContext from '../context/DataContext'
 import SortForm from '../common/SortForm'
 import { sortFiles } from '../utils/'
-
-const UploadImages = ({ history }) => {
+const UploadImages = () => {
+  const history = useHistory()
   const { state, dispatch } = useContext(DataContext)
   const { sort } = state
   const [dataUrls, setDataUrls] = useState([])

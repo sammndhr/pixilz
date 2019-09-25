@@ -11,7 +11,7 @@ import { calculateDimensions, useWindowSize } from '../utils/'
 import ImageSizeWarning from '../common/ImageSizeWarning'
 import { withRouter } from 'react-router'
 
-const ImageList = ({ history }) => {
+const ImageList = () => {
   const size = useWindowSize()
   const { state, dispatch } = useContext(DataContext)
   const { dataUrls, imgResizeWidth } = state
@@ -32,13 +32,6 @@ const ImageList = ({ history }) => {
     },
     [dispatch]
   )
-
-  useEffect(() => {
-    if (history.action === 'POP') {
-      history.replace('/')
-      dispatch({ type: 'RESET' })
-    }
-  }, [history, dispatch])
 
   useEffect(() => {
     if (!dataUrls.length) return
