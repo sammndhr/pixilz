@@ -22,7 +22,8 @@ const DataProvider = ({ children }) => {
       scaleDown: false,
       scaleUp: true
     },
-    sort: true
+    sort: true,
+    imgResizeWidth: 0
   }
 
   const reducer = (state, action) => {
@@ -53,6 +54,8 @@ const DataProvider = ({ children }) => {
         return { ...state, resizePrefs: action.payload }
       case 'UPDATE_SORT':
         return { ...state, sort: action.payload }
+      case 'UPDATE_IMG_RESIZE_WIDTH':
+        return { ...state, imgResizeWidth: action.payload }
       default:
         return { ...state }
     }

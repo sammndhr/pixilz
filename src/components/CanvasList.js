@@ -20,7 +20,8 @@ const CanvasList = ({ history }) => {
     imgsWrapperRef,
     dataUrls,
     canvasesLoaded,
-    canvases
+    canvases,
+    imgResizeWidth
   } = state
   const images = imgsWrapperRef ? imgsWrapperRef.children : []
   const [clickStatus, setClickStatus] = useState(false)
@@ -32,7 +33,7 @@ const CanvasList = ({ history }) => {
     scaleDown: true,
     scaleUp: false
   })
-  const [imgResizeWidth, setImgResizeWidth] = useState(0)
+  // const [imgResizeWidth, setImgResizeWidth] = useState(0)
   const canvasRefs = useRef([])
   const canvasesWrapperRef = useCallback(
     node => {
@@ -81,9 +82,12 @@ const CanvasList = ({ history }) => {
 
   useEffect(() => {
     if (dimensions.width && !imgResizeWidth) {
-      setImgResizeWidth(dimensions.width.min)
+      dispatch({
+        type: 'UPDATE_IMG_RESIZE_WIDTH',
+        payload: dimensions.width.min
+      })
     }
-  }, [dimensions, imgResizeWidth])
+  }, [dimensions, imgResizeWidth, dispatch])
 
   useEffect(() => {
     const cleanup = () => {
@@ -98,9 +102,15 @@ const CanvasList = ({ history }) => {
     setResizePrefs(resizePrefs)
     if (!dimensions.width) return
     if (resizePrefs.scaleDown) {
-      setImgResizeWidth(dimensions.width.min)
+      dispatch({
+        type: 'UPDATE_IMG_RESIZE_WIDTH',
+        payload: dimensions.width.min
+      })
     } else {
-      setImgResizeWidth(dimensions.width.max)
+      dispatch({
+        type: 'UPDATE_IMG_RESIZE_WIDTH',
+        payload: dimensions.width.max
+      })
     }
   }
 
@@ -193,7 +203,7 @@ const CanvasList = ({ history }) => {
               />
             </aside>
           </div>
-          <ImageList imgResizeWidth={imgResizeWidth} />
+          <ImageList />
         </Fragment>
       )}
       {clickStatus && canvasesDrawn && (

@@ -9,12 +9,12 @@ import React, {
 import DataContext from '../context/DataContext'
 import { calculateDimensions, useWindowSize } from '../utils/'
 import ImageSizeWarning from '../common/ImageSizeWarning'
+import { withRouter } from 'react-router'
 
-const ImageList = ({ imgResizeWidth }) => {
+const ImageList = ({ history }) => {
   const size = useWindowSize()
   const { state, dispatch } = useContext(DataContext)
-  // const [clickStatus, setClickStatus] = useState(false)
-  const { dataUrls } = state
+  const { dataUrls, imgResizeWidth } = state
 
   const [images, setImages] = useState([])
   const [maxWidth, setMaxWidth] = useState(0)
@@ -32,6 +32,14 @@ const ImageList = ({ imgResizeWidth }) => {
     },
     [dispatch]
   )
+
+  useEffect(() => {
+    if (history.action === 'POP') {
+      history.replace('/')
+      dispatch({ type: 'RESET' })
+    }
+  }, [history, dispatch])
+
   useEffect(() => {
     if (!dataUrls.length) return
     const images = [],
@@ -83,7 +91,7 @@ const ImageList = ({ imgResizeWidth }) => {
       }
       const windowWidth = size.width - asideWidth
       let reSizeWidth = imgResizeWidth
-      setMaxWidth(dimensions.width.max) //multiply by 4 cause Material UI does it that way
+      setMaxWidth(dimensions.width.max)
       setDimensions(dimensions)
       if (windowWidth < imgResizeWidth) {
         reSizeWidth = windowWidth
@@ -95,7 +103,7 @@ const ImageList = ({ imgResizeWidth }) => {
       }
       resizeImages(reSizeWidth)
     }
-  }, [imgsRefs, imgsLoaded, size, imgResizeWidth])
+  }, [imgsRefs, imgsLoaded, size, imgResizeWidth, dispatch])
 
   useEffect(() => {
     if (!imgsLoaded) return
@@ -130,4 +138,4 @@ const ImageList = ({ imgResizeWidth }) => {
   )
 }
 
-export default ImageList
+export default withRouter(ImageList)
