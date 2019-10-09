@@ -7,9 +7,7 @@ const Footer = () => {
 
   useEffect(() => {
     if (showContact) {
-      contactRef.current.innerHTML = `${
-        contactRef.current.dataset.info
-      }@gmail.com`
+      contactRef.current.innerHTML = `contact@${contactRef.current.dataset.info}.com`
       document.addEventListener('click', closeContact)
     }
     return () => {
@@ -34,7 +32,7 @@ const Footer = () => {
         Contact
       </Link>
       {showContact ? (
-        <p className='menu' ref={contactRef} data-info='stitch.n.slice' /> //so email stays hidden and can't be scraped by crawlers
+        <p className='menu' ref={contactRef} data-info='pixilz' /> //so email stays hidden and can't be scraped by crawlers
       ) : null}
     </footer>
   )

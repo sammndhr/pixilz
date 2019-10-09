@@ -1,13 +1,13 @@
 {
-  "name": "stitch-and-slice",
+  "name": "Pixilz",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@material-ui/core": "^4.4.3",
+    "@material-ui/core": "^4.5.0",
     "file-saver": "^2.0.2",
     "node-sass": "^4.12.0",
-    "react": "^16.9.0",
-    "react-dom": "^16.9.0",
+    "react": "^16.10.2",
+    "react-dom": "^16.10.2",
     "react-scripts": "3.0.1"
   },
   "scripts": {
@@ -32,6 +32,6 @@
     ]
   },
   "devDependencies": {
-    "react-router-dom": "^5.1.0"
+    "react-router-dom": "^5.1.2"
   }
 }

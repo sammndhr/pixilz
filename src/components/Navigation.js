@@ -46,7 +46,7 @@ const Navigation = () => {
     return (
       <div className='brand'>
         <Link to='/' onClick={dispatchReset}>
-          <span className='text'>STITCH 'N' SLICE</span>
+          <span className='text'>PIXILZ</span>
         </Link>
       </div>
     )
@@ -57,11 +57,7 @@ const Navigation = () => {
       <nav className='nav'>
         {renderBrand()}
         <div className='links'>
-          <Button
-            className='dark-switcher'
-            handleClick={theme.toggleTheme}
-            content={renderThemeButton(theme)}
-          />
+          <Button className='dark-switcher' handleClick={theme.toggleTheme} content={renderThemeButton(theme)} />
         </div>
       </nav>
     </header>
