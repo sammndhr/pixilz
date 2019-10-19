@@ -9,6 +9,8 @@ $radio-height: 1.25rem;
   padding: 0 1rem;
   color: $font-color;
   height: max-content;
+  // border-bottom: 3px solid $green;
+  box-shadow: 0 2px 6px 0 hsla(0, 0%, 0%, 0.2);
   .form-group {
     font-size: 1em;
     padding: 1em;
@@ -114,6 +116,14 @@ $radio-height: 1.25rem;
         }
       }
     }
+  }
+}
+
+.aside {
+  .options,
+  .form {
+    background-color: inherit;
+    box-shadow: none;
   }
 }
 

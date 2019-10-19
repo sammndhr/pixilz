@@ -1,8 +1,6 @@
-//Colors-used #12C47C as base color on https://palx.jxnblk.com/12C47C to get other colors and shades
-
 $white: #ffffff;
 $jet-black: #000000;
-
+// https://coolors.co/3682ed-27ae60-080708-df2935-fdca40
 /*  greens Primary "green" */
 
 $green: #27ae60;
@@ -45,43 +43,21 @@ $blue-7: mix(black, $blue, 40);
 $blue-8: mix(black, $blue, 60);
 $blue-9: mix(black, $blue, 80);
 
-/* cyans */
-$cyan-0: #e3f6f8;
-$cyan-1: #c6edf0;
-$cyan-2: #a4e2e8;
-$cyan-3: #7dd6de;
-$cyan-4: #4ec7d3;
-$cyan-5: #12b5c4;
-$cyan-6: #10a3b1;
-$cyan-7: #0e8f9b;
-$cyan-8: #0b7780;
-$cyan-9: #08555c;
-
-// yellows
-$yellow-0: #f5f7e0;
-$yellow-1: #eaeebe;
-$yellow-2: #dfe59a;
-$yellow-3: #d3db72;
-$yellow-4: #c5d045;
-$yellow-5: #b5c412;
-$yellow-6: #a3b110;
-$yellow-7: #8f9b0e;
-$yellow-8: #77810b;
-$yellow-9: #565d08;
-
-$red-0: #f9eae9;
-$red-1: #f3d4d1;
-$red-2: #ecbab5;
-$red-3: #e49a93;
-$red-4: #d97066;
-$red-5: #c42112;
-$red-6: #b01d10;
-$red-7: #9a1a0e;
-$red-8: #7f150b;
-$red-9: #5a0f08;
-
+/* Yellows */
+$yellow: #fdca40;
+$yellow-1: mix(white, $yellow, 80);
+$yellow-2: mix(white, $yellow, 60);
+$yellow-3: mix(white, $yellow, 40);
+$yellow-4: mix(white, $yellow, 20);
+$yellow-5: $yellow;
+$yellow-6: mix(black, $yellow, 20);
+$yellow-7: mix(black, $yellow, 40);
+$yellow-8: mix(black, $yellow, 60);
+$yellow-9: mix(black, $yellow, 80);
 /* Hightlighter */
+// $yellow-hl: #f1c40f;
 // $yellow-hl: #f0d461;
+// #FFD806
 // $red-hl: #ef5b5b;
 // $green-hl: #00d287;
 // $blue-hl: #5183f5;

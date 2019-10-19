@@ -187,7 +187,7 @@ const CanvasList = () => {
     <Fragment>
       {!clickStatus && (
         <Fragment>
-          <div>
+          <div className='aside-wrapper'>
             <aside className='aside'>
               <Resize
                 handleClick={handleClick}
