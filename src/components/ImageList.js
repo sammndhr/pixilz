@@ -84,7 +84,7 @@ const ImageList = () => {
       }
       const windowWidth = size.width - asideWidth
       let reSizeWidth = imgResizeWidth
-      setMaxWidth(dimensions.width.max)
+      setMaxWidth(dimensions.width.max + 24)
       setDimensions(dimensions)
       if (windowWidth < imgResizeWidth) {
         reSizeWidth = windowWidth

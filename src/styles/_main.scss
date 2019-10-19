@@ -27,6 +27,9 @@
     min-height: 0;
     grid-area: canvas;
     display: grid;
+    // margin: 1.5rem;
+    margin-top: 1.15rem;
+
     justify-items: center;
     align-items: center;
     .canvas-item,
@@ -72,6 +75,6 @@
 @media all and (min-width: 1067px) {
   .canvases-wrapper,
   .images-wrapper {
-    padding-right: 1.5rem;
+    margin-right: 1.5rem;
   }
 }
