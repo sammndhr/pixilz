@@ -80,7 +80,7 @@ const Resize = ({ handleRadioButtonChange, handleClick }) => {
                 onChange={handleChange}
               />
               <span className='radio-span'></span>
-              <span>Resize to smallest image {width.min}px</span>
+              <span>Resize to smallest: {width.min}px</span>
             </label>
             <label className='form-radio-label' htmlFor='largest'>
               <input
@@ -94,7 +94,7 @@ const Resize = ({ handleRadioButtonChange, handleClick }) => {
                 onChange={handleChange}
               />
               <span className='radio-span'></span>
-              <span>Resize to largest image {width.max}px</span>
+              <span>Resize to largest: {width.max}px</span>
             </label>
           </Fragment>
         ) : null}

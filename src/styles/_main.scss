@@ -1,4 +1,5 @@
 .main-grid {
+  box-shadow: 0 2px 6px 0 hsla(0, 0%, 0%, 0.2);
   display: grid;
   background-color: $paper-bg-color;
   grid-template-areas: 'options canvas';
@@ -11,9 +12,12 @@
   grid-gap: 1.5rem;
   justify-items: center;
   .aside-wrapper {
+    box-shadow: 0 2px 6px 0 hsla(0, 0%, 0%, 0.2);
     grid-area: options;
     background-color: $grey-8;
     .aside {
+      margin: 1rem;
+      background-color: $form-bg-color;
       justify-self: stretch;
       min-height: 0;
       align-self: start;

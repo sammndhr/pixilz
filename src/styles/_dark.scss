@@ -1,8 +1,8 @@
 .dark.container {
-  $form-bg-color: $grey-10;
+  $form-bg-color: $grey-9;
   $checked-color: $blue-4;
-  $hover-bg-color: $grey-9;
-  $paper-bg-color: $grey-10;
+  $hover-bg-color: $grey-10;
+  $paper-bg-color: $grey-9;
   background-color: $dark-background;
   color: $default-dark-color;
 
@@ -33,6 +33,9 @@
   }
 
   .main-grid {
+    .aside-wrapper {
+      background-color: $grey-5;
+    }
     background-color: $paper-bg-color;
   }
 

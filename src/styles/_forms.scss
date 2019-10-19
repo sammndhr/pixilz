@@ -46,7 +46,7 @@ $radio-height: 1.25rem;
       }
 
       .radio-span {
-        box-shadow: 0 0 0 0.125em $unchecked-color;
+        box-shadow: 0 0 0 0.125em $grey-9;
         border: $checkbox-height * 0.15 solid $form-bg-color;
         height: $radio-height;
         width: $radio-height;
