@@ -15,13 +15,7 @@ const SortForm = ({ uploadFiles }) => {
       <div className='form options'>
         <fieldset className='form-group'>
           <label className='form-check-label' htmlFor='sort'>
-            <input
-              type='checkbox'
-              name='sort'
-              id='sort'
-              checked={sort}
-              onChange={handleChange}
-            />
+            <input type='checkbox' name='sort' id='sort' checked={sort} onChange={handleChange} />
             <span className='cb-span'></span>
             <span>Auto sort after uploading</span>
           </label>

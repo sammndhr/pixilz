@@ -16,8 +16,6 @@
     grid-area: options;
     background-color: $grey-8;
     .aside {
-      margin: 1rem;
-      background-color: $form-bg-color;
       justify-self: stretch;
       min-height: 0;
       align-self: start;
@@ -31,9 +29,7 @@
     min-height: 0;
     grid-area: canvas;
     display: grid;
-    // margin: 1.5rem;
     margin-top: 1.15rem;
-
     justify-items: center;
     align-items: center;
     .canvas-item,

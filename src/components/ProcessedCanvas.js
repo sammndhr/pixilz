@@ -3,8 +3,8 @@ import { withRouter } from 'react-router-dom'
 import { saveAs } from 'file-saver'
 import { Zip } from '../utils'
 import DataContext from '../context/DataContext'
-import { stitchProcessing } from '../utils/'
-import { Button } from '../common/Button'
+import { stitchProcessing, stitchOnly } from '../utils/'
+import { Button } from '../smallComponents/Button'
 
 class ProcessedCanvas extends Component {
   static contextType = DataContext
@@ -15,19 +15,19 @@ class ProcessedCanvas extends Component {
     avgHeight: 0,
     canvasProcessStatus: false
   }
+
   componentDidUpdate(prevProps, prevState) {
     const { state, dispatch } = this.context
-    const { canvasesWrapperRef, dimensions } = state
+
+    const { canvasesWrapperRef, dimensions, stitchPrefs } = state
 
     if (!dimensions.width || !dimensions.height) return
     if (!canvasesWrapperRef) return
 
     const canvasList = Array.from(canvasesWrapperRef.children),
-      { processedCanvases } = stitchProcessing(
-        canvasList,
-        this.canvasRefs,
-        dimensions
-      )
+      { processedCanvases } = stitchPrefs.stitchOnly
+        ? stitchOnly(canvasList, this.canvasRefs)
+        : stitchProcessing(canvasList, this.canvasRefs, dimensions)
 
     if (!this.state.processedCanvases.length) {
       this.setState({
@@ -143,17 +143,10 @@ class ProcessedCanvas extends Component {
       <Fragment>
         {!this.context.state.loader && (
           <Fragment>
-            <div>
+            <div className='aside-wrapper'>
               <aside className='aside'>
-                <div className='button-container'>
-                  <div className='form options'>
-                    <fieldset className='form-group'>
-                      <Button
-                        handleClick={this.handleDownloadClick}
-                        content='Download'
-                      />
-                    </fieldset>
-                  </div>
+                <div>
+                  <Button handleClick={this.handleDownloadClick} content='Download' />
                 </div>
               </aside>
             </div>

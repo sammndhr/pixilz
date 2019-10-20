@@ -1,62 +1,92 @@
 import React from 'react'
 
+const combine = arr => {
+  const canvas = document.createElement('canvas')
+
+  const canvases = []
+  let joinedHeight = 0,
+    joinedWidth = 0,
+    maxLen = 0
+  for (let i = 0; i < arr.length; i++) {
+    const cvs = arr[i],
+      cvsObj = {
+        canvas: cvs,
+        oWidth: cvs.width,
+        oHeight: cvs.height
+      }
+    joinedWidth = cvs.width
+
+    canvases.push(cvsObj)
+  }
+  for (let i = 0; i < canvases.length; i++) {
+    const cvsObj = canvases[i]
+    cvsObj.nWidth = joinedWidth
+    cvsObj.nHeight = (cvsObj.nWidth * cvsObj.oHeight) / cvsObj.oWidth
+    if (joinedHeight + cvsObj.nHeight >= 15000) {
+      maxLen = i
+      break
+    }
+    joinedHeight += cvsObj.nHeight
+  }
+
+  canvas.width = joinedWidth
+  canvas.height = joinedHeight
+
+  const ctx = canvas.getContext('2d'),
+    Left = 0
+  let Top = 0
+  maxLen = canvases.length
+  for (let i = 0; i < maxLen; i++) {
+    ctx.drawImage(canvases[i].canvas, Left, Top)
+    Top += canvases[i].nHeight
+  }
+
+  return canvas
+}
+
+const stitchOnly = (canvasList, canvasRefs) => {
+  const processFinalCanvas = ({ sourceCan, i, width, height }) => {
+    const canvas = createCanvas(i, width, height)
+    return [{ canvas, sourceCan, i, width, height }]
+  }
+
+  const createCanvas = (i, width, height) => {
+    const canvas = (
+      <canvas
+        key={i}
+        width={width}
+        height={height}
+        className='processed-canvas'
+        ref={ref => {
+          canvasRefs[i] = ref
+        }}
+      />
+    )
+    return canvas
+  }
+
+  const combined = combine(canvasList)
+  const result = processFinalCanvas({ sourceCan: combined, i: 0, width: combined.width, height: combined.height })
+
+  return { processedCanvases: result }
+}
 const stitchProcessing = (canvasList, canvasRefs, dimensions) => {
   const processedCanvases = []
   const minHeight = dimensions.height.min
-  const combineSlicedImgs = arr => {
-    const canvas = document.createElement('canvas')
-    const canvases = []
-    let joinedHeight = 0,
-      joinedWidth = 0
-    for (let i = 0; i < arr.length; i++) {
-      const cvs = arr[i],
-        cvsObj = {
-          canvas: cvs,
-          oWidth: cvs.width,
-          oHeight: cvs.height
-        }
-      joinedWidth = cvs.width
-
-      canvases.push(cvsObj)
-    }
-    for (let i = 0; i < canvases.length; i++) {
-      const cvsObj = canvases[i]
-      cvsObj.nWidth = joinedWidth
-
-      cvsObj.nHeight = (cvsObj.nWidth * cvsObj.oHeight) / cvsObj.oWidth
-      joinedHeight += cvsObj.nHeight
-    }
-
-    canvas.width = joinedWidth
-    canvas.height = joinedHeight
-    const ctx = canvas.getContext('2d'),
-      Left = 0
-    let Top = 0
-    for (let i = 0; i < canvases.length; i++) {
-      ctx.drawImage(canvases[i].canvas, Left, Top)
-      Top += canvases[i].nHeight
-    }
-
-    return canvas
-  }
 
   const combineSmallerImgs = (first, height, images) => {
     let comb = first
 
     while (comb.height < height && images.length >= 1) {
       const next = images.shift()
-      comb = combineSlicedImgs([comb, next])
+      comb = combine([comb, next])
     }
     return comb
   }
 
   const comparePixels = (old, curr) => {
     const threshold = 0
-    const diff = Math.sqrt(
-      Math.pow(curr.r - old.r, 2) +
-        Math.pow(curr.g - old.g, 2) +
-        Math.pow(curr.b - old.b, 2)
-    )
+    const diff = Math.sqrt(Math.pow(curr.r - old.r, 2) + Math.pow(curr.g - old.g, 2) + Math.pow(curr.b - old.b, 2))
     return !(diff > threshold)
   }
 
@@ -129,17 +159,7 @@ const stitchProcessing = (canvasList, canvasRefs, dimensions) => {
 
     remainingCan.width = width
     remainingCan.height = remainingH
-    rCtx.drawImage(
-      combCan,
-      0,
-      sliceHeight - 1,
-      width,
-      remainingH,
-      0,
-      0,
-      width,
-      remainingH
-    )
+    rCtx.drawImage(combCan, 0, sliceHeight - 1, width, remainingH, 0, 0, width, remainingH)
     return remainingCan
   }
 
@@ -149,10 +169,7 @@ const stitchProcessing = (canvasList, canvasRefs, dimensions) => {
     while (sliceHeight < first.height) {
       if (verifyLastRowColor(first, sliceHeight) === true) {
         const padding = sliceHeight + 40
-        if (
-          verifyLastRowColor(first, padding) === true &&
-          padding < first.height
-        ) {
+        if (verifyLastRowColor(first, padding) === true && padding < first.height) {
           sliceHeight = padding
         }
         remainingCan = sliceCanvas(first, sliceHeight)
@@ -189,7 +206,7 @@ const stitchProcessing = (canvasList, canvasRefs, dimensions) => {
       }
     } else {
       const second = cnvsCopy.shift()
-      const combined = combineSlicedImgs([first, second])
+      const combined = combine([first, second])
       first = combineSmallerImgs(combined, avgHeight, cnvsCopy)
       const remainingCan = findSLiceLocation(first, avgHeight)
       cnvsCopy.unshift(remainingCan)
@@ -200,4 +217,4 @@ const stitchProcessing = (canvasList, canvasRefs, dimensions) => {
   return { processedCanvases }
 }
 
-export default stitchProcessing
+export { stitchProcessing, stitchOnly }

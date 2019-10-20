@@ -4,7 +4,7 @@ import sun from '../images/sun.svg'
 import moon from '../images/moon.svg'
 import ThemeContext from '../context/ThemeContext'
 import DataContext from '../context/DataContext'
-import { Button } from '../common/Button'
+import { Button } from '../smallComponents/Button'
 
 const Navigation = () => {
   const theme = useContext(ThemeContext)
@@ -57,7 +57,11 @@ const Navigation = () => {
       <nav className='nav'>
         {renderBrand()}
         <div className='links'>
-          <Button className='dark-switcher' handleClick={theme.toggleTheme} content={renderThemeButton(theme)} />
+          <Button
+            className='dark-switcher'
+            handleClick={theme.toggleTheme}
+            content={renderThemeButton(theme)}
+          />
         </div>
       </nav>
     </header>

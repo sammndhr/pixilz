@@ -9,7 +9,7 @@ import ProcessedCanvas from './ProcessedCanvas'
 import Footer from './Footer'
 import CanvasList from './CanvasList'
 import UploadImages from './UploadImages'
-import Loader from '../common/Loader'
+import Loader from '../smallComponents/Loader'
 
 const RedirectRoute = ({ children, ...rest }) => {
   const history = useHistory()

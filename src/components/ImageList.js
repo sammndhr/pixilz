@@ -1,14 +1,7 @@
-import React, {
-  Fragment,
-  useContext,
-  useState,
-  useEffect,
-  useCallback,
-  useRef
-} from 'react'
+import React, { Fragment, useContext, useState, useEffect, useCallback, useRef } from 'react'
 import DataContext from '../context/DataContext'
 import { calculateDimensions, useWindowSize } from '../utils/'
-import ImageSizeWarning from '../common/ImageSizeWarning'
+import Warning from '../smallComponents/Warning'
 import { withRouter } from 'react-router'
 
 const ImageList = () => {
@@ -84,7 +77,7 @@ const ImageList = () => {
       }
       const windowWidth = size.width - asideWidth
       let reSizeWidth = imgResizeWidth
-      setMaxWidth(dimensions.width.max + 24)
+      if (dimensions.width.max) setMaxWidth(dimensions.width.max + 24)
       setDimensions(dimensions)
       if (windowWidth < imgResizeWidth) {
         reSizeWidth = windowWidth
@@ -122,7 +115,7 @@ const ImageList = () => {
   return (
     <Fragment>
       <div style={{ maxWidth }}>
-        {displaySizeWarning ? <ImageSizeWarning /> : null}
+        {displaySizeWarning ? <Warning text={`Displayed size isn't the final size. Please expand browser to view exact size.`} /> : null}
         <div className='images-wrapper' ref={imgsWrapperRef}>
           {images}
         </div>

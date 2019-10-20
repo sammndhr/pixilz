@@ -1,27 +1,16 @@
-import React, {
-  Fragment,
-  useContext,
-  useState,
-  useEffect,
-  useCallback,
-  useRef
-} from 'react'
+import React, { Fragment, useContext, useState, useEffect, useCallback, useRef } from 'react'
 import DataContext from '../context/DataContext'
 import ProcessedCanvas from './ProcessedCanvas'
-import Resize from '../common/ResizeForm'
+import Resize from '../smallComponents/ResizeForm'
+import StitchPrefForm from '../smallComponents/StitchPrefForm'
 import ImageList from './ImageList'
-import { calculateDimensions } from '../utils/'
+import { calculateDimensions, useWindowSize } from '../utils/'
+import { Button } from '../smallComponents/Button'
 
 const CanvasList = () => {
+  const size = useWindowSize()
   const { state, dispatch } = useContext(DataContext)
-  const {
-    dimensions,
-    imgsWrapperRef,
-    dataUrls,
-    canvasesLoaded,
-    canvases,
-    imgResizeWidth
-  } = state
+  const { dimensions, imgsWrapperRef, dataUrls, canvasesLoaded, canvases, imgResizeWidth } = state
   const images = imgsWrapperRef ? imgsWrapperRef.children : []
   const [clickStatus, setClickStatus] = useState(false)
   const [imgsResizeDimensions, setImgsResizeDimensions] = useState([])
@@ -52,6 +41,7 @@ const CanvasList = () => {
     return cleanup
   }, [dispatch, showLoader])
 
+  //Images get resized here if they're different sizes
   useEffect(() => {
     const imgsLen = images.length
     if (!canvasesLoaded || canvasesDrawn || !imgsResizeDimensions.length) return
@@ -90,7 +80,7 @@ const CanvasList = () => {
     return cleanup
   }, [dispatch])
 
-  const handleRadioButtonChange = resizePrefs => {
+  const handleSizeChange = resizePrefs => {
     setResizePrefs(resizePrefs)
     if (!dimensions.width) return
     if (resizePrefs.scaleDown) {
@@ -104,6 +94,13 @@ const CanvasList = () => {
         payload: dimensions.width.max
       })
     }
+  }
+
+  const handleStitchPrefsChange = stitchPrefs => {
+    dispatch({
+      type: 'UPDATE_STITCH_PREFS',
+      payload: stitchPrefs
+    })
   }
 
   const resizeImages = () => {
@@ -189,23 +186,17 @@ const CanvasList = () => {
         <Fragment>
           <div className='aside-wrapper'>
             <aside className='aside'>
-              <Resize
-                handleClick={handleClick}
-                handleRadioButtonChange={handleRadioButtonChange}
-              />
+              <StitchPrefForm handleStitchPrefsChange={handleStitchPrefsChange} />
+              <Resize handleClick={handleClick} handleSizeChange={handleSizeChange} />
+              <Button handleClick={handleClick} content='Stitch n Slice' />
             </aside>
           </div>
           <ImageList />
         </Fragment>
       )}
-      {clickStatus && canvasesDrawn && (
-        <ProcessedCanvas resizePrefs={resizePrefs} />
-      )}
+      {clickStatus && canvasesDrawn && <ProcessedCanvas size={size} />}
       {clickStatus && !canvasesDrawn && (
-        <div
-          ref={canvasesWrapperRef}
-          className='canvases-wrapper'
-          style={{ maxWidth: dimensions.width.max }}>
+        <div ref={canvasesWrapperRef} className='canvases-wrapper' style={{ maxWidth: dimensions.width.max }}>
           {canvases}
         </div>
       )}

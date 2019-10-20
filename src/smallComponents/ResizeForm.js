@@ -1,8 +1,7 @@
 import React, { useState, useEffect, useContext, Fragment } from 'react'
 import DataContext from '../context/DataContext'
-import { Button } from './Button'
 
-const Resize = ({ handleRadioButtonChange, handleClick }) => {
+const Resize = ({ handleSizeChange }) => {
   const { state } = useContext(DataContext)
   const { dimensions } = state
   const [disabled, setDisabled] = useState(false)
@@ -44,7 +43,7 @@ const Resize = ({ handleRadioButtonChange, handleClick }) => {
   }, [dimensions, width.min])
 
   const handleChange = event => {
-    handleRadioButtonChange(event.target.value)
+    handleSizeChange(event.target.value)
     setselectedVal(event.target.value)
   }
 
@@ -59,15 +58,15 @@ const Resize = ({ handleRadioButtonChange, handleClick }) => {
     }
     if (resizePrefs.scaleDown !== localResizePrefs.scaleDown) {
       setResizePrefs(localResizePrefs)
-      handleRadioButtonChange(localResizePrefs)
+      handleSizeChange(localResizePrefs)
     }
-  }, [selectedVal, resizePrefs, handleRadioButtonChange])
+  }, [selectedVal, resizePrefs, handleSizeChange])
 
   return (
-    <div className='form options'>
-      <fieldset className='form-group'>
-        {!disabled ? (
-          <Fragment>
+    <Fragment>
+      {!disabled ? (
+        <div className='form options'>
+          <fieldset className='form-group'>
             <label className='form-radio-label' htmlFor='smallest'>
               <input
                 disabled={disabled}
@@ -96,11 +95,10 @@ const Resize = ({ handleRadioButtonChange, handleClick }) => {
               <span className='radio-span'></span>
               <span>Resize to largest: {width.max}px</span>
             </label>
-          </Fragment>
-        ) : null}
-        <Button handleClick={handleClick} content='Stitch n Slice' />
-      </fieldset>
-    </div>
+          </fieldset>
+        </div>
+      ) : null}
+    </Fragment>
   )
 }
 export default Resize

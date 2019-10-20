@@ -23,7 +23,11 @@ const DataProvider = ({ children }) => {
       scaleUp: true
     },
     sort: true,
-    imgResizeWidth: 0
+    imgResizeWidth: 0,
+    stitchPrefs: {
+      stitchOnly: false,
+      stitchAndSlice: true
+    }
   }
 
   const reducer = (state, action) => {
@@ -56,6 +60,8 @@ const DataProvider = ({ children }) => {
         return { ...state, sort: action.payload }
       case 'UPDATE_IMG_RESIZE_WIDTH':
         return { ...state, imgResizeWidth: action.payload }
+      case 'UPDATE_STITCH_PREFS':
+        return { ...state, stitchPrefs: action.payload }
       default:
         return { ...state }
     }
