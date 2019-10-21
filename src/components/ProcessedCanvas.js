@@ -7,11 +7,12 @@ import { stitchProcessing, stitchOnly } from '../utils/'
 import { Button } from '../smallComponents/Button'
 import { useWindowSize } from '../utils/'
 import Warning from '../smallComponents/Warning'
+import DownloadForm from '../smallComponents/DownloadForm'
 
 const ProcessedCanvas = ({ history }) => {
   const size = useWindowSize()
   const { state, dispatch } = useContext(DataContext)
-  const { canvasesWrapperRef, dimensions, stitchPrefs, imgResizeWidth } = state
+  const { canvasesWrapperRef, dimensions, stitchPrefs, imgResizeWidth, folderName } = state
   const canvasRefs = useRef([])
   const wrapper = useRef(null)
   const [processedCanvasesState, setProcessedCanvasesState] = useState([])
@@ -179,7 +180,7 @@ const ProcessedCanvas = ({ history }) => {
         }
       })
       new Response(readableStream).blob().then(blob => {
-        saveAs(blob, 'Pixilz.zip')
+        saveAs(blob, `${folderName}.zip`)
       })
     })
   }
@@ -189,13 +190,8 @@ const ProcessedCanvas = ({ history }) => {
         <Fragment>
           <div className='aside-wrapper'>
             <aside className='aside'>
-              <div className='button-container'>
-                <div className='form options'>
-                  <fieldset className='form-group'>
-                    <Button handleClick={handleDownloadClick} content='Download' />
-                  </fieldset>
-                </div>
-              </div>
+              <DownloadForm canvasesDrawn={canvasesDrawn} />
+              <Button handleClick={handleDownloadClick} content='Download as Zip' />
             </aside>
           </div>
           <div>

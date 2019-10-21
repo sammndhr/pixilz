@@ -10,7 +10,7 @@ $radio-height: 1.25rem;
   color: $font-color;
   height: max-content;
   margin: 1rem;
-  // border-bottom: 3px solid $green;
+
   box-shadow: 0 2px 6px 0 hsla(0, 0%, 0%, 0.2);
   .form-group {
     font-size: 1em;
@@ -19,8 +19,10 @@ $radio-height: 1.25rem;
     align-content: center;
     align-items: flex-start;
     vertical-align: center;
+
     .form-check-label,
-    .form-radio-label {
+    .form-radio-label,
+    .form-text-label {
       display: block;
       white-space: nowrap;
       cursor: pointer;
@@ -54,8 +56,7 @@ $radio-height: 1.25rem;
         height: $radio-height;
         width: $radio-height;
         border-radius: 50%;
-        transition: all $duration cubic-bezier(0.4, 0, 0.23, 1),
-          border-color ease 0ms;
+        transition: all $duration cubic-bezier(0.4, 0, 0.23, 1), border-color ease 0ms;
         background-color: transparent;
       }
       &:hover {
@@ -105,6 +106,47 @@ $radio-height: 1.25rem;
             }
           }
         }
+      }
+    }
+    .form-text-label {
+      .form-text-helper {
+        font-size: 0.75rem;
+        text-align: left;
+      }
+      &:hover {
+        background-color: inherit;
+      }
+      text-align: center;
+      .input-text-wrapper {
+        margin-top: 0.5rem;
+        position: relative;
+      }
+      input[type='text'] {
+        padding: 0.3rem 0.5rem;
+        min-width: 200px;
+        width: 100%;
+        box-sizing: border-box;
+      }
+
+      .input-text {
+        border: 0;
+        padding: 7px 0;
+        border-bottom: 2px solid $grey-4;
+      }
+
+      .input-text ~ .focus-border {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 0;
+        height: 2px;
+        background-color: $checked-color;
+        transition: 0.4s;
+      }
+
+      .input-text:focus ~ .focus-border {
+        width: 100%;
+        transition: 0.4s;
       }
     }
     .form-check-label {
@@ -193,4 +235,16 @@ $radio-height: 1.25rem;
       padding: 0;
     }
   }
+}
+
+input[type='text'] {
+  font: 15px/24px 'Muli', sans-serif;
+  color: #333;
+  width: 100%;
+  box-sizing: border-box;
+  letter-spacing: 1px;
+}
+
+:focus {
+  outline: none;
 }
