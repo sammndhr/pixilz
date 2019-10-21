@@ -3,15 +3,20 @@ import { useState, useEffect } from 'react'
 export default function useWindowSize() {
   const [windowSize, setWindowSize] = useState({
     width: document.body.clientWidth,
-    height: document.body.clientHeight
+    height: document.body.clientHeight,
+    innerHeight: window.innerHeight,
+    innerWidth: window.innerWidth
   })
 
   useEffect(() => {
     const isClient = typeof window === 'object'
     function getSize() {
+      console.log(document.body.clientHeight)
       return {
         width: isClient ? document.body.clientWidth : undefined,
-        height: isClient ? document.body.clientHeight : undefined
+        height: isClient ? document.body.clientHeight : undefined,
+        innerHeight: isClient ? window.innerHeight : undefined,
+        innerWidth: isClient ? window.innerWidth : undefined
       }
     }
     if (!isClient) {

@@ -1,63 +1,144 @@
-import React, { Component, Fragment } from 'react'
+import React, { Fragment, useContext, useState, useEffect, useRef } from 'react'
+import DataContext from '../context/DataContext'
 import { withRouter } from 'react-router-dom'
 import { saveAs } from 'file-saver'
 import { Zip } from '../utils'
-import DataContext from '../context/DataContext'
 import { stitchProcessing, stitchOnly } from '../utils/'
 import { Button } from '../smallComponents/Button'
+import { useWindowSize } from '../utils/'
+import Warning from '../smallComponents/Warning'
 
-class ProcessedCanvas extends Component {
-  static contextType = DataContext
-  canvasRefs = []
-  state = {
-    processedCanvases: [],
-    blobs: [],
-    avgHeight: 0,
-    canvasProcessStatus: false
-  }
+const ProcessedCanvas = ({ history }) => {
+  const size = useWindowSize()
+  const { state, dispatch } = useContext(DataContext)
+  const { canvasesWrapperRef, dimensions, stitchPrefs, imgResizeWidth } = state
+  const canvasRefs = useRef([])
+  const wrapper = useRef(null)
+  const [processedCanvasesState, setProcessedCanvasesState] = useState([])
+  const [blobs, setBlobs] = useState([])
+  const [canvasProcessStatus, setCanvasProcessStatus] = useState(false)
+  const [canvasesDrawn, setCanvasesDrawn] = useState(false)
+  const [canvasesCreated, setCanvasesCreated] = useState(false)
+  const [canvases, setCanvases] = useState([])
+  const [displaySizeWarning, setDisplaySizeWarning] = useState(false)
 
-  componentDidUpdate(prevProps, prevState) {
-    const { state, dispatch } = this.context
+  useEffect(() => {
+    const canvases = canvasRefs.current,
+      canLen = canvases.length,
+      resizeImages = newWidth => {
+        for (let i = 0; i < canLen; i++) {
+          const canvas = canvasRefs.current[i]
+          canvas.style.width = `${newWidth}px`
+        }
+      }
 
-    const { canvasesWrapperRef, dimensions, stitchPrefs } = state
+    if (canvasesDrawn) {
+      const padding = 3 * 24
+      let asideWidth = 0
+      if (size.width > 1067) {
+        asideWidth = 453.142 + padding
+      }
 
+      const windowWidth = size.width - asideWidth
+      let reSizeWidth = imgResizeWidth
+
+      if (windowWidth < imgResizeWidth) {
+        reSizeWidth = windowWidth
+      }
+      if (reSizeWidth !== imgResizeWidth) {
+        setDisplaySizeWarning(true)
+        resizeImages(reSizeWidth)
+      } else {
+        setDisplaySizeWarning(false)
+      }
+    }
+  }, [canvasesDrawn, imgResizeWidth, size.width])
+
+  useEffect(() => {
+    dispatch({ type: 'SHOW_LOADER', payload: !canvasesDrawn })
+  }, [canvasesDrawn, dispatch])
+
+  useEffect(() => {
     if (!dimensions.width || !dimensions.height) return
     if (!canvasesWrapperRef) return
 
     const canvasList = Array.from(canvasesWrapperRef.children),
-      { processedCanvases } = stitchPrefs.stitchOnly
-        ? stitchOnly(canvasList, this.canvasRefs)
-        : stitchProcessing(canvasList, this.canvasRefs, dimensions)
+      { processedCanvases } = stitchPrefs.stitchOnly ? stitchOnly(canvasList, canvasRefs) : stitchProcessing(canvasList, canvasRefs, dimensions)
 
-    if (!this.state.processedCanvases.length) {
-      this.setState({
-        processedCanvases,
-        canvasProcessStatus: true
-      })
-      dispatch({
-        type: 'UPDATE_CANVAS_PROCESS_STATUS',
-        payload: true
-      })
+    if (!processedCanvasesState.length) {
+      setProcessedCanvasesState(processedCanvases)
+      setCanvasProcessStatus(true)
     }
+  }, [canvasesWrapperRef, dimensions, processedCanvasesState.length, stitchPrefs.stitchOnly])
 
-    const currStatus = this.state.canvasProcessStatus,
-      prevStatus = prevState.canvasProcessStatus,
-      canLen = processedCanvases.length,
+  //create canvases
+  useEffect(() => {
+    if (!canvasProcessStatus) return
+    const canLen = processedCanvasesState.length,
+      canvases = [],
+      createCanvas = (i, width, height) => {
+        const canvas = (
+          <canvas
+            key={i}
+            width={width}
+            height={height}
+            className='processed-canvas'
+            ref={ref => {
+              canvasRefs.current[i] = ref
+            }}
+          />
+        )
+        return canvas
+      }
+    for (let j = 0; j < canLen; j++) {
+      const { i, width, height } = processedCanvasesState[j],
+        canvas = createCanvas(i, width, height)
+      canvases.push(canvas)
+
+      if (j === canLen - 1) {
+        setCanvases(canvases)
+        setCanvasesCreated(true)
+      }
+    }
+  }, [canvasProcessStatus, processedCanvasesState])
+
+  // draw canvases
+  useEffect(() => {
+    const canLen = processedCanvasesState.length,
       blobs = []
-
-    if (currStatus === prevStatus) return
+    if (!canvasesCreated || !canvases.length) return
+    const drawCanvas = ({ sourceCan, i, width, height }) => {
+        const canvas = canvasRefs.current[i]
+        const ctx = canvas.getContext('2d', { alpha: false })
+        ctx.drawImage(sourceCan, 0, 0, width, height, 0, 0, width, height)
+      },
+      getCanvasBlob = (canvas, mimeType, quality) => {
+        return new Promise((resolve, reject) => {
+          canvas.toBlob(
+            blob => {
+              resolve(blob)
+            },
+            mimeType,
+            quality
+          )
+        })
+      },
+      pushToHistoryState = history => {
+        history.push('/download')
+      }
 
     for (let j = 0; j < canLen; j++) {
-      const { sourceCan, i, width, height } = processedCanvases[j]
+      const { sourceCan, i, width, height } = processedCanvasesState[j]
       if (i === j) {
-        const canvas = this.canvasRefs[i]
-        this.drawCanvas(canvas, {
+        drawCanvas({
           sourceCan,
           i,
           width,
           height
         })
-        const blob = this.getCanvasBlob(canvas, 'image/jpeg', 1).then(
+        const canvas = canvasRefs.current[i]
+        // const blob = getCanvasBlob(canvas, 'image/jpeg', 1).then( //images are ~2X if quality if set to 1
+        const blob = getCanvasBlob(canvas, 'image/jpeg').then(
           blob => {
             return blob
           },
@@ -68,51 +149,16 @@ class ProcessedCanvas extends Component {
         blobs.push(blob)
       }
     }
-    this.setState({
-      blobs
-    })
+    setBlobs(blobs)
 
-    if (this.props.history.location.pathname !== '/download') {
-      this.pushToHistoryState(this.props.history)
+    setCanvasesDrawn(true)
+    if (history.location.pathname !== '/download') {
+      pushToHistoryState(history)
     }
-  }
+  }, [canvases, canvasesCreated, history, processedCanvasesState])
 
-  componentWillUnmount() {
-    const { dispatch } = this.context
-
-    dispatch({
-      type: 'UPDATE_CANVAS_PROCESS_STATUS',
-      payload: false
-    })
-    dispatch({
-      type: 'UPDATE_CANVASES_LOADED',
-      payload: false
-    })
-  }
-
-  pushToHistoryState = history => {
-    history.push('/download')
-  }
-
-  getCanvasBlob = (canvas, mimeType, quality) => {
-    return new Promise((resolve, reject) => {
-      canvas.toBlob(
-        blob => {
-          resolve(blob)
-        },
-        mimeType,
-        quality
-      )
-    })
-  }
-
-  drawCanvas = (canvas, { sourceCan, i, width, height }) => {
-    const ctx = canvas.getContext('2d')
-    ctx.drawImage(sourceCan, 0, 0, width, height, 0, 0, width, height)
-  }
-
-  handleDownloadClick = () => {
-    Promise.all(this.state.blobs).then(blobs => {
+  const handleDownloadClick = () => {
+    Promise.all(blobs).then(blobs => {
       const files = []
       blobs.forEach((blob, i) => {
         const stream = function() {
@@ -133,33 +179,36 @@ class ProcessedCanvas extends Component {
         }
       })
       new Response(readableStream).blob().then(blob => {
-        saveAs(blob, 'archive.zip')
+        saveAs(blob, 'Pixilz.zip')
       })
     })
   }
-
-  render() {
-    return (
-      <Fragment>
-        {!this.context.state.loader && (
-          <Fragment>
-            <div className='aside-wrapper'>
-              <aside className='aside'>
-                <div>
-                  <Button handleClick={this.handleDownloadClick} content='Download' />
+  return (
+    <Fragment>
+      {
+        <Fragment>
+          <div className='aside-wrapper'>
+            <aside className='aside'>
+              <div className='button-container'>
+                <div className='form options'>
+                  <fieldset className='form-group'>
+                    <Button handleClick={handleDownloadClick} content='Download' />
+                  </fieldset>
                 </div>
-              </aside>
-            </div>
-            <div className='canvases-wrapper' id='processed-canvases'>
-              {this.state.processedCanvases.map((processedCan, i) => {
-                return processedCan.canvas
+              </div>
+            </aside>
+          </div>
+          <div>
+            {displaySizeWarning ? <Warning text={`Displayed size isn't the final size. Please expand browser to view exact size.`} /> : null}
+            <div className='canvases-wrapper' ref={wrapper} id='processed-canvases'>
+              {canvases.map(canvas => {
+                return canvas
               })}
             </div>
-          </Fragment>
-        )}
-      </Fragment>
-    )
-  }
+          </div>
+        </Fragment>
+      }
+    </Fragment>
+  )
 }
-
 export default withRouter(ProcessedCanvas)

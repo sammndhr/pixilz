@@ -1,19 +1,18 @@
 import React, { Fragment } from 'react'
+import { useWindowSize } from '../utils/'
 
 const Loader = () => {
+  const size = useWindowSize()
   return (
     <Fragment>
       <div
         className='loader-wrapper'
         style={{
           zIndex: 1000,
-          height: window.innerHeight,
-          width: window.innerWidth
+          height: size.innerHeight || window.innerHeight,
+          width: size.width
         }}>
-        <div
-          className='loader'
-          // style={{ position: 'absolute', top: '100px' }}
-        />
+        <div className='loader' />
       </div>
     </Fragment>
   )

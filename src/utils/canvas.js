@@ -1,5 +1,3 @@
-import React from 'react'
-
 const combine = arr => {
   const canvas = document.createElement('canvas')
 
@@ -32,7 +30,7 @@ const combine = arr => {
   canvas.width = joinedWidth
   canvas.height = joinedHeight
 
-  const ctx = canvas.getContext('2d'),
+  const ctx = canvas.getContext('2d', { alpha: false }),
     Left = 0
   let Top = 0
   maxLen = canvases.length
@@ -45,30 +43,17 @@ const combine = arr => {
 }
 
 const stitchOnly = (canvasList, canvasRefs) => {
-  const processFinalCanvas = ({ sourceCan, i, width, height }) => {
-    const canvas = createCanvas(i, width, height)
-    return [{ canvas, sourceCan, i, width, height }]
-  }
-
-  const createCanvas = (i, width, height) => {
-    const canvas = (
-      <canvas
-        key={i}
-        width={width}
-        height={height}
-        className='processed-canvas'
-        ref={ref => {
-          canvasRefs[i] = ref
-        }}
-      />
-    )
-    return canvas
-  }
-
   const combined = combine(canvasList)
-  const result = processFinalCanvas({ sourceCan: combined, i: 0, width: combined.width, height: combined.height })
-
-  return { processedCanvases: result }
+  return {
+    processedCanvases: [
+      {
+        sourceCan: combined,
+        i: 0,
+        width: combined.width,
+        height: combined.height
+      }
+    ]
+  }
 }
 const stitchProcessing = (canvasList, canvasRefs, dimensions) => {
   const processedCanvases = []
@@ -93,7 +78,7 @@ const stitchProcessing = (canvasList, canvasRefs, dimensions) => {
   const verifyLastRowColor = (canvas, avgH) => {
     const height = avgH || canvas.height,
       { width } = canvas,
-      ctx = canvas.getContext('2d'),
+      ctx = canvas.getContext('2d', { alpha: false }),
       { data } = ctx.getImageData(0, height - 1, width, 1)
 
     let curr,
@@ -123,31 +108,11 @@ const stitchProcessing = (canvasList, canvasRefs, dimensions) => {
     return slice
   }
 
-  const processFinalCanvas = ({ sourceCan, i, width, height }) => {
-    const canvas = createCanvas(i, width, height)
-    processedCanvases.push({ canvas, sourceCan, i, width, height })
-  }
-
-  const createCanvas = (i, width, height) => {
-    const canvas = (
-      <canvas
-        key={i}
-        width={width}
-        height={height}
-        className='processed-canvas'
-        ref={ref => {
-          canvasRefs[i] = ref
-        }}
-      />
-    )
-    return canvas
-  }
-
   const sliceCanvas = (combCan, sliceHeight) => {
     const { height, width } = combCan,
       remainingCan = document.createElement('canvas'),
       remainingH = height - sliceHeight,
-      rCtx = remainingCan.getContext('2d'),
+      rCtx = remainingCan.getContext('2d', { alpha: false }),
       canvasAttributes = {
         sourceCan: combCan,
         i: processedCanvases.length,
@@ -155,7 +120,7 @@ const stitchProcessing = (canvasList, canvasRefs, dimensions) => {
         height: sliceHeight
       }
 
-    processFinalCanvas(canvasAttributes)
+    processedCanvases.push(canvasAttributes)
 
     remainingCan.width = width
     remainingCan.height = remainingH
@@ -185,7 +150,7 @@ const stitchProcessing = (canvasList, canvasRefs, dimensions) => {
     let first = cnvsCopy.shift()
     first = combineSmallerImgs(first, avgHeight, cnvsCopy)
     if (cnvsCopy.length === 0) {
-      processFinalCanvas({
+      processedCanvases.push({
         sourceCan: first,
         i: processedCanvases.length,
         width: first.width,
@@ -194,7 +159,7 @@ const stitchProcessing = (canvasList, canvasRefs, dimensions) => {
       return
     } else if (verifyLastRowColor(first, avgHeight)) {
       if (first.height <= avgHeight) {
-        processFinalCanvas({
+        processedCanvases.push({
           sourceCan: first,
           i: processedCanvases.length,
           width: first.width,

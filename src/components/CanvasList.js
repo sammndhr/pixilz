@@ -4,11 +4,10 @@ import ProcessedCanvas from './ProcessedCanvas'
 import Resize from '../smallComponents/ResizeForm'
 import StitchPrefForm from '../smallComponents/StitchPrefForm'
 import ImageList from './ImageList'
-import { calculateDimensions, useWindowSize } from '../utils/'
+import { calculateDimensions } from '../utils/'
 import { Button } from '../smallComponents/Button'
 
 const CanvasList = () => {
-  const size = useWindowSize()
   const { state, dispatch } = useContext(DataContext)
   const { dimensions, imgsWrapperRef, dataUrls, canvasesLoaded, canvases, imgResizeWidth } = state
   const images = imgsWrapperRef ? imgsWrapperRef.children : []
@@ -34,11 +33,6 @@ const CanvasList = () => {
 
   useEffect(() => {
     dispatch({ type: 'SHOW_LOADER', payload: showLoader })
-    const cleanup = () => {
-      setShowLoader(false)
-      dispatch({ type: 'SHOW_LOADER', payload: false })
-    }
-    return cleanup
   }, [dispatch, showLoader])
 
   //Images get resized here if they're different sizes
@@ -140,9 +134,9 @@ const CanvasList = () => {
   }
 
   const handleClick = () => {
+    setShowLoader(true)
     resizeImages()
     setClickStatus(true)
-    setShowLoader(true)
     const imgsLen = images.length,
       canvases = [],
       createCanvas = (img, i) => {
@@ -188,13 +182,13 @@ const CanvasList = () => {
             <aside className='aside'>
               <StitchPrefForm handleStitchPrefsChange={handleStitchPrefsChange} />
               <Resize handleClick={handleClick} handleSizeChange={handleSizeChange} />
-              <Button handleClick={handleClick} content='Stitch n Slice' />
+              <Button handleClick={handleClick} content='Process Images' />
             </aside>
           </div>
           <ImageList />
         </Fragment>
       )}
-      {clickStatus && canvasesDrawn && <ProcessedCanvas size={size} />}
+      {clickStatus && canvasesDrawn && <ProcessedCanvas />}
       {clickStatus && !canvasesDrawn && (
         <div ref={canvasesWrapperRef} className='canvases-wrapper' style={{ maxWidth: dimensions.width.max }}>
           {canvases}

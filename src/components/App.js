@@ -20,11 +20,7 @@ const RedirectRoute = ({ children, ...rest }) => {
     return <Redirect to='/' />
   }
 
-  return history.action === 'POP' ? (
-    renderRedirect()
-  ) : (
-    <Route {...rest}>{children}</Route>
-  )
+  return history.action === 'POP' ? renderRedirect() : <Route {...rest}>{children}</Route>
 }
 
 const App = () => {
@@ -34,6 +30,11 @@ const App = () => {
   const { imgsLoaded, canvasesLoaded, canvasProcessStatus, loader } = state
   const [themeClass, setThemeClass] = useState('')
   const [mainClass, setMainClass] = useState('')
+  const [display, setDisplay] = useState('none')
+
+  useEffect(() => {
+    loader ? setDisplay('none') : setDisplay('')
+  }, [loader])
 
   useEffect(() => {
     if ((imgsLoaded || canvasesLoaded || canvasProcessStatus) && !mainClass) {
@@ -43,12 +44,7 @@ const App = () => {
       setMainClass('')
     }
     const cleanup = () => {
-      if (
-        !imgsLoaded &&
-        !canvasesLoaded &&
-        !canvasProcessStatus &&
-        !!mainClass
-      ) {
+      if (!imgsLoaded && !canvasesLoaded && !canvasProcessStatus && !!mainClass) {
         setMainClass('')
       }
     }
@@ -66,8 +62,8 @@ const App = () => {
   return (
     <div className={'App container ' + themeClass}>
       <Navigation />
-      <main className={mainClass}>
-        {loader && <Loader />}
+      {loader && <Loader />}
+      <main style={{ display }} className={mainClass}>
         <RedirectRoute path='/' exact>
           <UploadImages />
         </RedirectRoute>

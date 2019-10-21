@@ -1,12 +1,10 @@
 .main-grid {
   box-shadow: 0 2px 6px 0 hsla(0, 0%, 0%, 0.2);
   display: grid;
+  position: relative;
   background-color: $paper-bg-color;
   grid-template-areas: 'options canvas';
-  grid-template-columns: minmax(min-content, max-content) minmax(
-      min-content,
-      max-content
-    );
+  grid-template-columns: minmax(min-content, max-content) minmax(min-content, max-content);
   grid-template-rows: 1fr;
   position: relative;
   grid-gap: 1.5rem;
