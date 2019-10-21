@@ -160,13 +160,19 @@ const ProcessedCanvas = ({ history }) => {
 
   const handleDownloadClick = () => {
     Promise.all(blobs).then(blobs => {
-      const files = []
+      const files = [],
+        fileNameLen = blobs.length.toString().length
+
       blobs.forEach((blob, i) => {
+        let name = `${i}`
         const stream = function() {
           return new Response(blob).body
         }
+        while (name.length < fileNameLen) {
+          name = `0${name}`
+        }
         const file = {
-          name: `${i}.jpeg`,
+          name: name + '.jpeg',
           stream
         }
         files.push(file)

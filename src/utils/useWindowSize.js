@@ -11,7 +11,6 @@ export default function useWindowSize() {
   useEffect(() => {
     const isClient = typeof window === 'object'
     function getSize() {
-      console.log(document.body.clientHeight)
       return {
         width: isClient ? document.body.clientWidth : undefined,
         height: isClient ? document.body.clientHeight : undefined,
