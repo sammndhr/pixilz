@@ -6,7 +6,7 @@ import { sortFiles } from '../utils/'
 const UploadImages = () => {
   const history = useHistory()
   const { state, dispatch } = useContext(DataContext)
-  const { sort } = state
+  const { sort, uploadFolder } = state
   const [dataUrls, setDataUrls] = useState([])
   const [imgsUploaded, setImgsUploaded] = useState(false)
 
@@ -46,6 +46,9 @@ const UploadImages = () => {
   }
 
   const uploadFiles = (e, history) => {
+    const { name, webkitRelativePath } = e.target.files[0]
+    if (uploadFolder) dispatch({ type: 'UPDATE_FOLDER_NAME', payload: webkitRelativePath.slice(0, webkitRelativePath.indexOf(name) - 1) })
+
     readMultipleFiles(e.target.files)
       .then(results => {
         setDataUrls(results)

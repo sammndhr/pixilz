@@ -3,14 +3,15 @@ import DataContext from '../context/DataContext'
 
 const DownloadForm = ({ canvasesDrawn }) => {
   const inputRef = useRef(null)
-  const defaultValue = 'Pixilz'
-  const [value, setValue] = useState(defaultValue)
-  const [color, setColor] = useState('inherit')
 
-  const { dispatch } = useContext(DataContext)
+  const { state, dispatch } = useContext(DataContext)
+  const { folderName } = state
+  const [value, setValue] = useState(folderName)
+  const [color, setColor] = useState('inherit')
   const handleChange = event => {
     setValue(event.target.value)
   }
+
   const handleFocus = () => {
     setColor('#3682ed')
   }
@@ -31,7 +32,6 @@ const DownloadForm = ({ canvasesDrawn }) => {
   const handleBlur = () => {
     setColor('inherit')
   }
-
   return (
     <div className='form options'>
       <fieldset className='form-group'>
@@ -50,7 +50,7 @@ const DownloadForm = ({ canvasesDrawn }) => {
                 name='fname'
                 onFocus={handleFocus}
                 onBlur={handleBlur}
-                defaultValue={defaultValue}
+                defaultValue={folderName}
               />
               <span className='focus-border'></span>
             </div>

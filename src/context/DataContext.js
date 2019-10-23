@@ -28,6 +28,7 @@ const DataProvider = ({ children }) => {
       stitchOnly: false,
       stitchAndSlice: true
     },
+    uploadFolder: true,
     folderName: 'Pixilz'
   }
 
@@ -63,6 +64,8 @@ const DataProvider = ({ children }) => {
         return { ...state, imgResizeWidth: action.payload }
       case 'UPDATE_STITCH_PREFS':
         return { ...state, stitchPrefs: action.payload }
+      case 'UPDATE_UPLOAD_FOLDER':
+        return { ...state, uploadFolder: action.payload }
       case 'UPDATE_FOLDER_NAME':
         return { ...state, folderName: action.payload }
       default:

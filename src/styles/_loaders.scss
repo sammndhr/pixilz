@@ -56,6 +56,8 @@
   @include loader-rotate;
 }
 
-.loader {
-  @include loader($size: 100px, $border-size: 2px, $align: middle);
+.loader-wrapper {
+  .loader {
+    @include loader($size: 100px, $border-size: 2px, $align: middle);
+  }
 }

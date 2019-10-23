@@ -10,18 +10,18 @@ import Warning from '../smallComponents/Warning'
 import DownloadForm from '../smallComponents/DownloadForm'
 
 const ProcessedCanvas = ({ history }) => {
-  const size = useWindowSize()
-  const { state, dispatch } = useContext(DataContext)
-  const { canvasesWrapperRef, dimensions, stitchPrefs, imgResizeWidth, folderName } = state
-  const canvasRefs = useRef([])
-  const wrapper = useRef(null)
-  const [processedCanvasesState, setProcessedCanvasesState] = useState([])
-  const [blobs, setBlobs] = useState([])
-  const [canvasProcessStatus, setCanvasProcessStatus] = useState(false)
-  const [canvasesDrawn, setCanvasesDrawn] = useState(false)
-  const [canvasesCreated, setCanvasesCreated] = useState(false)
-  const [canvases, setCanvases] = useState([])
-  const [displaySizeWarning, setDisplaySizeWarning] = useState(false)
+  const size = useWindowSize(),
+    { state, dispatch } = useContext(DataContext),
+    { canvasesWrapperRef, dimensions, stitchPrefs, imgResizeWidth, folderName } = state,
+    canvasRefs = useRef([]),
+    wrapper = useRef(null),
+    [processedCanvasesState, setProcessedCanvasesState] = useState([]),
+    [blobs, setBlobs] = useState([]),
+    [canvasProcessStatus, setCanvasProcessStatus] = useState(false),
+    [canvasesDrawn, setCanvasesDrawn] = useState(false),
+    [canvasesCreated, setCanvasesCreated] = useState(false),
+    [canvases, setCanvases] = useState([]),
+    [displaySizeWarning, setDisplaySizeWarning] = useState(false)
 
   useEffect(() => {
     const canvases = canvasRefs.current,
@@ -192,24 +192,20 @@ const ProcessedCanvas = ({ history }) => {
   }
   return (
     <Fragment>
-      {
-        <Fragment>
-          <div className='aside-wrapper'>
-            <aside className='aside'>
-              <DownloadForm canvasesDrawn={canvasesDrawn} />
-              <Button handleClick={handleDownloadClick} content='Download as Zip' />
-            </aside>
-          </div>
-          <div>
-            {displaySizeWarning ? <Warning text={`Displayed size isn't the final size. Please expand browser to view exact size.`} /> : null}
-            <div className='canvases-wrapper' ref={wrapper} id='processed-canvases'>
-              {canvases.map(canvas => {
-                return canvas
-              })}
-            </div>
-          </div>
-        </Fragment>
-      }
+      <div className='aside-wrapper'>
+        <aside className='aside'>
+          <DownloadForm canvasesDrawn={canvasesDrawn} />
+          <Button handleClick={handleDownloadClick} content='Download as Zip' />
+        </aside>
+      </div>
+      <div>
+        {displaySizeWarning ? <Warning text={`Displayed size isn't the final size. Please expand browser to view exact size.`} /> : null}
+        <div className='canvases-wrapper' ref={wrapper} id='processed-canvases'>
+          {canvases.map(canvas => {
+            return canvas
+          })}
+        </div>
+      </div>
     </Fragment>
   )
 }
