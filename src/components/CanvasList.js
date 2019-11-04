@@ -1,11 +1,11 @@
-import React, { Fragment, useContext, useState, useEffect, useCallback, useRef } from 'react'
+import React, { Fragment, useCallback, useContext, useEffect, useRef, useState } from 'react'
+import { Button } from '../smallComponents/Button'
+import { calculateDimensions } from '../utils/'
 import DataContext from '../context/DataContext'
+import ImageList from './ImageList'
 import ProcessedCanvas from './ProcessedCanvas'
 import Resize from '../smallComponents/ResizeForm'
 import StitchPrefForm from '../smallComponents/StitchPrefForm'
-import ImageList from './ImageList'
-import { calculateDimensions } from '../utils/'
-import { Button } from '../smallComponents/Button'
 
 const CanvasList = () => {
   const { state, dispatch } = useContext(DataContext)

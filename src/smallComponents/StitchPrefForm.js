@@ -1,4 +1,4 @@
-import React, { useState, useEffect, Fragment } from 'react'
+import React, { Fragment, useEffect, useState } from 'react'
 
 const Resize = ({ handleStitchPrefsChange }) => {
   const [stitchPrefs, setStitchPrefs] = useState({

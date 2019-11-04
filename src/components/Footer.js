@@ -1,5 +1,6 @@
-import React, { useState, useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
+import React, { useEffect, useRef, useState } from 'react'
+
 //TODO. Change email to form
 const Footer = () => {
   const contactRef = useRef()

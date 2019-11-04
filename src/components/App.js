@@ -1,15 +1,14 @@
-import React, { useState, useContext, useEffect } from 'react'
-import { Route, Redirect } from 'react-router-dom'
-import { useHistory } from 'react-router'
-import '../styles/App.scss'
-import ThemeContext from '../context/ThemeContext'
+import React, { useContext, useEffect, useState } from 'react'
+import { Redirect, Route, useHistory } from 'react-router-dom'
+import CanvasList from './CanvasList'
 import DataContext from '../context/DataContext'
+import Footer from './Footer'
+import Loader from '../smallComponents/Loader'
 import Navigation from './Navigation'
 import ProcessedCanvas from './ProcessedCanvas'
-import Footer from './Footer'
-import CanvasList from './CanvasList'
+import ThemeContext from '../context/ThemeContext'
 import UploadImages from './UploadImages'
-import Loader from '../smallComponents/Loader'
+import '../styles/App.scss'
 
 const RedirectRoute = ({ children, ...rest }) => {
   const history = useHistory()

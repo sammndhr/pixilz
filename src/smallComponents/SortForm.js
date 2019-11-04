@@ -1,6 +1,6 @@
 import React, { Fragment, useContext } from 'react'
-import { UploadButton } from './Button'
 import DataContext from '../context/DataContext'
+import { UploadButton } from './Button'
 
 const SortForm = ({ uploadFiles }) => {
   const { state, dispatch } = useContext(DataContext)

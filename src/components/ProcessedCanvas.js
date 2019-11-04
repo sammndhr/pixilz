@@ -1,13 +1,13 @@
-import React, { Fragment, useContext, useState, useEffect, useRef } from 'react'
-import DataContext from '../context/DataContext'
-import { withRouter } from 'react-router-dom'
+import React, { Fragment, useContext, useEffect, useRef, useState } from 'react'
 import { saveAs } from 'file-saver'
-import { Zip } from '../utils'
-import { stitchProcessing, stitchOnly } from '../utils/'
+import { withRouter } from 'react-router-dom'
 import { Button } from '../smallComponents/Button'
+import DataContext from '../context/DataContext'
+import DownloadForm from '../smallComponents/DownloadForm'
+import { stitchOnly, stitchProcessing } from '../utils/'
 import { useWindowSize } from '../utils/'
 import Warning from '../smallComponents/Warning'
-import DownloadForm from '../smallComponents/DownloadForm'
+import { Zip } from '../utils'
 
 const ProcessedCanvas = ({ history }) => {
   const size = useWindowSize(),

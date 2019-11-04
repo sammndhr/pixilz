@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext, Fragment } from 'react'
+import React, { Fragment, useContext, useEffect, useState } from 'react'
 import DataContext from '../context/DataContext'
 
 const Resize = ({ handleSizeChange }) => {
@@ -17,9 +17,7 @@ const Resize = ({ handleSizeChange }) => {
     avg: 0
   })
 
-  const [selectedVal, setselectedVal] = useState(
-    resizePrefs.scaleDown ? 'scaleDown' : 'scaleUp'
-  )
+  const [selectedVal, setselectedVal] = useState(resizePrefs.scaleDown ? 'scaleDown' : 'scaleUp')
 
   useEffect(() => {
     if (dimensions.width && dimensions.height && !width.min) {

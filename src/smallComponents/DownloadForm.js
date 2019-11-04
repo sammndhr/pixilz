@@ -1,4 +1,4 @@
-import React, { useState, useEffect, Fragment, useContext, useRef, useLayoutEffect } from 'react'
+import React, { Fragment, useContext, useEffect, useLayoutEffect, useRef, useState } from 'react'
 import DataContext from '../context/DataContext'
 
 const DownloadForm = ({ canvasesDrawn }) => {

@@ -1,8 +1,9 @@
-import React, { useState, useContext, useEffect } from 'react'
-import { withRouter, useHistory } from 'react-router'
+import React, { useContext, useEffect, useState } from 'react'
+import { useHistory, withRouter } from 'react-router-dom'
 import DataContext from '../context/DataContext'
-import SortForm from '../smallComponents/SortForm'
 import { sortFiles } from '../utils/'
+import SortForm from '../smallComponents/SortForm'
+
 const UploadImages = () => {
   const history = useHistory()
   const { state, dispatch } = useContext(DataContext)
