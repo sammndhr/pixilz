@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { Redirect, Route, useHistory } from 'react-router-dom'
+import { Redirect, Route, Switch, useHistory } from 'react-router-dom'
 import CanvasList from './CanvasList'
 import DataContext from '../context/DataContext'
 import Footer from './Footer'
@@ -63,16 +63,18 @@ const App = () => {
       <Navigation />
       {loader && <Loader />}
       <main style={{ display }} className={mainClass}>
-        <RedirectRoute path='/' exact>
-          <UploadImages />
-        </RedirectRoute>
-        <RedirectRoute path='/options' exact>
-          <CanvasList />
-        </RedirectRoute>
-        <RedirectRoute path='/download'>
-          <ProcessedCanvas />
-        </RedirectRoute>
-        <Redirect from='*' to='/' />
+        <Switch>
+          <RedirectRoute path='/' exact>
+            <UploadImages />
+          </RedirectRoute>
+          <RedirectRoute path='/options' exact>
+            <CanvasList />
+          </RedirectRoute>
+          <RedirectRoute path='/download'>
+            <ProcessedCanvas />
+          </RedirectRoute>
+          <Redirect from='*' to='/' />
+        </Switch>
       </main>
       <Footer />
     </div>
