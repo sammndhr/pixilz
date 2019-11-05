@@ -1,4 +1,4 @@
-const sortFilesByName = filesArr => {
+const sortFiles = filesArr => {
   const reA = /[^a-zA-Z]/g
   const reN = /[^0-9]/g
   const sortAlphaNum = (objA, objB) => {
@@ -17,4 +17,12 @@ const sortFilesByName = filesArr => {
   return filesArr.sort(sortAlphaNum)
 }
 
-export default sortFilesByName
+const filterAndConvertToArr = files => {
+  const arr = []
+  for (const file of files) {
+    if (file.type.includes('image')) arr.push(file)
+  }
+  return arr
+}
+
+export { sortFiles, filterAndConvertToArr }

@@ -34,4 +34,4 @@ const calculateDimensions = (images, realAvg) => {
     height: { ...minMaxHeight, avg: Math.round(totalHeight / len) }
   }
 }
-export default { calculateDimensions }
+export default calculateDimensions

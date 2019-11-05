@@ -1,8 +1,5 @@
-import { default as Image } from './image'
-import { stitchProcessing, stitchOnly } from './canvas'
-const { calculateDimensions } = Image
+export { default as calculateDimensions } from './image'
 export { default as Zip } from './zip'
-export { default as sortFiles } from './file'
-export { stitchProcessing, stitchOnly }
+export { sortFiles, filterAndConvertToArr } from './file'
+export { stitchProcessing, stitchOnly } from './canvas'
 export { default as useWindowSize } from './useWindowSize'
-export { calculateDimensions }

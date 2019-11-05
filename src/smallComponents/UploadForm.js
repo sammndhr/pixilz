@@ -2,7 +2,7 @@ import React, { Fragment, useContext } from 'react'
 import DataContext from '../context/DataContext'
 import { UploadButton } from './Button'
 
-const SortForm = ({ uploadFiles }) => {
+const UploadForm = ({ uploadFiles }) => {
   const { state, dispatch } = useContext(DataContext)
   const { sort, uploadFolder } = state
 
@@ -56,4 +56,4 @@ const SortForm = ({ uploadFiles }) => {
     </Fragment>
   )
 }
-export default SortForm
+export default UploadForm
