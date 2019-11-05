@@ -19,12 +19,12 @@ const UploadForm = ({ uploadFiles }) => {
       <div className='form options'>
         <fieldset className='form-group'>
           <label className='form-check-label' htmlFor='sort'>
-            <input type='checkbox' name='sort' id='sort' checked={sort} onChange={handleSortChange} />
+            <input type='checkbox' name='sort' id='sort' defaultChecked={sort} onChange={handleSortChange} />
             <span className='cb-span'></span>
             <span>Auto sort after uploading</span>
           </label>
           <label className='form-check-label' htmlFor='upload-folder'>
-            <input type='checkbox' name='upload-folder' id='upload-folder' checked={uploadFolder} onChange={handleUploadChange} />
+            <input type='checkbox' name='upload-folder' id='upload-folder' defaultChecked={uploadFolder} onChange={handleUploadChange} />
             <span className='cb-span'></span>
             <span>Select folder instead of multiple files</span>
           </label>
