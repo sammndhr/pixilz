@@ -1,9 +1,11 @@
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  font-family: $open-sans, -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans',
+    'Helvetica Neue', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: $background;
+  color: $default-color;
 }
 
 code {
@@ -13,12 +15,6 @@ code {
 @font-face {
   font-family: 'Medieval';
   src: url('./MedievalSharp-Bold.ttf') format('truetype');
-}
-
-body {
-  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  background-color: $background;
-  color: $default-color;
 }
 
 a,
