@@ -1,11 +1,10 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import App from './components/App'
-
 import { BrowserRouter as Router } from 'react-router-dom'
-import * as serviceWorker from './serviceWorker'
-import { ThemeProvider } from './context/ThemeContext'
+import App from './components/App'
 import { DataProvider } from './context/DataContext'
+import { ThemeProvider } from './context/ThemeContext'
+import * as serviceWorker from './serviceWorker'
 
 ReactDOM.render(
   <Router>

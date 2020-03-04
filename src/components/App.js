@@ -1,14 +1,14 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { Redirect, Route, Switch, useHistory } from 'react-router-dom'
-import CanvasList from './CanvasList'
 import DataContext from '../context/DataContext'
-import Footer from './Footer'
+import ThemeContext from '../context/ThemeContext'
 import Loader from '../smallComponents/Loader'
+import '../styles/App.scss'
+import CanvasList from './CanvasList'
+import Footer from './Footer'
 import Navigation from './Navigation'
 import ProcessedCanvas from './ProcessedCanvas'
-import ThemeContext from '../context/ThemeContext'
 import UploadImages from './UploadImages'
-import '../styles/App.scss'
 
 const RedirectRoute = ({ children, ...rest }) => {
   const history = useHistory()
@@ -19,7 +19,11 @@ const RedirectRoute = ({ children, ...rest }) => {
     return <Redirect to='/' />
   }
 
-  return history.action === 'POP' ? renderRedirect() : <Route {...rest}>{children}</Route>
+  return history.action === 'POP' ? (
+    renderRedirect()
+  ) : (
+    <Route {...rest}>{children}</Route>
+  )
 }
 
 const App = () => {
@@ -43,7 +47,12 @@ const App = () => {
       setMainClass('')
     }
     const cleanup = () => {
-      if (!imgsLoaded && !canvasesLoaded && !canvasProcessStatus && !!mainClass) {
+      if (
+        !imgsLoaded &&
+        !canvasesLoaded &&
+        !canvasProcessStatus &&
+        !!mainClass
+      ) {
         setMainClass('')
       }
     }

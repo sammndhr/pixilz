@@ -1,15 +1,29 @@
-import React, { Fragment, useCallback, useContext, useEffect, useRef, useState } from 'react'
-import { Button } from '../smallComponents/Button'
-import { calculateDimensions } from '../utils/'
+import React, {
+  Fragment,
+  useCallback,
+  useContext,
+  useEffect,
+  useRef,
+  useState
+} from 'react'
 import DataContext from '../context/DataContext'
-import ImageList from './ImageList'
-import ProcessedCanvas from './ProcessedCanvas'
+import { Button } from '../smallComponents/Button'
 import Resize from '../smallComponents/ResizeForm'
 import StitchPrefForm from '../smallComponents/StitchPrefForm'
+import { calculateDimensions } from '../utils/'
+import ImageList from './ImageList'
+import ProcessedCanvas from './ProcessedCanvas'
 
 const CanvasList = () => {
   const { state, dispatch } = useContext(DataContext)
-  const { dimensions, imgsWrapperRef, dataUrls, canvasesLoaded, canvases, imgResizeWidth } = state
+  const {
+    dimensions,
+    imgsWrapperRef,
+    dataUrls,
+    canvasesLoaded,
+    canvases,
+    imgResizeWidth
+  } = state
   const images = imgsWrapperRef ? imgsWrapperRef.children : []
   const [clickStatus, setClickStatus] = useState(false)
   const [imgsResizeDimensions, setImgsResizeDimensions] = useState([])
@@ -180,8 +194,13 @@ const CanvasList = () => {
         <Fragment>
           <div className='aside-wrapper'>
             <aside className='aside'>
-              <StitchPrefForm handleStitchPrefsChange={handleStitchPrefsChange} />
-              <Resize handleClick={handleClick} handleSizeChange={handleSizeChange} />
+              <StitchPrefForm
+                handleStitchPrefsChange={handleStitchPrefsChange}
+              />
+              <Resize
+                handleClick={handleClick}
+                handleSizeChange={handleSizeChange}
+              />
               <Button handleClick={handleClick} content='Process Images' />
             </aside>
           </div>
@@ -190,7 +209,11 @@ const CanvasList = () => {
       )}
       {clickStatus && canvasesDrawn && <ProcessedCanvas />}
       {clickStatus && !canvasesDrawn && (
-        <div ref={canvasesWrapperRef} className='canvases-wrapper' style={{ maxWidth: dimensions.width.max }}>
+        <div
+          ref={canvasesWrapperRef}
+          className='canvases-wrapper'
+          style={{ maxWidth: dimensions.width.max }}
+        >
           {canvases}
         </div>
       )}

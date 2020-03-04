@@ -1,8 +1,8 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { useHistory, withRouter } from 'react-router-dom'
 import DataContext from '../context/DataContext'
-import { sortFiles, filterAndConvertToArr } from '../utils/'
 import UploadForm from '../smallComponents/UploadForm'
+import { filterAndConvertToArr, sortFiles } from '../utils/'
 
 const UploadImages = () => {
   const history = useHistory()
@@ -35,7 +35,9 @@ const UploadImages = () => {
   }
 
   const readMultipleFiles = async files => {
-    const filesArr = uploadFolder ? filterAndConvertToArr(files) : Array.from(files)
+    const filesArr = uploadFolder
+      ? filterAndConvertToArr(files)
+      : Array.from(files)
     const filesToProcess = sort ? sortFiles(filesArr) : filesArr
     const promises = filesToProcess.map(async file => {
       const data = await readFile(file)
@@ -48,7 +50,14 @@ const UploadImages = () => {
 
   const uploadFiles = (e, history) => {
     const { name, webkitRelativePath } = e.target.files[0]
-    if (uploadFolder) dispatch({ type: 'UPDATE_FOLDER_NAME', payload: webkitRelativePath.slice(0, webkitRelativePath.indexOf(name) - 1) })
+    if (uploadFolder)
+      dispatch({
+        type: 'UPDATE_FOLDER_NAME',
+        payload: webkitRelativePath.slice(
+          0,
+          webkitRelativePath.indexOf(name) - 1
+        )
+      })
     readMultipleFiles(e.target.files)
       .then(results => {
         setDataUrls(results)

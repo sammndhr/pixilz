@@ -1,18 +1,23 @@
-import React, { Fragment, useContext, useEffect, useRef, useState } from 'react'
 import { saveAs } from 'file-saver'
+import React, { Fragment, useContext, useEffect, useRef, useState } from 'react'
 import { withRouter } from 'react-router-dom'
-import { Button } from '../smallComponents/Button'
 import DataContext from '../context/DataContext'
+import { Button } from '../smallComponents/Button'
 import DownloadForm from '../smallComponents/DownloadForm'
-import { stitchOnly, stitchProcessing } from '../utils/'
-import { useWindowSize } from '../utils/'
 import Warning from '../smallComponents/Warning'
 import { Zip } from '../utils'
+import { stitchOnly, stitchProcessing, useWindowSize } from '../utils/'
 
 const ProcessedCanvas = ({ history }) => {
   const size = useWindowSize(),
     { state, dispatch } = useContext(DataContext),
-    { canvasesWrapperRef, dimensions, stitchPrefs, imgResizeWidth, folderName } = state,
+    {
+      canvasesWrapperRef,
+      dimensions,
+      stitchPrefs,
+      imgResizeWidth,
+      folderName
+    } = state,
     canvasRefs = useRef([]),
     wrapper = useRef(null),
     [processedCanvasesState, setProcessedCanvasesState] = useState([]),
@@ -64,13 +69,20 @@ const ProcessedCanvas = ({ history }) => {
     if (!canvasesWrapperRef) return
 
     const canvasList = Array.from(canvasesWrapperRef.children),
-      { processedCanvases } = stitchPrefs.stitchOnly ? stitchOnly(canvasList, canvasRefs) : stitchProcessing(canvasList, canvasRefs, dimensions)
+      { processedCanvases } = stitchPrefs.stitchOnly
+        ? stitchOnly(canvasList, canvasRefs)
+        : stitchProcessing(canvasList, canvasRefs, dimensions)
 
     if (!processedCanvasesState.length) {
       setProcessedCanvasesState(processedCanvases)
       setCanvasProcessStatus(true)
     }
-  }, [canvasesWrapperRef, dimensions, processedCanvasesState.length, stitchPrefs.stitchOnly])
+  }, [
+    canvasesWrapperRef,
+    dimensions,
+    processedCanvasesState.length,
+    stitchPrefs.stitchOnly
+  ])
 
   //create canvases
   useEffect(() => {
@@ -199,7 +211,11 @@ const ProcessedCanvas = ({ history }) => {
         </aside>
       </div>
       <div>
-        {displaySizeWarning ? <Warning text={`Displayed size isn't the final size. Please expand browser to view exact size.`} /> : null}
+        {displaySizeWarning ? (
+          <Warning
+            text={`Displayed size isn't the final size. Please expand browser to view exact size.`}
+          />
+        ) : null}
         <div className='canvases-wrapper' ref={wrapper} id='processed-canvases'>
           {canvases.map(canvas => {
             return canvas

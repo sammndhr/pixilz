@@ -1,4 +1,11 @@
-import React, { Fragment, useContext, useEffect, useLayoutEffect, useRef, useState } from 'react'
+import React, {
+  Fragment,
+  useContext,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState
+} from 'react'
 import DataContext from '../context/DataContext'
 
 const DownloadForm = ({ canvasesDrawn }) => {
@@ -37,7 +44,10 @@ const DownloadForm = ({ canvasesDrawn }) => {
       <fieldset className='form-group'>
         <Fragment>
           <label className='form-text-label' htmlFor='folder-name'>
-            <span style={{ display: 'block', color }} className='form-text-helper'>
+            <span
+              style={{ display: 'block', color }}
+              className='form-text-helper'
+            >
               Zip File name
             </span>
             <div className='input-text-wrapper'>

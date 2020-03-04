@@ -6,7 +6,9 @@ const Resize = ({ handleStitchPrefsChange }) => {
     stitchAndSlice: true
   })
 
-  const [selectedVal, setselectedVal] = useState(stitchPrefs.stitchOnly ? 'stitchOnly' : 'stitchAndSlice')
+  const [selectedVal, setselectedVal] = useState(
+    stitchPrefs.stitchOnly ? 'stitchOnly' : 'stitchAndSlice'
+  )
 
   const handleChange = event => {
     setselectedVal(event.target.value)

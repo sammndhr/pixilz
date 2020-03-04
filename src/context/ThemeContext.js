@@ -38,7 +38,8 @@ class ThemeProvider extends Component {
         value={{
           dark,
           toggleTheme: this.toggleTheme
-        }}>
+        }}
+      >
         {children}
       </ThemeContext.Provider>
     )

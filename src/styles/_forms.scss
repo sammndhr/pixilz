@@ -56,7 +56,8 @@ $radio-height: 1.25rem;
         height: $radio-height;
         width: $radio-height;
         border-radius: 50%;
-        transition: all $duration cubic-bezier(0.4, 0, 0.23, 1), border-color ease 0ms;
+        transition: all $duration cubic-bezier(0.4, 0, 0.23, 1),
+          border-color ease 0ms;
         background-color: transparent;
       }
       &:hover {

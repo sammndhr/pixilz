@@ -1,5 +1,5 @@
-import { Link } from 'react-router-dom'
 import React, { useEffect, useRef, useState } from 'react'
+import { Link } from 'react-router-dom'
 
 //TODO. Change email to form
 const Footer = () => {
@@ -29,7 +29,8 @@ const Footer = () => {
         onClick={event => {
           event.preventDefault()
           setShowContact(true)
-        }}>
+        }}
+      >
         Contact
       </Link>
       {showContact ? (

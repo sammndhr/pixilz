@@ -71,7 +71,11 @@ const stitchProcessing = (canvasList, canvasRefs, dimensions) => {
 
   const comparePixels = (old, curr) => {
     const threshold = 0
-    const diff = Math.sqrt(Math.pow(curr.r - old.r, 2) + Math.pow(curr.g - old.g, 2) + Math.pow(curr.b - old.b, 2))
+    const diff = Math.sqrt(
+      Math.pow(curr.r - old.r, 2) +
+        Math.pow(curr.g - old.g, 2) +
+        Math.pow(curr.b - old.b, 2)
+    )
     return !(diff > threshold)
   }
 
@@ -124,7 +128,17 @@ const stitchProcessing = (canvasList, canvasRefs, dimensions) => {
 
     remainingCan.width = width
     remainingCan.height = remainingH
-    rCtx.drawImage(combCan, 0, sliceHeight - 1, width, remainingH, 0, 0, width, remainingH)
+    rCtx.drawImage(
+      combCan,
+      0,
+      sliceHeight - 1,
+      width,
+      remainingH,
+      0,
+      0,
+      width,
+      remainingH
+    )
     return remainingCan
   }
 
@@ -134,7 +148,10 @@ const stitchProcessing = (canvasList, canvasRefs, dimensions) => {
     while (sliceHeight < first.height) {
       if (verifyLastRowColor(first, sliceHeight) === true) {
         const padding = sliceHeight + 40
-        if (verifyLastRowColor(first, padding) === true && padding < first.height) {
+        if (
+          verifyLastRowColor(first, padding) === true &&
+          padding < first.height
+        ) {
           sliceHeight = padding
         }
         remainingCan = sliceCanvas(first, sliceHeight)

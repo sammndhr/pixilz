@@ -1,10 +1,10 @@
-import { Link } from 'react-router-dom'
 import React, { useContext, useEffect, useState } from 'react'
-import { Button } from '../smallComponents/Button'
+import { Link } from 'react-router-dom'
 import DataContext from '../context/DataContext'
+import ThemeContext from '../context/ThemeContext'
 import moon from '../images/moon.svg'
 import sun from '../images/sun.svg'
-import ThemeContext from '../context/ThemeContext'
+import { Button } from '../smallComponents/Button'
 
 const Navigation = () => {
   const theme = useContext(ThemeContext)
@@ -57,7 +57,11 @@ const Navigation = () => {
       <nav className='nav'>
         {renderBrand()}
         <div className='links'>
-          <Button className='dark-switcher' handleClick={theme.toggleTheme} content={renderThemeButton(theme)} />
+          <Button
+            className='dark-switcher'
+            handleClick={theme.toggleTheme}
+            content={renderThemeButton(theme)}
+          />
         </div>
       </nav>
     </header>

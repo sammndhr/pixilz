@@ -1,5 +1,5 @@
+export { stitchOnly, stitchProcessing } from './canvas'
+export { filterAndConvertToArr, sortFiles } from './file'
 export { default as calculateDimensions } from './image'
-export { default as Zip } from './zip'
-export { sortFiles, filterAndConvertToArr } from './file'
-export { stitchProcessing, stitchOnly } from './canvas'
 export { default as useWindowSize } from './useWindowSize'
+export { default as Zip } from './zip'

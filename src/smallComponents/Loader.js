@@ -11,7 +11,8 @@ const Loader = () => {
           zIndex: 1000,
           height: size.innerHeight || window.innerHeight,
           width: size.width
-        }}>
+        }}
+      >
         <div className='loader' />
       </div>
     </Fragment>
