@@ -1,7 +1,15 @@
 {
   "name": "pixilz",
   "version": "0.1.0",
-  "private": true,
+  "description": "Web app that auto stitches and slices images after calculating where to slice based on the color of each pixel in the row.",
+  "author": {
+    "name": "Mrinalini 'Sam' Manandhar",
+    "email": "sam@mrinalini.dev"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mrinalini-m/pixilz"
+  },
   "dependencies": {
     "file-saver": "^2.0.2",
     "node-sass": "^4.13.1",
@@ -31,5 +39,12 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  }
+  },
+  "license": "MIT",
+  "keywords": [
+    "mrinalini manandhar",
+    "mrinalini sam",
+    "pixilz",
+    "web comics"
+  ]
 }
